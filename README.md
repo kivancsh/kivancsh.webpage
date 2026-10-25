@@ -78,7 +78,7 @@ SE
 
 ## Müzik
 
-Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: `spotify` (Spotify şarkı adresi `spotify:track:…`), `youtube` (aynı şarkının resmi YouTube video kimliği), `title`, `artist`. Ana sayfanınki `site.music`; alt plakta şarkı yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. YouTube sesi `site.volume` ile ayarlanır (0–100, şu an 50).
+Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: `spotify` (Spotify şarkı adresi `spotify:track:…`), `youtube` (aynı şarkının resmi YouTube video kimliği), `title`, `artist`. Ana sayfanınki `site.music`; alt plakta şarkı yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. YouTube sesi `site.volume` ile ayarlanır (0–100, şu an 50). Bir şarkının başında sessizlik varsa `"start": 4` gibi bir alanla şarkı ilk açılışta o saniyeden başlar (Let It Happen'da kullanılıyor).
 
 - Sayfa değişince şarkı da değişir; bir sayfaya geri dönülünce o sayfanın şarkısı kaldığı saniyeden devam eder (ziyaret boyunca hatırlanır, sayfa yenilenince sıfırlanır). İlk kez çalan şarkı en baştan başlar.
 - Tarayıcıda Spotify'a giriş yapmış ziyaretçiler şarkıyı Spotify'dan tam dinler. Giriş yapmamış ziyaretçilere Spotify yalnızca 30 saniyelik bir önizleme verdiği için çalar bunu fark edince o ziyaret boyunca YouTube'a geçer ve şarkıyı başından, tam ve ayarlı seste çalar.

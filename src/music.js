@@ -77,6 +77,15 @@ export class Music {
     return track ? track.spotify || track.youtube : '';
   }
 
+  // where a song begins when it hasn't been heard yet: `start` (seconds) skips a silent intro
+  startMs(track = this.track) {
+    return (track?.start || 0) * 1000;
+  }
+
+  resumeMs() {
+    return this.positions.has(this.key()) ? this.positions.get(this.key()) : this.startMs();
+  }
+
   // ---- shared -----------------------------------------------------------------
 
   setLabel(track) {
@@ -190,7 +199,7 @@ export class Music {
     const host = document.createElement('div');
     host.className = 'np-sp';
     this.frame.appendChild(host);
-    this.resumeAt = this.positions.get(this.key()) || 0;
+    this.resumeAt = this.resumeMs();
     this.seeking = this.resumeAt > 1500;
     this.last = { position: 0, duration: 0 };
     this.spApi.createController(host, { uri: this.track.spotify, width: '100%', height: 80 }, (c) => {
@@ -228,8 +237,8 @@ export class Music {
       if (duration > 0) this.positions.set(this.key(), position);
     } else if (isPaused && !isBuffering && wasPlaying) {
       if (ended && !this.userPaused) {
-        this.positions.set(this.key(), 0);
-        c.seek(0);
+        this.positions.set(this.key(), this.startMs());
+        c.seek(this.startMs() / 1000);
         c.play();
       } else if (this.interacted) {
         this.userPaused = true; // paused from the embed's own button
@@ -254,7 +263,7 @@ export class Music {
         width: '100%',
         height: '100%',
         videoId: this.track.youtube,
-        playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, modestbranding: 1, playsinline: 1, rel: 0 },
+        playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, modestbranding: 1, playsinline: 1, rel: 0, start: Math.floor(this.startMs() / 1000) },
         events: {
           onReady: () => {
             this.ytReady = true;
@@ -289,9 +298,9 @@ export class Music {
       this.setPlaying(false);
     } else if (s === YT.ENDED) {
       // round again from the top
-      this.positions.set(this.key(), 0);
+      this.positions.set(this.key(), this.startMs());
       if (!this.userPaused) {
-        this.yt.seekTo(0, true);
+        this.yt.seekTo(this.startMs() / 1000, true);
         this.yt.playVideo();
       }
     }
@@ -312,7 +321,7 @@ export class Music {
   ytLoad() {
     if (!this.ytReady) return;
     this.ytSwitching = true;
-    const opts = { videoId: this.track.youtube, startSeconds: (this.positions.get(this.key()) || 0) / 1000 };
+    const opts = { videoId: this.track.youtube, startSeconds: this.resumeMs() / 1000 };
     if (this.pending) {
       this.pending = false;
       this.yt.loadVideoById(opts);
