@@ -1,0 +1,144 @@
+{
+  "_doc": "Sitenin tüm içeriği. Metin alanları (name, years, label, subtitle) {\"tr\": …, \"en\": …} biçimindedir. Her yazının Türkçesi 'post' dosyasında, İngilizcesi aynı adın .en.md uzantılı dosyasındadır (ör. stajlar.md ve stajlar.en.md). 'music' o sayfada çalan şarkıdır; alt plakta yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. All content. Text fields are {\"tr\": …, \"en\": …}; English posts live next to the Turkish ones as *.en.md.",
+  "site": {
+    "name": "Kıvanç Karademir",
+    "subtitle": {
+      "tr": "Kişisel plak arşivi",
+      "en": "Professional Portfolio"
+    },
+    "music": {
+      "spotify": "spotify:track:0VjIjW4GlUZAMYd2vXMi3b",
+      "title": "Blinding Lights",
+      "artist": "The Weeknd",
+      "youtube": "fHI8X4OXluQ"
+    },
+    "volume": 50
+  },
+  "records": [
+    {
+      "slug": "universite-tecrubelerim",
+      "years": {
+        "tr": "2018–2023",
+        "en": "2018–2023"
+      },
+      "name": {
+        "tr": "Üniversite Tecrübelerim",
+        "en": "University Experience"
+      },
+      "accent": "#B3384A",
+      "post": "posts/universite-tecrubelerim.md",
+      "music": {
+        "spotify": "spotify:track:1mea3bSkSGXuIRvnydlB5b",
+        "title": "Viva La Vida",
+        "artist": "Coldplay",
+        "youtube": "dvgZkm1xWPE"
+      },
+      "children": [
+        {
+          "slug": "kulup-etkinlikleri",
+          "name": {
+            "tr": "Endüstri Mühendisliği Kulüp Etkinlikleri Deneyimlerim",
+            "en": "Industrial Engineering Student Club Activities"
+          },
+          "label": {
+            "tr": "Kulüp Etkinlikleri",
+            "en": "Club Activities"
+          },
+          "accent": "#C9574F",
+          "post": "posts/universite-tecrubelerim/kulup-etkinlikleri.md"
+        },
+        {
+          "slug": "stajlar",
+          "name": {
+            "tr": "Stajlar",
+            "en": "Internships"
+          },
+          "label": {
+            "tr": "Stajlar",
+            "en": "Internships"
+          },
+          "accent": "#8F2E46",
+          "post": "posts/universite-tecrubelerim/stajlar.md"
+        }
+      ]
+    },
+    {
+      "slug": "kariyer-yolculugum",
+      "years": {
+        "tr": "2023–Bugün",
+        "en": "2023–Present"
+      },
+      "name": {
+        "tr": "Kariyer Yolculuğum",
+        "en": "Professional Career"
+      },
+      "accent": "#3F66C2",
+      "post": "posts/kariyer-yolculugum.md",
+      "music": {
+        "spotify": "spotify:track:2X485T9Z5Ly0xyaghN73ed",
+        "title": "Let It Happen",
+        "artist": "Tame Impala",
+        "youtube": "-ed6UeDp1ek"
+      }
+    },
+    {
+      "slug": "dunya-turu-hobiler",
+      "years": {
+        "tr": "2025–Daima",
+        "en": "2025–Ongoing"
+      },
+      "name": {
+        "tr": "Dünya Turu & Hobiler",
+        "en": "International Travel & Personal Interests"
+      },
+      "accent": "#2E9370",
+      "post": "posts/dunya-turu-hobiler.md",
+      "music": {
+        "spotify": "spotify:track:1LzNfuep1bnAUR9skqdHCK",
+        "title": "Fade Into You",
+        "artist": "Mazzy Star",
+        "youtube": "ImKY6TZEyrI"
+      },
+      "children": [
+        {
+          "slug": "kesif-seyahat",
+          "name": {
+            "tr": "Keşif & Seyahat",
+            "en": "International Travel"
+          },
+          "label": {
+            "tr": "Keşif & Seyahat",
+            "en": "Travel"
+          },
+          "accent": "#2F8C99",
+          "post": "posts/dunya-turu-hobiler/kesif-seyahat.md",
+          "music": {
+            "spotify": "spotify:track:374niFA4ZgtXDlflUaNc3q",
+            "title": "La Route",
+            "artist": "Juniore",
+            "youtube": "dIirVPZDoMc"
+          }
+        },
+        {
+          "slug": "hobiler",
+          "name": {
+            "tr": "Fitness, Yapay Zeka, Futbol, Müzik",
+            "en": "Fitness, Artificial Intelligence, Football and Music"
+          },
+          "label": {
+            "tr": "Hobiler",
+            "en": "Personal Interests"
+          },
+          "accent": "#C4A04C",
+          "post": "posts/dunya-turu-hobiler/hobiler.md",
+          "music": {
+            "spotify": "spotify:track:2p8IUWQDrpjuFltbdgLOag",
+            "title": "After Hours",
+            "artist": "The Weeknd",
+            "youtube": "ygTZZpVkmKg"
+          }
+        }
+      ]
+    }
+  ]
+}

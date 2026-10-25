@@ -1,0 +1,293 @@
+/* Light theme for the blog pages (inside a record).
+   The exhibition stays a dark room; stepping through a record's spindle hole opens
+   onto a bright page lit in that record's colour. Tokens are redefined on .post so
+   every component keeps its layout and only changes paint. See DESIGN.md. */
+
+.post {
+  --paper: #14161b; /* ink: headings, body */
+  --muted: #59606b; /* secondary text, captions (5.8:1) */
+  --faint: rgba(20, 22, 27, 0.34); /* decorative only, never text */
+  --line: rgba(20, 22, 27, 0.11); /* hairlines, card borders */
+  --surface: #ffffff; /* raised plates: role cards, track cards, map pins */
+  --pa-wash: color-mix(in oklab, var(--pa) 6%, #fbfcfd); /* page ground */
+  --pa-ink: color-mix(in oklab, var(--pa) 64%, #14161b); /* accent as text, >= 4.5:1 */
+  --pa-display: color-mix(in oklab, var(--pa) 80%, #14161b); /* accent as display type, >= 3:1 */
+  --shadow-soft: 0 1px 0 rgba(20, 22, 27, 0.04), 0 18px 40px -26px color-mix(in oklab, var(--pa) 45%, rgba(20, 22, 27, 0.55));
+  color: var(--paper);
+  color-scheme: light;
+  background:
+    radial-gradient(60% 46% at 88% 4%, color-mix(in oklab, var(--pa) 15%, transparent), transparent 72%),
+    radial-gradient(50% 40% at 0% 100%, color-mix(in oklab, var(--pa) 7%, transparent), transparent 70%),
+    var(--pa-wash);
+}
+.post ::selection {
+  background: color-mix(in oklab, var(--pa) 26%, #ffffff);
+  color: var(--paper);
+}
+.post-scroll {
+  scrollbar-color: color-mix(in oklab, var(--pa) 40%, #c9ced4) transparent;
+}
+.in-post .grain {
+  opacity: 0.035;
+}
+
+/* the record's light: a pool of its colour opens behind the header as the portal does */
+.ph::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: -8vw;
+  top: -10vh;
+  width: 70vw;
+  height: 80vh;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--pa) 22%, transparent), transparent);
+  opacity: 0;
+  transform: scale(0.7);
+  transform-origin: 80% 20%;
+  transition: opacity 1.6s ease 0.1s, transform 2.2s var(--ease) 0.1s;
+  pointer-events: none;
+}
+.ph {
+  isolation: isolate;
+}
+.post.is-in .ph::before {
+  opacity: 1;
+  transform: none;
+}
+
+/* top bar */
+.post-bar::before {
+  background: linear-gradient(var(--pa-wash) 62%, transparent);
+  -webkit-mask: linear-gradient(#000 78%, transparent);
+  mask: linear-gradient(#000 78%, transparent);
+}
+
+/* header */
+.ph-year {
+  color: var(--pa-display);
+}
+.ph-flag,
+.trk,
+.pb h3,
+.ph-mark,
+.tl-when,
+.t-n,
+.tracks-k,
+.mc-n,
+.pf-parent:hover {
+  color: var(--pa-ink);
+}
+.ph-disc .vinyl {
+  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.08), 0 30px 60px -24px color-mix(in oklab, var(--pa) 55%, rgba(20, 22, 27, 0.6));
+}
+.post .vinyl {
+  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.08), 0 14px 26px -14px rgba(20, 22, 27, 0.45);
+}
+
+/* body */
+.pb blockquote::before {
+  color: var(--pa);
+}
+.pb a {
+  text-decoration-color: color-mix(in oklab, var(--pa) 70%, transparent);
+}
+.fig-frame {
+  background: #eef0f3;
+}
+.fig-ph {
+  background:
+    radial-gradient(60% 80% at 30% 30%, color-mix(in oklab, var(--pa) 22%, transparent), transparent 70%),
+    repeating-linear-gradient(135deg, rgba(20, 22, 27, 0.035) 0 1px, transparent 1px 14px),
+    #f2f4f6;
+}
+.fig-ph span {
+  background: rgba(255, 255, 255, 0.7);
+}
+.timeline li::before {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--pa) 18%, #ffffff);
+}
+
+/* track list, footer cards */
+.tracks-l a:hover,
+.tracks-l a:focus-visible {
+  background: color-mix(in oklab, var(--pa) 8%, #ffffff);
+}
+.pf-card {
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+.pf-card::before {
+  background: radial-gradient(80% 120% at 0% 100%, color-mix(in oklab, var(--ca) 16%, transparent), transparent 70%);
+}
+.pf-y {
+  color: color-mix(in oklab, var(--ca) 64%, #14161b);
+}
+
+/* roles: logos sit on white plates */
+.role {
+  background: linear-gradient(120deg, color-mix(in oklab, var(--pa) 5%, #ffffff), #ffffff 60%);
+  box-shadow: var(--shadow-soft);
+}
+.role:hover {
+  border-color: color-mix(in oklab, var(--pa) 40%, transparent);
+}
+.role-plate {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.role-plate::after {
+  background: linear-gradient(115deg, transparent 40%, color-mix(in oklab, var(--pa) 14%, transparent) 50%, transparent 60%);
+}
+.role-mono {
+  color: var(--pa-ink);
+}
+.pb .role-org {
+  color: var(--pa-ink);
+}
+.role-notes {
+  color: color-mix(in oklab, var(--paper) 78%, transparent);
+}
+
+/* stats */
+.stat-v {
+  color: var(--pa-display);
+}
+
+/* travel map: daylight cartography */
+.tmap {
+  background:
+    radial-gradient(70% 70% at 60% 30%, color-mix(in oklab, var(--pa) 10%, transparent), transparent 70%),
+    #eaf1f3;
+  box-shadow: var(--shadow-soft);
+}
+.tmap .sphere {
+  fill: #f3f7f8;
+  stroke: rgba(20, 22, 27, 0.08);
+}
+.tmap .land path {
+  fill: #dde4e6;
+  stroke: #f3f7f8;
+}
+.tmap .land .home {
+  fill: color-mix(in oklab, #e30a17 24%, #dde4e6);
+}
+.vc-base {
+  fill: #cdd5d8;
+}
+.vc.on .vc-edge {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 2px var(--pa)) drop-shadow(0 0 8px var(--pa));
+}
+.route {
+  stroke: #14161b;
+  opacity: 0.5;
+}
+.pin-dot {
+  fill: #14161b;
+}
+.pin.on .pin-dot {
+  fill: var(--pa-ink);
+}
+.pin-t {
+  fill: #14161b;
+  stroke: #f3f7f8;
+}
+.home-t {
+  fill: #9b0b14;
+}
+.plane path {
+  fill: #14161b;
+  filter: drop-shadow(0 3px 3px rgba(20, 22, 27, 0.25));
+}
+.tmap-replay {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--paper);
+}
+.tmap-board {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--pa-ink);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.tcard {
+  background: var(--surface);
+}
+.tcard-flag {
+  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.1), 0 6px 14px -8px rgba(20, 22, 27, 0.5);
+}
+.tcard-n {
+  color: var(--pa-ink);
+}
+
+/* hobbies: each chapter is a bright panel in its own colour */
+.hob-art {
+  background: radial-gradient(80% 80% at 50% 40%, color-mix(in oklab, var(--hc) 14%, transparent), transparent 75%), #ffffff;
+  box-shadow: 0 24px 50px -32px color-mix(in oklab, var(--hc) 60%, rgba(20, 22, 27, 0.6));
+}
+.hob-text .trk {
+  color: color-mix(in oklab, var(--hc) 64%, #14161b);
+}
+.fit-bar {
+  fill: #14161b;
+}
+.fit-bpm,
+.ai-line,
+.mu-notes text {
+  fill: #14161b;
+}
+.fit-unit {
+  fill: #59606b;
+}
+.ai-pulse {
+  fill: var(--hc);
+  filter: none;
+}
+.ai-nodes circle {
+  fill: #ffffff;
+}
+.ai-typed,
+.ai-caret {
+  fill: color-mix(in oklab, var(--hc) 64%, #14161b);
+}
+.mu-arm line,
+.mu-arm circle {
+  stroke: #9aa1ab;
+  fill: #9aa1ab;
+}
+.mu-g circle {
+  stroke: rgba(255, 255, 255, 0.07);
+}
+
+/* the player in the top bar sits on the light page while a blog is open */
+.in-post .np-meta {
+  color: #59606b;
+}
+.in-post .np-k {
+  color: var(--accent);
+}
+.in-post .np-ytrow {
+  background: #ffffff;
+  color: #14161b;
+  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.1), 0 16px 34px -24px rgba(20, 22, 27, 0.45);
+}
+.in-post .np-ymeta .np-a {
+  color: #59606b;
+}
+.in-post .np-btn {
+  border-color: rgba(20, 22, 27, 0.25);
+}
+.in-post .np-play {
+  border-left-color: #14161b;
+}
+.in-post .np.is-playing .snd-bars i {
+  background: #14161b;
+}
+.in-post .np-frame {
+  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.08), 0 16px 34px -24px rgba(20, 22, 27, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph::before {
+    transition: opacity 0.4s ease;
+    transform: none;
+  }
+}

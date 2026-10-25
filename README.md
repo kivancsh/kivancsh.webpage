@@ -1,0 +1,98 @@
+# Kıvanç Karademir · kişisel plak arşivi
+
+Hayatın yıllarını plaklar olarak anlatan kişisel blog. Her plak bir dönem; plağın içine girince o dönemin yazısı açılır.
+
+## Çalıştırma
+
+```bash
+npm install
+npm run dev      # http://localhost:5178
+npm run build    # statik çıktı: dist/
+```
+
+Yayın: `main` dalına her push'ta `.github/workflows/deploy.yml` siteyi derleyip GitHub Pages'e yükler (https://kivancsh.github.io/kivancsh.webpage/). Bunun için depo ayarlarında Settings → Pages → Source: **GitHub Actions** seçili olmalı.
+
+Netlify alternatifi: depoyu bağlarsanız `netlify.toml` derlemeyi kendisi yapar.
+
+## İçerik nasıl düzenlenir (koda dokunmadan)
+
+Tüm içerik `public/content/` altında:
+
+- `records.json`: site adı, plakların sırası, yılları, adları, renkleri ve alt plakları.
+- `posts/*.md`: her plağın yazısı. `posts/ogrencilik/*.md`: ÖĞRENCİLİK'in alt plaklarının yazıları.
+
+Bir plak alanları:
+
+| alan | ne işe yarar |
+| --- | --- |
+| `slug` | adres: `#/slug` |
+| `years` | etikette ve başlıkta görünen yıl/dönem, ör. `2010–2015` veya `2016` |
+| `name` | plağın adı |
+| `accent` | dönemin vurgu rengi (taban her zaman vinil siyahı kalır) |
+| `post` | yazının Markdown dosyası |
+| `children` | (isteğe bağlı) alt plaklar: `slug`, `name`, `post`, isteğe bağlı `accent` |
+
+Herhangi bir plağa `children` eklemek, onun altında mini plak yelpazesini otomatik açar.
+
+Markdown'da desteklenenler: `## ara başlık` (plak yüzündeki parça gibi A1, A2... numaralanır), `### küçük başlık`, `> alıntı` (son satır `— kişi` olursa imza olur), `- liste`, `![açıklama](resim-yolu)` (yer tutucu için `placeholder`), `**kalın**`, `*italik*`, `[bağlantı](https://...)` ve kronoloji bloğu:
+
+````
+```timeline
+2012 | Olay
+2014 | Başka bir olay
+```
+````
+
+Görselleri `public/content/img/` gibi bir klasöre koyup `![Açıklama](content/img/foto.jpg)` diye ekleyebilirsiniz. Ön bilgi (`---` arası) içindeki `title` ve `lede` sayfanın başlığı ve giriş cümlesidir; `placeholder: true` sayfada "Yer tutucu içerik" işaretini gösterir, gerçek yazıyı koyunca silin. Metindeki `[Yer tutucu]` ifadeleri de işaretli görünür.
+
+## Sayfa davranışı
+
+- Ana plak sayfası o dönemin **genel özeti**dir. Alt plağı olan bir plağın özet sayfasının sonunda "Bu plağın parçaları" listesi bulunur; her alt plak kendi yazısını açar.
+- Adresler: `#/` sergi, `#/universite-tecrubelerim` dönem özeti, `#/universite-tecrubelerim/stajlar` alt plak. Geri tuşu ve paylaşılan bağlantılar çalışır.
+- Ana sayfada yalnızca ana plaklar durur; alt plaklar, ana plakları ortaya gelince altında açılır.
+
+## Özel bloklar
+
+Markdown içinde şu bloklar da kullanılabilir:
+
+````
+```roles
+content/logos/turkcell.png | Turkcell | Yetenek Programı | not 1 ; not 2
+ | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | logo yoksa baş harfler gösterilir
+```
+
+```stats
+1447 | Katılımcı | Etkinlik proje liderliği
+```
+
+```travelmap
+FI
+SE
+```
+````
+
+- `roles`: logo kartları (logolar `public/content/logos/` içinde). Dörtten fazla satır olunca ızgara olur.
+- `stats`: ekrana gelince sayan büyük rakamlar.
+- `travelmap`: Türkiye'den uçuşlu dünya haritası. Tanımlı ülkeler: FI, SE, NO, RS, MK, KKTC. Yeni ülke için `src/travel/travel.js` (ülke, başkent) ve `src/travel/flags.js` (bayrak) dosyalarına bir satır eklenmesi gerekir.
+- Ön bilgide `layout: hobbies`: her `##` başlık kendi renk ve animasyonuyla tam ekran bir bölüm olur (Fitness, Yapay Zeka, Futbol, Müzik temaları hazır).
+
+## Müzik
+
+Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: `spotify` (Spotify şarkı adresi `spotify:track:…`), `youtube` (aynı şarkının resmi YouTube video kimliği), `title`, `artist`. Ana sayfanınki `site.music`; alt plakta şarkı yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. YouTube sesi `site.volume` ile ayarlanır (0–100, şu an 50).
+
+- Sayfa değişince şarkı da değişir; bir sayfaya geri dönülünce o sayfanın şarkısı kaldığı saniyeden devam eder (ziyaret boyunca hatırlanır, sayfa yenilenince sıfırlanır). İlk kez çalan şarkı en baştan başlar.
+- Tarayıcıda Spotify'a giriş yapmış ziyaretçiler şarkıyı Spotify'dan tam dinler. Giriş yapmamış ziyaretçilere Spotify yalnızca 30 saniyelik bir önizleme verdiği için çalar bunu fark edince o ziyaret boyunca YouTube'a geçer ve şarkıyı başından, tam ve ayarlı seste çalar.
+- Tarayıcılar sesli otomatik oynatmayı engellediği için müzik ziyaretçinin ilk tıklamasında/dokunuşunda başlar. Ziyaretçi durdurursa kendiliğinden tekrar başlamaz.
+
+## Harita verisi
+
+`public/content/map/world.json`, Natural Earth verisinden `npm run map` ile üretilir; yeniden üretmek gerekmez.
+
+## Dil (Türkçe / English)
+
+Sağ üstteki TR / EN düğmesi tüm siteyi değiştirir. Seçim tarayıcıda hatırlanır ve adrese `?lang=en` olarak eklenir, böylece İngilizce bir bağlantı doğrudan İngilizce açılır. İlk ziyarette tarayıcı dili Türkçe değilse ve İngilizceyse site İngilizce açılır.
+
+- Arayüz metinleri: `src/i18n.js`.
+- Plak adları, yıllar, kısa etiketler ve alt başlık: `records.json` içinde `{"tr": "…", "en": "…"}`.
+- Yazılar: Türkçesi `x.md`, İngilizcesi yanındaki `x.en.md`. İngilizce dosya yoksa Türkçesi gösterilir.
+- Spotify oynatıcısının kendi düğmeleri (ör. "Önizle") Spotify'a aittir ve ziyaretçinin tarayıcı diline göre değişir.
