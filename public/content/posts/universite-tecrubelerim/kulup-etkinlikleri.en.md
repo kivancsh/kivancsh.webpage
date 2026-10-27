@@ -46,6 +46,7 @@ content/logos/emu-ie-club.webp | EMU Industrial Engineering Club | Chair of the 
 
 ```roles
 content/logos/temt.webp | Union of Industrial Engineering Societies of Türkiye | Executive Board Member | Vice Chair, responsible for Sponsorship and Finance ; Member of the Supervisory and Advisory Board
+content/logos/estiem.webp | ESTIEM | European Students of Industrial Engineering and Management | Member ; Coordinator
 ```
 
 ## Case Study Competitions

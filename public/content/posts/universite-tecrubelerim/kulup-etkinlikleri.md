@@ -46,6 +46,7 @@ content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü | Yönet
 
 ```roles
 content/logos/temt.webp | Türkiye Endüstri Mühendisliği Toplulukları Birliği | Yönetim Kurulu Üyeliği | Sponsorluk & Finanstan Sorumlu Başkan Yardımcısı ; Denetleme ve Danışma Kurulu Üyeliği
+content/logos/estiem.webp | ESTIEM | European Students of Industrial Engineering and Management | Üye ; Koordinatör
 ```
 
 ## Vaka analiz yarışmaları

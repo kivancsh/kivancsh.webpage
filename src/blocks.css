@@ -1052,6 +1052,9 @@
 .ls-layer {
   position: absolute;
   inset: 0;
+  /* its own stacking context, so the logos' depth order never lifts them above the page */
+  z-index: 0;
+  isolation: isolate;
   pointer-events: none;
   overflow: hidden;
   opacity: 0;
