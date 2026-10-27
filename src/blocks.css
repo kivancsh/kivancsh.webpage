@@ -1186,3 +1186,11 @@
     grid-template-columns: 1fr;
   }
 }
+/* a single photo inside a chapter: a slim portrait card, not the full text width */
+.photo-set--in .ps-grid--1 {
+  grid-template-columns: 1fr;
+  max-width: 300px;
+}
+.photo-set--in .ps-grid--1 .ps-item img {
+  height: 100%;
+}

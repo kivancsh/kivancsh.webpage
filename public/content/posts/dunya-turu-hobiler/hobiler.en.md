@@ -7,8 +7,12 @@ layout: hobbies
 ## Fitness
 
 ```stats
-23 | Kilograms lost | In two months
+21 | Kilograms lost | In two months
  | Increased muscle mass through regular training |
+```
+
+```photos inline
+content/img/hobiler/spor-salonu.webp 675x1200 | Training
 ```
 
 ## Artificial Intelligence
@@ -30,9 +34,9 @@ content/img/hobiler/atki.webp 640x480 | Scarves up
 
 ## Music
 
-### ![Guitar](content/img/hobiler/gitar.svg) I play the guitar
+### ![Guitar](content/img/hobiler/gitar.svg) Amateur guitarist
 
-### ![Spotify](content/logos/spotify.svg) A highly active Spotify listener
+### ![Spotify](content/logos/spotify.svg) Melophile
 
 ```stats
 45,447 | Minutes listened | 2025 Spotify Wrapped
@@ -42,5 +46,7 @@ Each record on this website has its own soundtrack, which can be played from the
 
 ```photos
 ## Moments
+content/img/hobiler/ucak-kanadi.webp 480x640 | Above the clouds
 content/img/hobiler/yamac-parasutu.webp 1200x658 | Paragliding
+content/img/hobiler/kahve.webp 1200x600 | Coffee break
 ```

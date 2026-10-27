@@ -7,8 +7,12 @@ layout: hobbies
 ## Fitness
 
 ```stats
-23 | Kilo verildi | 2 ayda
+21 | Kilo verildi | 2 ayda
  | Düzenli sporla kas kütlesi artışı |
+```
+
+```photos inline
+content/img/hobiler/spor-salonu.webp 675x1200 | Antrenman
 ```
 
 ## Yapay Zeka
@@ -30,9 +34,9 @@ content/img/hobiler/atki.webp 640x480 | Atkılar havada
 
 ## Müzik
 
-### ![Gitar](content/img/hobiler/gitar.svg) Gitar çalıyorum
+### ![Gitar](content/img/hobiler/gitar.svg) Amatör gitarcı
 
-### ![Spotify](content/logos/spotify.svg) Çok aktif bir Spotify dinleyicisiyim
+### ![Spotify](content/logos/spotify.svg) Melophile
 
 ```stats
 45.447 | Dakika dinleme | 2025 Spotify Özeti
@@ -42,5 +46,7 @@ Bu sitedeki her plağın kendi şarkısı var; sağ üstteki çalardan dinleyebi
 
 ```photos
 ## Kareler
+content/img/hobiler/ucak-kanadi.webp 480x640 | Bulutların üstünde
 content/img/hobiler/yamac-parasutu.webp 1200x658 | Yamaç paraşütü
+content/img/hobiler/kahve.webp 1200x600 | Kahve molası
 ```
