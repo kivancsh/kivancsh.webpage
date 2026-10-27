@@ -10,6 +10,12 @@ layout: hobbies
 
 Claude, Claude Code, OpenAI and prompt engineering. This website was also developed with Claude Code.
 
+### ![Claude](content/logos/claude.svg) My Claude Code Projects
+
+- **Optiva**: AI-powered smart business management for SMEs [View the Project →](https://lnkd.in/p/dmGdPRtf)
+- **3-5-2 Mobile Game** [View the Project →](https://lnkd.in/p/dzTaCt5T)
+- **This Website**
+
 ## Football
 
 ## Music

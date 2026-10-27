@@ -14,7 +14,7 @@ const data = JSON.parse(fs.readFileSync(`${OUT}/content/records.json`, 'utf8'));
 const L = (v, lang) => (v && typeof v === 'object' ? v[lang] ?? v.tr : v);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const plain = (s) => s.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*?([^*]+)\*\*?/g, '$1').trim();
+const plain = (s) => s.replace(/!\[[^\]]*\]\([^)]+\)\s*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*?([^*]+)\*\*?/g, '$1').trim();
 
 function readPost(file, lang) {
   const en = file.replace(/\.md$/, '.en.md');

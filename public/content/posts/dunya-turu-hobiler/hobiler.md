@@ -10,6 +10,12 @@ layout: hobbies
 
 Claude, Claude Code, OpenAI ve prompt mühendisliği. Bu site de Claude Code ile geliştirildi.
 
+### ![Claude](content/logos/claude.svg) Claude Code Projelerim
+
+- **Optiva**: KOBİ'ler için Yapay Zekâ destekli Akıllı İşletme Yönetimi [Projeyi Görmek için Tıklayın →](https://lnkd.in/p/dmGdPRtf)
+- **3-5-2 Mobil Oyunu** [Projeyi Görmek için Tıklayın →](https://lnkd.in/p/dzTaCt5T)
+- **Bu Web Sitesi**
+
 ## Futbol
 
 ## Müzik

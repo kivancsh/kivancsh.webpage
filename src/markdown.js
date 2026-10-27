@@ -14,6 +14,8 @@ function safeUrl(u) {
 
 function inline(s) {
   let out = esc(s);
+  // ![alt](src) inside a line: a small logo beside the text
+  out = out.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, u) => `<img class="md-ico" src="${esc(safeUrl(u.replace(/&amp;/g, '&')))}" alt="${alt}" decoding="async">`);
   out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => {
     const href = safeUrl(u.replace(/&amp;/g, '&'));
     const ext = /^https?:/i.test(href);
