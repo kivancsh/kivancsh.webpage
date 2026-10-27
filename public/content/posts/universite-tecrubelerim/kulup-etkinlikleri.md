@@ -4,10 +4,25 @@ lede: Kulüp başkanlığı, ulusal birlik yönetimi ve vaka analiz yarışmalar
 ---
 
 ```logosphere
+content/logos/sphere/turkcell.webp | Turkcell
+content/logos/sphere/loreal.webp | L'Oréal
+content/logos/sphere/vodafone.webp | Vodafone
 content/logos/spacex.webp | SpaceX
+content/logos/sphere/bp.webp | BP
+content/logos/sphere/castrol.webp | Castrol
+content/logos/sphere/hayat.webp | Hayat Holding
 content/logos/pfizer.webp | Pfizer
+content/logos/sphere/lc-waikiki.webp | LC Waikiki
+content/logos/sphere/sampa.webp | Sampa
+content/logos/sphere/qnb-finansbank.webp | QNB Finansbank
 content/logos/thy.webp | Turkish Airlines
+content/logos/sphere/3ik.webp | 3İK
+content/logos/sphere/getir.webp | Getir
+content/logos/sphere/hepsiburada.webp | Hepsiburada
 content/logos/bosch.webp | Bosch
+content/logos/sphere/peak-games.webp | Peak Games
+content/logos/sphere/watsons.webp | Watsons
+content/logos/sphere/yapi-kredi.webp | Yapı Kredi
 content/logos/samsung.webp | Samsung
 content/logos/pg.webp | P&G
 ```
