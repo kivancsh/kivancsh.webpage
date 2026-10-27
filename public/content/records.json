@@ -3,8 +3,13 @@
   "site": {
     "name": "Kıvanç Karademir",
     "subtitle": {
-      "tr": "Kişisel plak arşivi",
-      "en": "Professional Portfolio"
+      "tr": "Endüstri Mühendisi · Perakende Kanal Satış Yöneticisi",
+      "en": "Industrial Engineer · Retail Channel Sales Manager"
+    },
+    "contact": {
+      "email": "alperen.kivanc@hotmail.com",
+      "linkedin": "https://www.linkedin.com/in/alperenk%C4%B1van%C3%A7karademir/",
+      "cv": "content/cv/Kivanc-Karademir-CV.pdf"
     },
     "music": {
       "spotify": "spotify:track:0VjIjW4GlUZAMYd2vXMi3b",

@@ -2,9 +2,9 @@ import gsap from 'gsap';
 import { loadPost } from './content.js';
 import { renderMarkdown, renderInline, esc } from './markdown.js';
 import { compactYears } from './labels.js';
-import { pad } from './color.js';
 import { hashFor } from './router.js';
 import { t, getLang } from './i18n.js';
+import { contactLinks } from './contact.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 
@@ -115,67 +115,56 @@ export class Post {
   }
 
   template(route, r, child, meta, body) {
-    const n = this.records.length;
     const i = route.record;
-    const placeholder = meta.placeholder || (child || r).placeholder;
     const title = meta.title || (child || r).name;
     const kids = r.children || [];
-    const top = child
-      ? `<span>${esc(r.name)}</span><span class="sep"></span><span>${t('post.singleOf', { i: pad(route.child + 1), n: pad(kids.length) })}</span>`
-      : `<span>${t('post.recordOf', { i: pad(i + 1), n: pad(n) })}</span><span class="sep"></span><span>${kids.length ? t('post.summaryMain') : t('post.summary')}</span>`;
     const label = child ? child._labelURL : r._labelURL;
 
     let tracks = '';
     if (!child && kids.length) {
       tracks = `<section class="tracks" aria-labelledby="tracks-h">
-        <p class="tracks-k rv">${t('post.sideB')}</p>
         <h2 class="tracks-h rv" id="tracks-h">${t('post.tracks')}</h2>
         <ol class="tracks-l">${kids
           .map((c, ci) => `<li class="rv" style="--i:${ci}"><a href="${hashFor({ view: 'post', record: i, child: ci }, this.records)}">
-            <span class="t-n">B${ci + 1}</span><span class="vinyl vinyl--xs" style="--label:url(${c._labelURL})"></span>
+            <span class="vinyl vinyl--xs" style="--label:url(${c._labelURL})"></span>
             <span class="t-name">${esc(c.name)}</span><span class="t-go">${t('post.read')}</span></a></li>`)
           .join('')}</ol></section>`;
     }
 
-    let prev, next, prevLabel, nextLabel;
+    // two ways out: carry on to the next page, or go back to the records
+    let next;
     if (child) {
-      const pc = (route.child - 1 + kids.length) % kids.length;
       const nc = (route.child + 1) % kids.length;
-      prev = { route: { view: 'post', record: i, child: pc }, k: t('post.prevTrack'), t: kids[pc].name, y: `B${pc + 1}`, l: kids[pc]._labelURL };
-      next = { route: { view: 'post', record: i, child: nc }, k: t('post.nextTrack'), t: kids[nc].name, y: `B${nc + 1}`, l: kids[nc]._labelURL };
+      next = { route: { view: 'post', record: i, child: nc }, k: t('post.nextTrack'), t: kids[nc].name, l: kids[nc]._labelURL };
     } else {
-      const pi = (i - 1 + n) % n;
+      const n = this.records.length;
       const ni = (i + 1) % n;
-      prev = { route: { view: 'post', record: pi, child: null }, k: t('post.prevRecord'), t: this.records[pi].name, y: this.records[pi].years, l: this.records[pi]._labelURL, a: this.records[pi].accent };
-      next = { route: { view: 'post', record: ni, child: null }, k: t('post.nextRecord'), t: this.records[ni].name, y: this.records[ni].years, l: this.records[ni]._labelURL, a: this.records[ni].accent };
+      const nr = this.records[ni];
+      next = { route: { view: 'post', record: ni, child: null }, k: t('post.nextRecord'), t: nr.name, y: nr.years, l: nr._labelURL, a: nr.accent };
     }
-    prevLabel = prev;
-    nextLabel = next;
-    const navCard = (x, cls) => `<a class="pf-card ${cls}" href="${hashFor(x.route, this.records)}"${x.a ? ` style="--ca:${x.a}"` : ''}>
-        <span class="pf-k">${x.k}</span>
-        <span class="vinyl vinyl--md" style="--label:url(${x.l})"></span>
-        <span class="pf-y">${esc(x.y)}</span><span class="pf-t">${esc(x.t)}</span></a>`;
-
-    const parentLink = child
-      ? `<a class="pf-parent" href="${hashFor({ view: 'post', record: i, child: null }, this.records)}">${esc(t('post.toParent', { name: r.name }))}</a>`
-      : '';
 
     return `
       <header class="ph">
-        <div class="ph-top">${top}${placeholder ? `<span class="ph-flag">${t('post.placeholder')}</span>` : ''}</div>
         <div class="ph-year${compactYears(r.years).length > 7 ? ' ph-year--long' : ''}" aria-hidden="true"><span>${esc(compactYears(r.years))}</span></div>
         <div class="ph-disc" aria-hidden="true"><div class="vinyl vinyl--lg spin" style="--label:url(${label})"></div><div class="vinyl-sheen"></div></div>
         <h1 class="ph-title" tabindex="-1">${splitWords(title)}</h1>
         ${meta.lede ? `<p class="ph-lede">${renderInline(meta.lede)}</p>` : ''}
-        <p class="ph-cue" aria-hidden="true"><span></span>${t('post.cue')}</p>
       </header>
-      <article class="pb">${renderMarkdown(body, { sideLetter: child ? 'B' : 'A' })}</article>
+      <article class="pb">${renderMarkdown(body)}</article>
       ${tracks}
       <footer class="pf">
-        <div class="pf-nav">${navCard(prevLabel, 'pf-prev')}${navCard(nextLabel, 'pf-next')}</div>
-        ${parentLink}
-        <button type="button" class="pf-back" data-close><span class="vinyl vinyl--xs" style="--label:url(${r._labelURL})"></span>${t('post.back')}</button>
-        <p class="pf-sig">${esc(this.content.site.name)} · ${esc(r.years)}</p>
+        <section class="pf-contact rv" aria-labelledby="pfc-h">
+          <h2 class="pf-ch" id="pfc-h">${t('contact.title')}</h2>
+          <p class="pf-cl">${t('contact.lede')}</p>
+          <div class="pf-cx">${contactLinks(this.content.site.contact, { long: true })}</div>
+        </section>
+        <div class="pf-out">
+          <a class="pf-card pf-next" href="${hashFor(next.route, this.records)}"${next.a ? ` style="--ca:${next.a}"` : ''}>
+            <span class="pf-k">${next.k}</span>
+            <span class="vinyl vinyl--md" style="--label:url(${next.l})"></span>
+            ${next.y ? `<span class="pf-y">${esc(next.y)}</span>` : ''}<span class="pf-t">${esc(next.t)}</span></a>
+          <button type="button" class="pf-back" data-close><span class="vinyl vinyl--xs" style="--label:url(${r._labelURL})"></span>${t('post.back')}</button>
+        </div>
       </footer>`;
   }
 

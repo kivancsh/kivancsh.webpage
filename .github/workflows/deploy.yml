@@ -29,8 +29,22 @@ jobs:
         with:
           path: dist
 
+  # smoke test: open a record, dive into a single, switch language, close (tests/smoke.spec.js);
+  # a failure stops the deploy, so the live site keeps its last working version
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
   deploy:
-    needs: build
+    needs: [build, test]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

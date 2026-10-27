@@ -1,6 +1,6 @@
 ---
 title: Endüstri Mühendisliği Kulüp Etkinlikleri Deneyimlerim
-lede: [Yer tutucu] Kulüp yıllarını tek cümlede anlatan kısa bir giriş buraya gelecek.
+lede: Kulüp başkanlığı, ulusal birlik yönetimi ve vaka analiz yarışmalarında dereceler.
 ---
 
 ```stats
@@ -10,17 +10,17 @@ lede: [Yer tutucu] Kulüp yıllarını tek cümlede anlatan kısa bir giriş bur
 ## DAÜ Endüstri Mühendisliği Kulübü
 
 ```roles
-content/logos/emu-ie-club.jpg | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | Etkinlik Proje Liderliği (1447 Katılımcı)
+content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | Pandemi Sonrası Sanayi Projesi'nin liderliği: 1447 katılımcı ; SpaceX, P&G, Bosch, Türk Hava Yolları ve Turkcell'in katılımı
 ```
 
 ## Türkiye Endüstri Mühendisliği Toplulukları Birliği
 
 ```roles
-content/logos/temt.jpg | Türkiye Endüstri Mühendisliği Toplulukları Birliği | Yönetim Kurulu Üyeliği | Sponsorluk & Finanstan Sorumlu Başkan Yardımcısı ; Denetleme ve Danışma Kurulu Üyeliği
+content/logos/temt.webp | Türkiye Endüstri Mühendisliği Toplulukları Birliği | Yönetim Kurulu Üyeliği | Sponsorluk & Finanstan Sorumlu Başkan Yardımcısı ; Denetleme ve Danışma Kurulu Üyeliği
 ```
 
 ## Vaka analiz yarışmaları
 
 ```roles
-content/logos/temt.jpg | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye Dereceleri |
+content/logos/temt.webp | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye Dereceleri | VAY Vaka Analiz Yarışması: yerel birincilik ; Ulusal üçüncülük ve dördüncülük (Yapı Kredi ve Bosch vakaları)
 ```

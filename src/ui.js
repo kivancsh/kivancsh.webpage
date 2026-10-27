@@ -32,8 +32,6 @@ export class HeroUI {
     this.n = this.records.length;
     this.reduced = reduced;
     this.root = $('#hero');
-    this.idxC = $('.idx-c', this.root);
-    this.idxT = $('.idx-t', this.root);
     this.year = $('.hero-year .roll', this.root);
     this.name = $('.hero-name .roll', this.root);
     this.sub = $('.hero-sub .roll', this.root);
@@ -51,7 +49,6 @@ export class HeroUI {
     this.onOpenChild = onOpenChild;
     this.onHoverChild = onHoverChild;
 
-    this.idxT.textContent = pad(this.n);
     this.buildTimeline();
     this.tl.addEventListener('click', (e) => {
       const b = e.target.closest('button');
@@ -92,7 +89,6 @@ export class HeroUI {
     roll(this.year, String(r.years).replace(/[–-]/, ' — '), dir, this.reduced);
     roll(this.name, r.name, dir, this.reduced);
     roll(this.sub, kids ? t('hero.subKids', { k: kids }) : t('hero.sub'), dir, this.reduced);
-    this.idxC.textContent = pad(i + 1);
     this.tlButtons.forEach((b, j) => b.toggleAttribute('aria-current', j === i));
     this.openBtn.setAttribute('aria-label', t('a11y.open', { name: r.name, years: r.years }));
     this.metaDirty = true;

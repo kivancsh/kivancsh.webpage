@@ -86,14 +86,6 @@
 .role-body {
   min-width: 0;
 }
-.role-n {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  font: 500 10px var(--f-mono);
-  letter-spacing: 0.16em;
-  color: var(--faint);
-}
 .pb .role-org {
   margin: 0;
   font: 500 10.5px/1.5 var(--f-mono);
@@ -107,6 +99,13 @@
   font-variation-settings: 'opsz' 48;
   color: var(--paper);
   letter-spacing: -0.01em;
+}
+.pb .role-when {
+  margin: 6px 0 0;
+  font: 500 10.5px/1.5 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 .role-notes {
   list-style: none;
@@ -479,9 +478,6 @@
   font-size: clamp(40px, 5vw, 76px);
   line-height: 0.95;
   letter-spacing: -0.03em;
-}
-.hob-text .trk {
-  color: var(--hc);
 }
 .hob-text p {
   max-width: 36ch;

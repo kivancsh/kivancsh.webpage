@@ -1,3 +1,12 @@
+// fonts ship with the site (no Google Fonts round trip): Fraunces for display and text,
+// Big Shoulders for the big numbers, Plex Mono for small labels
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource/big-shoulders-display/500';
+import '@fontsource/big-shoulders-display/700';
+import '@fontsource/big-shoulders-display/800';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import './style.css';
 import './blocks.css';
 import './post-light.css';
@@ -7,7 +16,10 @@ import { HeroUI, Cursor } from './ui.js';
 import { Post } from './post.js';
 import { Sound } from './sound.js';
 import { Music } from './music.js';
-import { parseRoute, hashFor, sameRoute } from './router.js';
+import { parseRoute } from './router.js';
+import { createNavigation } from './navigation.js';
+import { createTransitions } from './transitions.js';
+import { contactLinks } from './contact.js';
 import { recordLabel, miniLabel, miniColor } from './labels.js';
 import { t, getLang, setLang, onLang, localizeContent, applyContent, translateDom } from './i18n.js';
 
@@ -21,8 +33,8 @@ async function fontsReady() {
   if (!document.fonts) return;
   const faces = [
     '800 100px "Big Shoulders Display"',
-    'italic 400 60px "Fraunces"',
-    '400 60px "Fraunces"',
+    'italic 400 60px "Fraunces Variable"',
+    '400 60px "Fraunces Variable"',
     '500 20px "IBM Plex Mono"',
   ];
   await Promise.race([Promise.all(faces.map((f) => document.fonts.load(f, 'ÖĞÇŞİ2015'))), wait(2500)]);
@@ -49,6 +61,7 @@ async function boot() {
     translateDom({ site });
     document.querySelectorAll('[data-site-name]').forEach((e) => (e.textContent = site));
     document.querySelectorAll('[data-site-sub]').forEach((e) => (e.textContent = content.site.subtitle || ''));
+    document.querySelectorAll('[data-contact]').forEach((e) => (e.innerHTML = contactLinks(content.site.contact)));
     document.title = content.site.subtitle ? t('meta.title', { site, sub: content.site.subtitle }) : site;
   };
   drawDomLabels();
@@ -90,11 +103,11 @@ async function boot() {
     content,
     reduced,
     onSelect: (i, o) => flyTo(i, o),
-    onOpen: () => navigate({ view: 'post', record: mod(Math.round(car.pos), n), child: null }),
-    onOpenChild: (p, c) => navigate({ view: 'post', record: p, child: c }),
+    onOpen: () => nav.navigate({ view: 'post', record: mod(Math.round(car.pos), n), child: null }),
+    onOpenChild: (p, c) => nav.navigate({ view: 'post', record: p, child: c }),
     onHoverChild: (c) => stage && (stage.hover = c >= 0 ? { kind: 'mini', index: c } : null),
   });
-  const post = new Post({ content, reduced, onClose: () => requestClose() });
+  const post = new Post({ content, reduced, onClose: () => nav.requestClose() });
 
   // --- music: each page has its song (Spotify); it starts on the first interaction ---
   const trackFor = (route) => {
@@ -124,7 +137,7 @@ async function boot() {
     if (app.view === 'post') setAccent(await post.rerender(app.route));
   });
 
-  // --- navigation -------------------------------------------------------------
+  // --- moving along the exhibition --------------------------------------------
   const activeIndex = () => mod(Math.round(car.pos), n);
 
   // `vis` is the clicked copy on the exhibition, so the flight goes to that very disc
@@ -151,174 +164,10 @@ async function boot() {
     }
   }
 
-  function cancelFly() {
-    if (stage) {
-      stage.fly.index = -1;
-      stage.fly.t = 0;
-    }
-  }
-
-  // history.state.d = how many entries back the exhibition is (-1: none behind us,
-  // e.g. the visit started on a shared post link)
-  function navigate(route) {
-    const hash = hashFor(route, records);
-    if (sameRoute(route, app.route) && !app.busy) return;
-    const depth = route.view === 'hero' ? 0 : app.depth >= 0 ? app.depth + 1 : -1;
-    history.pushState({ d: depth }, '', hash);
-    app.depth = depth;
-    go(route);
-  }
-
-  function requestClose() {
-    if (app.view !== 'post') return;
-    if (app.depth > 0) history.go(-app.depth);
-    else {
-      history.pushState({ d: 0 }, '', '#/');
-      app.depth = 0;
-      go({ view: 'hero' });
-    }
-  }
-
-  const onRouteChange = () => {
-    const route = parseRoute(location.hash, records);
-    app.depth = history.state?.d ?? (route.view === 'hero' ? 0 : -1);
-    go(route);
-  };
-  addEventListener('popstate', onRouteChange);
-  addEventListener('hashchange', onRouteChange);
-
-  // intercept in-page record links so they share the history bookkeeping
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#/"]');
-    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    e.preventDefault();
-    const route = parseRoute(a.getAttribute('href'), records);
-    if (route.view === 'hero') requestClose();
-    else navigate(route);
-  });
-
-  async function go(route, initial = false) {
-    if (app.busy) {
-      app.pending = route;
-      return;
-    }
-    if (sameRoute(route, app.route) && !initial) return;
-    app.busy = true;
-    music && music.setTrack(trackFor(route));
-    try {
-      if (route.view === 'hero') {
-        if (app.view === 'post') await closePost();
-      } else if (app.view === 'hero') {
-        await openPost(route, initial);
-      } else {
-        await swapPost(route);
-      }
-      app.route = route;
-    } catch (err) {
-      console.error(err);
-    }
-    app.busy = false;
-    if (app.pending) {
-      const p = app.pending;
-      app.pending = null;
-      if (!sameRoute(p, app.route)) go(p);
-    }
-  }
-
-  const targetFor = (route) =>
-    route.child != null && stage && !stage.compact
-      ? { kind: 'mini', parent: route.record, index: route.child }
-      : { kind: 'record', index: route.record };
-
-  async function openPost(route, initial) {
-    ui.hide();
-    const accent = await post.prepare(route);
-    cancelFly();
-    if (activeIndex() !== route.record) {
-      car.jumpTo(route.record);
-      syncActive(true);
-    }
-    car.enabled = false;
-    car.dragging = false;
-    const target = targetFor(route);
-    ui.hide();
-    cursor && cursor.set('');
-    setAccent(accent);
-
-    if (!stage || reduced || initial) {
-      post.open();
-      root.classList.add('in-post');
-      post.el.classList.add('fade-in');
-      requestAnimationFrame(() => post.reveal());
-      if (stage) {
-        stage.setDived(target);
-        stage.paused = true;
-      }
-      await wait(reduced ? 350 : 600);
-      post.el.classList.remove('fade-in');
-    } else {
-      sound.needle();
-      root.classList.add('portal');
-      post.open();
-      await stage.dive(target, { onInside: () => post.reveal() });
-      root.classList.add('in-post');
-      root.classList.remove('portal');
-      stage.paused = true;
-    }
-    app.view = 'post';
-    app.target = target;
-    root.classList.remove('deeplink');
-    post.focus();
-  }
-
-  async function closePost() {
-    const target = app.target;
-    sound.lift();
-    if (!stage || reduced) {
-      post.el.classList.add('fade-out');
-      await wait(reduced ? 300 : 450);
-      post.close();
-      post.el.classList.remove('fade-out');
-      root.classList.remove('in-post');
-      if (stage) {
-        stage.clearDive();
-        stage.resume();
-      }
-      ui.show();
-    } else {
-      stage.setDived(target);
-      stage.resume();
-      stage.update(0);
-      stage.render();
-      root.classList.add('portal');
-      root.classList.remove('in-post');
-      post.leave();
-      await stage.emerge({
-        onClosed: () => {
-          post.close();
-          root.classList.remove('portal');
-          ui.show();
-        },
-      });
-    }
-    car.enabled = true;
-    app.view = 'hero';
-    app.target = null;
-    setAccent(records[activeIndex()].accent);
-    const btn = ui.tlButtons[activeIndex()];
-    btn && btn.focus({ preventScroll: true });
-  }
-
-  async function swapPost(route) {
-    const accent = await post.swap(route);
-    setAccent(accent);
-    if (activeIndex() !== route.record) {
-      car.jumpTo(route.record);
-      syncActive(true);
-    }
-    app.target = targetFor(route);
-    if (stage) stage.setDived(app.target);
-  }
+  const transitions = createTransitions({ stage, post, ui, car, cursor, sound, reduced, root, app, records, setAccent, activeIndex, syncActive });
+  const { cancelFly } = transitions;
+  const nav = createNavigation({ records, app, transitions, onRoute: (route) => music && music.setTrack(trackFor(route)) });
+  const { navigate, requestClose } = nav;
 
   // --- active record bookkeeping ---------------------------------------------
   let lastActive = -1;
@@ -336,6 +185,10 @@ async function boot() {
   }
 
   // --- input ------------------------------------------------------------------
+  // the "drag · scroll" hint has done its job once the visitor has moved the records
+  const hinted = () => root.classList.add('hinted');
+  ['pointerdown', 'wheel', 'keydown'].forEach((ev) => addEventListener(ev, hinted, { once: true, passive: true }));
+
   const gesture = { down: false, id: -1, x: 0, y: 0, t: 0, moved: 0, samples: [] };
   const pxPerItem = () => (stage?.compact ? innerWidth * 0.62 : Math.min(innerWidth * 0.2, 380));
   const interactive = () => app.view === 'hero' && !app.busy;
@@ -536,10 +389,7 @@ async function boot() {
     import('./hobbies.js');
     import('./travel/travel.js');
   }, 1200);
-  const initial = parseRoute(location.hash, records);
-  app.depth = initial.view === 'post' ? -1 : 0;
-  history.replaceState({ d: app.depth }, '', location.hash || location.pathname + location.search);
-  if (initial.view === 'post') go(initial, true);
+  nav.start();
   requestAnimationFrame((t) => {
     last = t;
     tick(t);

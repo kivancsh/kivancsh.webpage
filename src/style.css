@@ -11,10 +11,10 @@
   --faint: rgba(236, 229, 216, 0.3);
   --line: rgba(236, 229, 216, 0.14);
   --accent: #d9893a;
-  --f-display: 'Fraunces', Georgia, serif;
-  --f-body: 'Newsreader', Georgia, serif;
+  --f-display: 'Fraunces Variable', Georgia, serif;
+  --f-body: 'Fraunces Variable', Georgia, serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --f-num: 'Big Shoulders Display', 'Fraunces', sans-serif;
+  --f-num: 'Big Shoulders Display', 'Fraunces Variable', sans-serif;
   --ease: cubic-bezier(0.2, 0.75, 0.1, 1);
   --gut: clamp(16px, 3.2vw, 44px);
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -245,34 +245,6 @@ kbd {
   pointer-events: auto;
 }
 
-.hero-idx {
-  position: absolute;
-  left: var(--gut);
-  bottom: calc(var(--gut) + var(--safe-b));
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  font-family: var(--f-num);
-}
-.idx-c {
-  font-size: clamp(44px, 4.6vw, 68px);
-  font-weight: 700;
-  line-height: 0.8;
-  color: var(--paper);
-  font-variant-numeric: tabular-nums;
-  min-width: 1.05em;
-}
-.idx-l {
-  width: 40px;
-  height: 1px;
-  background: var(--faint);
-  transform: translateY(-0.4em);
-}
-.idx-t {
-  font: 400 12px var(--f-mono);
-  color: var(--muted);
-  letter-spacing: 0.1em;
-}
 
 .hero-meta {
   position: absolute;
@@ -695,10 +667,11 @@ kbd {
   right: 0;
   z-index: 2;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 22px;
+  /* the header's links and player sit on the right, so both controls stay left */
   padding: calc(var(--gut) * 0.75) var(--gut);
-  padding-right: calc(var(--gut) + 400px);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.6s ease 0.2s;
@@ -801,27 +774,6 @@ kbd {
   max-width: 1500px;
   margin: 0 auto;
 }
-.ph-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 14px;
-  font: 500 10.5px var(--f-mono);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: clamp(16px, 3vh, 32px);
-}
-.ph-top .sep {
-  width: 22px;
-  height: 1px;
-  background: var(--faint);
-}
-.ph-flag {
-  color: var(--pa);
-  border-bottom: 1px dashed currentColor;
-  padding-bottom: 2px;
-}
 .ph-year {
   font: 800 clamp(96px, 21vw, 360px) / 0.8 var(--f-num);
   letter-spacing: -0.01em;
@@ -887,34 +839,9 @@ kbd {
   font: 400 clamp(19px, 1.7vw, 25px) / 1.45 var(--f-body);
   color: color-mix(in oklab, var(--paper) 82%, transparent);
 }
-.ph-cue {
-  margin: clamp(28px, 6vh, 56px) 0 0;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font: 500 10px var(--f-mono);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.ph-cue span {
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(var(--pa), transparent);
-  animation: cue 2.2s var(--ease) infinite;
-  transform-origin: top;
-}
-@keyframes cue {
-  0% { transform: scaleY(0); }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
 
 /* entrance choreography, triggered once the portal opens */
-.ph-top,
 .ph-lede,
-.ph-cue,
 .ph-disc {
   opacity: 0;
   transform: translateY(18px);
@@ -935,10 +862,7 @@ kbd {
   transition-delay: 0.15s;
 }
 .ph-lede { transition-delay: 0.5s; }
-.ph-cue { transition-delay: 0.7s; }
-.post.is-in .ph-top,
 .post.is-in .ph-lede,
-.post.is-in .ph-cue,
 .post.is-in .ph-disc {
   opacity: 1;
   transform: none;
@@ -971,6 +895,13 @@ kbd {
   color: var(--pa);
   margin: 0.06em 0.1em 0 -0.03em;
 }
+/* a hobby chapter's short caption is no place for a drop cap */
+.pb .hob-text .lead-p::first-letter {
+  float: none;
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
 .pb h2 {
   margin: 2.6em 0 0.9em;
   display: flex;
@@ -980,15 +911,6 @@ kbd {
   font-variation-settings: 'opsz' 96;
   letter-spacing: -0.02em;
   color: var(--paper);
-}
-.trk {
-  flex: none;
-  font: 500 11px var(--f-mono);
-  letter-spacing: 0.16em;
-  color: var(--pa);
-  padding-top: 0.3em;
-  min-width: 2.4em;
-  border-top: 1px solid currentColor;
 }
 .pb h3 {
   margin: 2em 0 0.6em;
@@ -1160,15 +1082,8 @@ kbd {
   margin: 0 auto;
   padding: 0 var(--gut) clamp(60px, 10vh, 120px);
 }
-.tracks-k {
-  margin: 0;
-  font: 500 10.5px var(--f-mono);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--pa);
-}
 .tracks-h {
-  margin: 10px 0 28px;
+  margin: 0 0 28px;
   font: 320 clamp(36px, 4.4vw, 64px) / 1 var(--f-display);
   font-variation-settings: 'opsz' 144;
   letter-spacing: -0.025em;
@@ -1181,7 +1096,7 @@ kbd {
 }
 .tracks-l a {
   display: grid;
-  grid-template-columns: 3em 36px 1fr auto;
+  grid-template-columns: 36px 1fr auto;
   align-items: center;
   gap: 18px;
   padding: 16px 4px;
@@ -1200,11 +1115,6 @@ kbd {
 }
 .tracks-l a:hover .vinyl {
   transform: rotate(160deg);
-}
-.t-n {
-  font: 500 11px var(--f-mono);
-  letter-spacing: 0.14em;
-  color: var(--pa);
 }
 .t-name {
   font: 400 clamp(20px, 1.8vw, 26px) / 1.2 var(--f-display);
@@ -1225,12 +1135,6 @@ kbd {
   flex-direction: column;
   align-items: center;
   gap: 34px;
-}
-.pf-nav {
-  width: min(1200px, 100%);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(12px, 2vw, 28px);
 }
 .pf-card {
   --ca: var(--pa);
@@ -1305,19 +1209,6 @@ kbd {
   grid-column: 1;
   grid-row: auto;
 }
-.pf-parent {
-  font: 500 10.5px var(--f-mono);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-decoration: none;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 4px;
-}
-.pf-parent:hover {
-  color: var(--paper);
-  border-color: var(--pa);
-}
 .pf-back {
   display: inline-flex;
   align-items: center;
@@ -1333,26 +1224,20 @@ kbd {
 .pf-back:hover .vinyl {
   transform: rotate(-180deg) scale(1.15);
 }
-.pf-sig {
-  margin: 0;
-  font: 400 10px var(--f-mono);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
 
 /* ---------- compact / phones ---------------------------------------------- */
 
 @media (max-width: 759px), (max-aspect-ratio: 85/100) {
-  .brand-sub { display: none; }
-  .brand { grid-template-columns: auto auto; }
+  .brand-name { font-size: 18px; }
+  .brand-sub {
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+  .brand-disc { width: 24px; height: 24px; }
   .snd-t { display: none; }
   .snd { padding: 12px 4px; }
-  .hero-idx {
-    top: calc(var(--gut) * 0.75 + 46px);
-    bottom: auto;
-  }
-  .idx-c { font-size: 40px; }
   .hero-hint { display: none; }
   .hero-meta {
     bottom: calc(78px + var(--safe-b));
@@ -1390,9 +1275,8 @@ kbd {
   .pb { font-size: 18.5px; line-height: 1.68; }
   .fig { width: 100vw; }
   .fig figcaption { padding: 0 var(--gut); }
-  .pf-nav { grid-template-columns: 1fr; }
   .pf-card { min-height: 0; }
-  .tracks-l a { grid-template-columns: 2.4em 30px 1fr; }
+  .tracks-l a { grid-template-columns: 30px 1fr; }
   .tracks-l .vinyl { width: 30px; }
   .t-go { display: none; }
   .timeline li { grid-template-columns: 1fr; gap: 2px; }
@@ -1437,14 +1321,11 @@ kbd {
   .grain,
   .spin,
   .brand-disc,
-  .ph-cue span,
   .snd[aria-pressed='true'] .snd-bars i {
     animation: none !important;
   }
   .rv,
-  .ph-top,
   .ph-lede,
-  .ph-cue,
   .ph-disc,
   .ph-year span,
   .ph-title .w > span,
@@ -1647,35 +1528,89 @@ kbd {
   animation: bars 0.9s ease-in-out infinite alternate;
 }
 
-@media (max-width: 759px), (max-aspect-ratio: 85/100) {
-  .top {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
-  }
+/* smaller screens: the player folds into a round button; tapping it drops the full
+   player down underneath. It stays rendered (only faded out) so the song keeps playing. */
+.np-pill {
+  display: none;
+}
+@media (max-width: 1099px), (max-aspect-ratio: 85/100) {
   .np {
-    width: 100%;
-  }
-  .brand {
-    align-self: flex-start;
+    position: relative;
+    width: auto;
   }
   .np-meta {
     display: none;
   }
-  .hero-idx {
-    top: calc(var(--gut) * 0.75 + 96px) !important;
-    left: auto;
-    right: var(--gut);
+  .np-pill {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--faint);
+    background: color-mix(in oklab, var(--accent) 16%, rgba(12, 11, 10, 0.6));
+    transition: border-color 0.3s, background 0.3s;
   }
-  .idx-c {
-    font-size: 32px !important;
+  .np-pill .snd-bars,
+  .np-pill .np-play {
+    grid-area: 1 / 1;
+  }
+  .np.is-playing .np-pill .snd-bars {
+    display: inline-flex;
+  }
+  .np.is-open .np-pill {
+    border-color: var(--accent);
+  }
+  .np-frame,
+  .np-ytrow {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: min(340px, calc(100vw - var(--gut) * 2));
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.25s ease, transform 0.35s var(--ease);
+  }
+  .np.is-open .np-frame,
+  .np.is-open .np-ytrow {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .top-r {
+    align-items: center;
+  }
+  .top-r .lang,
+  .top-r .contact {
+    margin-top: 0;
+  }
+}
+.in-post .np-pill {
+  background: #ffffff;
+  border-color: rgba(20, 22, 27, 0.18);
+}
+.in-post .np-pill .np-play {
+  border-left-color: #14161b;
+}
+.in-post .np.is-playing .np-pill .snd-bars i {
+  background: #14161b;
+}
+
+/* phones: the name and title keep the left; language, player and contact stack right */
+@media (max-width: 759px), (max-aspect-ratio: 85/100) {
+  .top {
+    gap: 10px;
+  }
+  .brand {
+    min-width: 0;
   }
   .post-bar {
-    padding-top: calc(var(--gut) * 0.75 + 92px) !important;
-    padding-right: var(--gut) !important;
+    justify-content: space-between;
+    padding-top: calc(var(--gut) * 0.75 + 48px) !important;
   }
   .ph {
-    padding-top: 196px !important;
+    padding-top: 150px !important;
   }
 }
 @media (min-width: 701px) and (max-width: 759px), (min-width: 701px) and (max-aspect-ratio: 85/100) {
@@ -1777,27 +1712,182 @@ kbd {
 
 @media (max-width: 759px), (max-aspect-ratio: 85/100) {
   .top-r {
+    display: grid;
+    grid-template-areas: 'lang np' 'contact contact';
+    justify-items: end;
     align-items: center;
-    gap: 8px;
+    gap: 4px 6px;
+  }
+  .top-r .lang {
+    grid-area: lang;
+    margin-top: 0;
   }
   .top-r .np {
-    flex: 1;
-    min-width: 0;
+    grid-area: np;
   }
-  .lang {
+  .top-r .contact {
+    grid-area: contact;
     margin-top: 0;
-    flex-direction: column;
   }
-  .lang button {
-    padding: 9px 8px;
+  .in-post .top-r .contact {
+    display: none;
   }
-  .lang button + button::before {
-    left: 50%;
-    top: 0;
-    width: 10px;
+}
+
+/* ---------- contact (header) ---------------------------------------------------- */
+
+.contact {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.contact a,
+.pf-cx a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.contact a {
+  padding: 8px 8px;
+  font: 500 10.5px var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+.contact a:hover,
+.contact a:focus-visible {
+  color: var(--paper);
+}
+.in-post .contact a {
+  color: #59606b;
+}
+.in-post .contact a:hover,
+.in-post .contact a:focus-visible {
+  color: #14161b;
+}
+.c-ico {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  background: currentColor;
+  -webkit-mask: var(--ico) center / contain no-repeat;
+  mask: var(--ico) center / contain no-repeat;
+}
+[data-c='email'] .c-ico {
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='M3.5 6.5 12 13l8.5-6.5'/%3E%3C/svg%3E");
+}
+[data-c='linkedin'] .c-ico {
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 3.5a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8zM3 9.6h4V21H3zM9.6 9.6h3.8v1.6c.6-1 1.9-2 3.8-2 4 0 4.8 2.6 4.8 6.1V21h-4v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z'/%3E%3C/svg%3E");
+}
+[data-c='cv'] .c-ico {
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linejoin='round'%3E%3Cpath d='M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z'/%3E%3Cpath d='M14 3v5h5M8.5 13h7M8.5 16.5h5'/%3E%3C/svg%3E");
+}
+/* below wide desktops the header links are icons (each keeps its spoken label) */
+@media (max-width: 1279px), (max-aspect-ratio: 85/100) {
+  .contact .c-t {
+    position: absolute;
+    width: 1px;
     height: 1px;
-    margin: 0 0 0 -5px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
+  .contact a {
+    padding: 8px 7px;
+  }
+  .contact .c-ico {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ---------- article end: contact and the two ways out ------------------------------ */
+
+.pf-contact {
+  width: min(1200px, 100%);
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid var(--line);
+  background: var(--surface, transparent);
+  box-shadow: var(--shadow-soft, none);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'h links' 'l links';
+  align-items: center;
+  gap: 8px clamp(20px, 4vw, 48px);
+}
+.pf-ch {
+  grid-area: h;
+  margin: 0;
+  font: 320 clamp(32px, 3.6vw, 52px) / 1 var(--f-display);
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.025em;
+}
+.pf-cl {
+  grid-area: l;
+  margin: 0;
+  max-width: 44ch;
+  font: 400 17px/1.5 var(--f-body);
+  color: var(--muted);
+}
+.pf-cx {
+  grid-area: links;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.pf-cx a {
+  padding: 13px 18px;
+  border: 1px solid color-mix(in oklab, var(--pa) 30%, var(--line));
+  font: 500 12px var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--paper);
+  transition: border-color 0.3s, background 0.3s;
+}
+.pf-cx a:hover,
+.pf-cx a:focus-visible {
+  border-color: var(--pa);
+  background: color-mix(in oklab, var(--pa) 8%, transparent);
+}
+.pf-cx .c-ico {
+  color: var(--pa-ink, var(--pa));
+}
+.pf-out {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+}
+@media (max-width: 700px) {
+  .pf-contact {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'h' 'l' 'links';
+  }
+  .pf-cx {
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+  .pf-cx a {
+    flex: 1 1 100%;
+  }
+  .pf-out {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .pf-out .pf-card {
+    width: 100%;
+  }
+}
+
+/* the drag hint bows out after the first interaction */
+.hero-hint {
+  transition: opacity 0.6s ease;
+}
+.hinted .hero-hint {
+  opacity: 0;
 }
 
 /* ---------- touch devices: keep the compositor light --------------------------- */

@@ -8,6 +8,9 @@
 // song's official YouTube upload for the rest of the visit: full length, from the start,
 // at the configured volume.
 //
+// On phones the player folds into a small round button in the header; tapping it opens
+// the full player underneath. The embed stays mounted (only out of sight) so it keeps playing.
+//
 // Spotify songs are swapped by building a fresh embed rather than controller.loadUri():
 // loadUri navigates the iframe, which adds entries to the page's history, so the
 // browser's back button would rewind the player instead of leaving the blog page.
@@ -32,6 +35,8 @@ export class Music {
     this.frame = el.querySelector('.np-frame');
     this.ytHost = el.querySelector('.np-yt');
     this.btn = el.querySelector('.np-btn');
+    this.pill = el.querySelector('.np-pill');
+    this.open = false;
     this.volume = volume;
     this.onChange = onChange || (() => {});
     this.mode = 'spotify';
@@ -65,6 +70,20 @@ export class Music {
       e.stopPropagation();
       this.toggle();
     });
+    this.pill?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.setOpen(!this.open);
+    });
+    document.addEventListener('pointerdown', (e) => this.open && !this.el.contains(e.target) && this.setOpen(false));
+    addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key !== 'Escape' || !this.open) return;
+        e.preventDefault(); // closes the player only, not the article behind it
+        this.setOpen(false);
+      },
+      true,
+    );
     const kick = () => {
       this.interacted = true;
       if (!this.userPaused && !this.playing) this.play();
@@ -105,6 +124,14 @@ export class Music {
 
   relabel() {
     this.btn?.setAttribute('aria-label', this.playing ? t('music.pause') : t('music.play'));
+    this.pill?.setAttribute('aria-label', `${this.open ? t('music.close') : t('music.open')} · ${this.track?.title || ''}`);
+  }
+
+  setOpen(v) {
+    this.open = v;
+    this.el.classList.toggle('is-open', v);
+    this.pill?.setAttribute('aria-expanded', String(v));
+    this.relabel();
   }
 
   play() {
@@ -134,6 +161,7 @@ export class Music {
     this.savePosition();
     this.track = track;
     this.setLabel(track);
+    this.relabel();
     this.pending = this.interacted && !this.userPaused;
     if (this.mode === 'youtube') this.ytLoad();
     else {

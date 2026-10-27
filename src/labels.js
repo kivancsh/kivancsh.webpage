@@ -5,8 +5,8 @@ import { t, upper } from './i18n.js';
 
 const TAU = Math.PI * 2;
 const MONO = '"IBM Plex Mono", ui-monospace, monospace';
-const NUM = '"Big Shoulders Display", "Fraunces", sans-serif';
-const SERIF = '"Fraunces", Georgia, serif';
+const NUM = '"Big Shoulders Display", "Fraunces Variable", sans-serif';
+const SERIF = '"Fraunces Variable", Georgia, serif';
 
 export function compactYears(years) {
   const m = String(years).match(/^(\d{4})\s*[–-]\s*(\d{4})$/);

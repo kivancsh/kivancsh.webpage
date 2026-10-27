@@ -1,13 +1,18 @@
 // Pre-projects the world map once, so the travel page only loads a small JSON of SVG
 // paths instead of a geo library. Run with: npm run map
-// Europe and its neighbours use the 50m Natural Earth data, the rest of the world 110m.
+// Europe and its neighbours use the 50m Natural Earth data (simplified), the rest of the
+// world the coarse 110m set: the map only ever zooms into Europe, so detail elsewhere is
+// never seen. Keeps the file around 100 KB.
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import { feature } from 'topojson-client';
+import { presimplify, quantile, simplify } from 'topojson-simplify';
 import { geoNaturalEarth1, geoPath, geoCentroid, geoArea } from 'd3-geo';
 
 const require = createRequire(import.meta.url);
-const t50 = require('world-atlas/countries-50m.json');
+// keep the most significant 20% of the 50m points (Visvalingam): the rest is invisible at this scale
+const raw50 = presimplify(require('world-atlas/countries-50m.json'));
+const t50 = simplify(raw50, quantile(raw50, Number(process.env.MAP_Q || 0.2)));
 const t110 = require('world-atlas/countries-110m.json');
 
 const W = 1000;
@@ -16,15 +21,15 @@ const projection = geoNaturalEarth1().fitExtent([[4, 4], [W - 4, H - 4]], { type
 
 const inDetailZone = (f) => {
   const [lon, lat] = geoCentroid(f);
-  return lon > -30 && lon < 65 && lat > 22 && lat < 75;
+  return lon > -25 && lon < 50 && lat > 30 && lat < 72;
 };
 
 const detailed = feature(t50, t50.objects.countries).features.filter(inDetailZone);
 const names = new Set(detailed.map((f) => f.properties.name));
 const coarse = feature(t110, t110.objects.countries).features.filter((f) => !names.has(f.properties.name) && f.properties.name !== 'Antarctica');
 
-const pathFine = geoPath(projection).digits(2);
-const pathCoarse = geoPath(projection).digits(1);
+const pathFine = geoPath(projection).digits(1);
+const pathCoarse = geoPath(projection).digits(0);
 
 // biggest polygon of a country (Norway without Svalbard, etc.) for flag placement
 function mainland(f) {

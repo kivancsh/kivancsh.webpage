@@ -1,9 +1,7 @@
 ---
 title: International Travel & Personal Interests
-lede: [Placeholder] A concise introduction summarising international travel and personal interests will be added here.
+lede: Ongoing pursuits rather than a defined period: travel to six countries and four personal interests.
 ---
-
-[Placeholder] Unlike the preceding records, this record does not cover a defined period; it presents ongoing pursuits, namely international travel and personal interests. This section may describe the role these pursuits play in personal and professional development.
 
 ```stats
 6 | Countries | Flights departing from Türkiye

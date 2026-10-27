@@ -1,9 +1,7 @@
 ---
 title: Dünya Turu & Hobiler
-lede: [Yer tutucu] Gezdiğin yerleri ve sevdiğin şeyleri tek cümlede anlatan kısa bir giriş buraya gelecek.
+lede: Bir dönem değil, hep süren şeyler: altı ülkeye yolculuk ve dört hobi.
 ---
-
-[Yer tutucu] Bu plak bir dönemi değil, hep süren şeyleri anlatıyor: yolculuklar ve hobiler. Buraya bu ikisinin hayatındaki yerini yazabilirsin.
 
 ```stats
 6 | Ülke | Türkiye'den kalkan uçuşlar

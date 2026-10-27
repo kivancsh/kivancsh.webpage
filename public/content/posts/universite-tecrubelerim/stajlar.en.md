@@ -1,21 +1,15 @@
 ---
 title: Internships
-lede: [Placeholder] A concise introduction summarising the internship experience will be added here.
+lede: From telecommunications to automotive, and from finance to FMCG: internships and career programmes at eight companies.
 ---
 
-[Placeholder] Eight internships and training programmes across eight organisations and functions. This section may describe how the internship experience began and how it shaped subsequent career direction.
-
 ```roles
-content/logos/turkcell.png | Turkcell | Talent Programme |
-content/logos/qnb-finansbank.png | QNB Finansbank | Finance Internship |
-content/logos/vodafone.png | Vodafone | Digital Marketing Internship |
-content/logos/sampa.png | Sampa | Production Planning Internship |
-content/logos/lc-waikiki.png | LC Waikiki | IT Scrum Training Programme |
-content/logos/loreal.png | L'Oréal | "My Future with L'Oréal" Training Programme |
-content/logos/kastamonu-entegre.png | Kastamonu Entegre | Production Planning Internship |
-content/logos/bp.png | BP / Castrol | Technical Support Specialist Internship |
+content/logos/turkcell.webp | Turkcell | Unlimited Talent Programme (Sales & Marketing) | Designed an improved production tracking system.
+content/logos/qnb-finansbank.webp | QNB Finansbank | Finance Internship |
+content/logos/vodafone.webp | Vodafone | Digital Marketing Internship | Supported SEO and Google Ads campaigns.
+content/logos/sampa.webp | SAMPA Automotive | Method Development Internship | Worked on material and machine optimisation.
+content/logos/lc-waikiki.webp | LC Waikiki | IT Scrum Training Programme |
+content/logos/loreal.webp | L'Oréal | My Future with L'Oréal | FMCG career development programme.
+content/logos/kastamonu-entegre.webp | Kastamonu Entegre (Hayat Holding) | Production Planning Internship | Supported workflow optimisation and quality control.
+content/logos/bp.webp | BP / Castrol | Technical Support Specialist Internship | Analysed Castrol's lubricant portfolio against competitors.
 ```
-
-## Key Takeaways
-
-[Placeholder] A paragraph summarising the principal competencies and insights gained through these internships.

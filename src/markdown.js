@@ -41,11 +41,10 @@ export function parseFrontMatter(src) {
   return { meta, body: src.slice(m[0].length) };
 }
 
-export function renderMarkdown(body, { sideLetter = 'A' } = {}) {
+export function renderMarkdown(body) {
   const lines = body.replace(/\r/g, '').split('\n');
   const html = [];
   let para = [];
-  let track = 0;
   let firstPara = true;
 
   const flush = () => {
@@ -92,8 +91,7 @@ export function renderMarkdown(body, { sideLetter = 'A' } = {}) {
     if ((m = t.match(/^(#{2,3})\s+(.*)$/))) {
       flush();
       if (m[1].length === 2) {
-        track++;
-        html.push(`<h2 class="rv"><span class="trk">${sideLetter}${track}</span><span class="h-t">${inline(m[2])}</span></h2>`);
+        html.push(`<h2 class="rv"><span class="h-t">${inline(m[2])}</span></h2>`);
       } else {
         html.push(`<h3 class="rv">${inline(m[2])}</h3>`);
       }
@@ -135,11 +133,11 @@ export function renderMarkdown(body, { sideLetter = 'A' } = {}) {
   return html.join('\n');
 }
 
-// logo | organisation | role | note ; note
+// logo | organisation | role | note ; note | dates
 function renderRoles(lines) {
   const rows = lines.filter((l) => l.trim()).map((l) => l.split('|').map((x) => x.trim()));
   const many = rows.length > 3;
-  const items = rows.map(([logo = '', org = '', role = '', notes = ''], i) => {
+  const items = rows.map(([logo = '', org = '', role = '', notes = '', when = ''], i) => {
     const plate = logo
       ? `<img src="${esc(safeUrl(logo))}" alt="${esc(org)} logosu" loading="lazy" decoding="async">`
       : `<span class="role-mono" aria-hidden="true">${esc(monogram(org))}</span>`;
@@ -147,9 +145,9 @@ function renderRoles(lines) {
     return `<li class="role rv" style="--i:${i}">
       <div class="role-plate">${plate}</div>
       <div class="role-body">
-        ${many ? `<span class="role-n">${String(i + 1).padStart(2, '0')}</span>` : ''}
         <p class="role-org">${inline(org)}</p>
         ${role ? `<p class="role-title">${inline(role)}</p>` : ''}
+        ${when ? `<p class="role-when">${inline(when)}</p>` : ''}
         ${list.length ? `<ul class="role-notes">${list.map((x) => `<li>${inline(x)}</li>`).join('')}</ul>` : ''}
       </div></li>`;
   });

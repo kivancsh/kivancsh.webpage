@@ -6,16 +6,12 @@ layout: hobbies
 
 ## Fitness
 
-[Yer tutucu] Antrenman rutinini, hedeflerini ya da sporun hayatındaki yerini anlatan bir paragraf.
-
 ## Yapay Zeka
 
-[Yer tutucu] Yapay zekaya ilgini, denediğin araçları ya da üzerinde çalıştığın projeleri anlatan bir paragraf.
+Claude, Claude Code, OpenAI ve prompt mühendisliği. Bu site de Claude Code ile geliştirildi.
 
 ## Futbol
 
-[Yer tutucu] Tuttuğun takımı, oynadığın mevkiyi ya da futbolla ilgili unutamadığın bir anı anlatan bir paragraf.
-
 ## Müzik
 
-[Yer tutucu] Dinlediğin türleri, bu sitede çalan Blinding Lights'ı neden seçtiğini ya da en sevdiğin konseri anlatan bir paragraf.
+Bu sitedeki her plağın kendi şarkısı var; sağ üstteki çalardan dinleyebilirsiniz.

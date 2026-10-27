@@ -6,16 +6,12 @@ layout: hobbies
 
 ## Fitness
 
-[Placeholder] A paragraph on the training routine, the goals pursued and the role of physical activity in daily life.
-
 ## Artificial Intelligence
 
-[Placeholder] A paragraph on the interest in artificial intelligence, the tools evaluated and any related projects.
+Claude, Claude Code, OpenAI and prompt engineering. This website was also developed with Claude Code.
 
 ## Football
 
-[Placeholder] A paragraph on the team supported, the playing position, or a notable football-related experience.
-
 ## Music
 
-[Placeholder] A paragraph on preferred musical genres, the selection of Blinding Lights for this website, or a memorable live performance.
+Each record on this website has its own soundtrack, which can be played from the player in the top right corner.

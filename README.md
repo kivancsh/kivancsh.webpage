@@ -7,8 +7,12 @@ Hayatın yıllarını plaklar olarak anlatan kişisel blog. Her plak bir dönem;
 ```bash
 npm install
 npm run dev      # http://localhost:5178
-npm run build    # statik çıktı: dist/
+npm run build    # statik çıktı: dist/ (+ her plak için önizleme sayfası, sitemap.xml)
+npm test         # duman testi: plağa gir, alt plağa geç, dil değiştir, kapat (Playwright)
+npm run og       # paylaşım görseli public/content/og.jpg (önce npm run dev açık olmalı)
 ```
+
+İlk `npm test` öncesinde bir kez `npx playwright install chromium` gerekir. Aynı test GitHub'da her push'ta yayından önce çalışır; geçmezse site eski hâliyle kalır.
 
 Yayın: `main` dalına her push'ta `.github/workflows/deploy.yml` siteyi derleyip GitHub Pages'e yükler (https://kivancsh.github.io/kivancsh.webpage/). Bunun için depo ayarlarında Settings → Pages → Source: **GitHub Actions** seçili olmalı.
 
@@ -18,8 +22,9 @@ Netlify alternatifi: depoyu bağlarsanız `netlify.toml` derlemeyi kendisi yapar
 
 Tüm içerik `public/content/` altında:
 
-- `records.json`: site adı, plakların sırası, yılları, adları, renkleri ve alt plakları.
-- `posts/*.md`: her plağın yazısı. `posts/ogrencilik/*.md`: ÖĞRENCİLİK'in alt plaklarının yazıları.
+- `records.json`: site adı, unvan (`subtitle`), iletişim (`contact`: e-posta, LinkedIn, özgeçmiş PDF yolu), plakların sırası, yılları, adları, renkleri ve alt plakları.
+- `cv/Kivanc-Karademir-CV.pdf`: sağ üstteki ve her yazının sonundaki "Özgeçmiş" bağlantısının açtığı dosya. Yenisini aynı adla koymak yeterli.
+- `posts/*.md`: her plağın yazısı. `posts/<plak>/*.md`: o plağın alt plaklarının yazıları.
 
 Bir plak alanları:
 
@@ -34,7 +39,7 @@ Bir plak alanları:
 
 Herhangi bir plağa `children` eklemek, onun altında mini plak yelpazesini otomatik açar.
 
-Markdown'da desteklenenler: `## ara başlık` (plak yüzündeki parça gibi A1, A2... numaralanır), `### küçük başlık`, `> alıntı` (son satır `— kişi` olursa imza olur), `- liste`, `![açıklama](resim-yolu)` (yer tutucu için `placeholder`), `**kalın**`, `*italik*`, `[bağlantı](https://...)` ve kronoloji bloğu:
+Markdown'da desteklenenler: `## ara başlık`, `### küçük başlık`, `> alıntı` (son satır `— kişi` olursa imza olur), `- liste`, `![açıklama](resim-yolu)` (yer tutucu için `placeholder`), `**kalın**`, `*italik*`, `[bağlantı](https://...)` ve kronoloji bloğu:
 
 ````
 ```timeline
@@ -43,7 +48,7 @@ Markdown'da desteklenenler: `## ara başlık` (plak yüzündeki parça gibi A1, 
 ```
 ````
 
-Görselleri `public/content/img/` gibi bir klasöre koyup `![Açıklama](content/img/foto.jpg)` diye ekleyebilirsiniz. Ön bilgi (`---` arası) içindeki `title` ve `lede` sayfanın başlığı ve giriş cümlesidir; `placeholder: true` sayfada "Yer tutucu içerik" işaretini gösterir, gerçek yazıyı koyunca silin. Metindeki `[Yer tutucu]` ifadeleri de işaretli görünür.
+Görselleri `public/content/img/` gibi bir klasöre koyup `![Açıklama](content/img/foto.jpg)` diye ekleyebilirsiniz. Ön bilgi (`---` arası) içindeki `title` ve `lede` sayfanın başlığı ve giriş cümlesidir. Metne `[Yer tutucu]` yazılırsa işaretli görünür; duman testi yayında yer tutucu kalmasına izin vermez.
 
 ## Sayfa davranışı
 
@@ -57,7 +62,7 @@ Markdown içinde şu bloklar da kullanılabilir:
 
 ````
 ```roles
-content/logos/turkcell.png | Turkcell | Yetenek Programı | not 1 ; not 2
+content/logos/turkcell.webp | Turkcell | Yetenek Programı | not 1 ; not 2 | Haz 2021 – Ağu 2021
  | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | logo yoksa baş harfler gösterilir
 ```
 
@@ -71,7 +76,7 @@ SE
 ```
 ````
 
-- `roles`: logo kartları (logolar `public/content/logos/` içinde). Dörtten fazla satır olunca ızgara olur.
+- `roles`: logo kartları. Sütunlar: logo | kurum | görev | notlar (`;` ile ayrılır) | tarih. Tarih isteğe bağlıdır ve unvanın altında küçük bir satır olarak görünür. Dörtten fazla satır olunca ızgara olur. Logolar `public/content/logos/` içinde, WebP ve en fazla 360 piksel genişlikte.
 - `stats`: ekrana gelince sayan büyük rakamlar.
 - `travelmap`: Türkiye'den uçuşlu dünya haritası. Tanımlı ülkeler: FI, SE, NO, RS, MK, KKTC. Yeni ülke için `src/travel/travel.js` (ülke, başkent) ve `src/travel/flags.js` (bayrak) dosyalarına bir satır eklenmesi gerekir.
 - Ön bilgide `layout: hobbies`: her `##` başlık kendi renk ve animasyonuyla tam ekran bir bölüm olur (Fitness, Yapay Zeka, Futbol, Müzik temaları hazır).
@@ -86,7 +91,22 @@ Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: 
 
 ## Harita verisi
 
-`public/content/map/world.json`, Natural Earth verisinden `npm run map` ile üretilir; yeniden üretmek gerekmez.
+`public/content/map/world.json` (~115 KB), Natural Earth verisinden `npm run map` ile üretilir; yeniden üretmek gerekmez. Avrupa ve çevresi ayrıntılı (sadeleştirilmiş 50m), dünyanın geri kalanı kaba (110m) çizilir, çünkü harita yalnızca Avrupa'ya yakınlaşır.
+
+## Yazı tipleri
+
+Fraunces (başlık ve metin), Big Shoulders Display (büyük rakamlar) ve IBM Plex Mono (küçük etiketler) npm paketleriyle siteyle birlikte gelir; Google Fonts'a istek gitmez.
+
+## Arama motorları ve bağlantı önizlemeleri
+
+Uygulama `#/` adresleriyle çalıştığı için `npm run build` sonunda `scripts/prerender.mjs` her plak ve alt plak için küçük bir statik sayfa üretir: `/kariyer-yolculugum/`, `/en/kariyer-yolculugum/` gibi. Bu sayfalarda başlık, açıklama ve paylaşım görseli etiketleri ile yazının düz metni bulunur; ziyaretçi açar açmaz sitedeki aynı sayfaya geçer. LinkedIn'de paylaşırken bu adresleri kullanın, ör. https://kivancsh.github.io/kivancsh.webpage/kariyer-yolculugum/
+
+## Kod düzeni
+
+- `src/main.js`: açılış, giriş (sürükleme, tekerlek, klavye), döngü.
+- `src/navigation.js`: adresler ve geçmiş (geri tuşu, paylaşılan bağlantılar).
+- `src/transitions.js`: plağa dalış / çıkış ve yazılar arası geçiş.
+- `src/post.js`, `src/markdown.js`: yazı sayfası. `src/contact.js`: iletişim bağlantıları.
 
 ## Dil (Türkçe / English)
 

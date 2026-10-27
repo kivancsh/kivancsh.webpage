@@ -66,15 +66,10 @@
 .ph-year {
   color: var(--pa-display);
 }
-.ph-flag,
-.trk,
 .pb h3,
 .ph-mark,
 .tl-when,
-.t-n,
-.tracks-k,
-.mc-n,
-.pf-parent:hover {
+.mc-n {
   color: var(--pa-ink);
 }
 .ph-disc .vinyl {
@@ -222,9 +217,6 @@
 .hob-art {
   background: radial-gradient(80% 80% at 50% 40%, color-mix(in oklab, var(--hc) 14%, transparent), transparent 75%), #ffffff;
   box-shadow: 0 24px 50px -32px color-mix(in oklab, var(--hc) 60%, rgba(20, 22, 27, 0.6));
-}
-.hob-text .trk {
-  color: color-mix(in oklab, var(--hc) 64%, #14161b);
 }
 .fit-bar {
   fill: #14161b;
