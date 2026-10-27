@@ -29,7 +29,7 @@ content/logos/pg.webp | P&G
 
 ```stats
 1447 | Katılımcı | Etkinlik proje liderliği
-1 | Mobil Uygulama |
+1 | Mobil Uygulama | [Uygulamayı Görmek için Tıklayın →](https://lnkd.in/p/dgzpdy9z)
  | KKTC ve Türkiye Vaka Analiz Yarışması Dereceleri |
  | Ekip Yönetimi |
  | Şirketlerle Sponsorluk Anlaşmaları |
@@ -39,13 +39,18 @@ content/logos/pg.webp | P&G
 ## DAÜ Endüstri Mühendisliği Kulübü
 
 ```roles
-content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | Pandemi Sonrası Sanayi Projesi'nin liderliği: 1447 katılımcı ; SpaceX, P&G, Bosch, Türk Hava Yolları ve Turkcell'in katılımı
+content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | Pandemi Sonrası Sanayi Projesi'nin liderliği: 1447 katılımcı ; Post Pandemik Endüstri Proje Lideri
 ```
 
 ## Türkiye Endüstri Mühendisliği Toplulukları Birliği
 
 ```roles
 content/logos/temt.webp | Türkiye Endüstri Mühendisliği Toplulukları Birliği | Yönetim Kurulu Üyeliği | Sponsorluk & Finanstan Sorumlu Başkan Yardımcısı ; Denetleme ve Danışma Kurulu Üyeliği
+```
+
+## ESTIEM
+
+```roles
 content/logos/estiem.webp | ESTIEM | European Students of Industrial Engineering and Management | Üye ; Koordinatör
 ```
 

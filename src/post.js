@@ -111,6 +111,20 @@ export class Post {
       const { mountRing } = await import('./gallery.js');
       rings.forEach((r) => this.cleanups.push(mountRing(r, opts)));
     }
+    this.inner.querySelectorAll('.role-flipbox').forEach((box) => {
+      const set = (on) => {
+        box.classList.toggle('is-flipped', on);
+        box.setAttribute('aria-pressed', String(on));
+      };
+      box.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && set(true));
+      box.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && set(false));
+      box.addEventListener('click', () => set(!box.classList.contains('is-flipped')));
+      box.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        set(!box.classList.contains('is-flipped'));
+      });
+    });
     const nums = [...this.inner.querySelectorAll('.stat-v')];
     if (nums.length) {
       const io = new IntersectionObserver(

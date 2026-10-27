@@ -1194,3 +1194,95 @@
 .photo-set--in .ps-grid--1 .ps-item img {
   height: 100%;
 }
+
+/* ---------- cards that turn over (roles with a back image) ---------------------- */
+.role-flipbox {
+  position: relative;
+  perspective: 1400px;
+  cursor: pointer;
+  outline: none;
+}
+.roles--grid .role-flipbox.rv {
+  transform: translateY(26px);
+}
+.roles--grid .role-flipbox.rv.in {
+  transform: none;
+}
+.role-flip {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.9s var(--ease);
+}
+.role-flipbox.is-flipped .role-flip {
+  transform: rotateY(180deg);
+}
+.role-face,
+.role-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.role-face {
+  height: 100%;
+}
+.role-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--pa) 30%, var(--line));
+  background: #f4f2ef;
+  box-shadow: var(--shadow-soft, none);
+}
+.role-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+/* a small turn-over mark tells the card has a back */
+.role-turn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--pa) 40%, var(--line));
+  background: #fff
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2359606b' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12a8 8 0 0 1 13.7-5.6L20 8.7'/%3E%3Cpath d='M20 4v4.7h-4.7'/%3E%3Cpath d='M20 12a8 8 0 0 1-13.7 5.6L4 15.3'/%3E%3Cpath d='M4 20v-4.7h4.7'/%3E%3C/svg%3E")
+    center / 14px no-repeat;
+  transition: transform 0.6s var(--ease);
+}
+.role-flipbox:hover .role-turn,
+.role-flipbox:focus-visible .role-turn {
+  transform: rotate(180deg);
+}
+.role-flipbox:focus-visible .role-face {
+  outline: 2px solid var(--pa);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .role-flip {
+    transition: none;
+  }
+}
+
+/* a link under a figure, e.g. "1 Mobil Uygulama · Uygulamayı Görmek için Tıklayın →" */
+.stat-d a {
+  display: inline-block;
+  margin-top: 4px;
+  font: 500 11px var(--f-mono);
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--pa-ink, var(--pa));
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+.stat-d a:hover {
+  opacity: 0.7;
+}

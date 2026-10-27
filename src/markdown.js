@@ -158,22 +158,28 @@ export function renderMarkdown(body) {
   return html.join('\n');
 }
 
-// logo | organisation | role | note ; note | dates
+// logo | organisation | role | note ; note | dates | back
+// With a `back` image the card turns over to show it (a certificate, a photo).
 function renderRoles(lines) {
   const rows = lines.filter((l) => l.trim()).map((l) => l.split('|').map((x) => x.trim()));
   const many = rows.length > 3;
-  const items = rows.map(([logo = '', org = '', role = '', notes = '', when = ''], i) => {
+  const items = rows.map(([logo = '', org = '', role = '', notes = '', when = '', back = ''], i) => {
     const plate = logo
       ? `<img src="${esc(safeUrl(logo))}" alt="${esc(org)} logosu" loading="lazy" decoding="async">`
       : `<span class="role-mono" aria-hidden="true">${esc(monogram(org))}</span>`;
     const list = notes.split(/\s;\s|;$/).map((x) => x.trim()).filter(Boolean);
-    return `<li class="role rv" style="--i:${i}">
-      <div class="role-plate">${plate}</div>
+    const face = `<div class="role-plate">${plate}</div>
       <div class="role-body">
         <p class="role-org">${inline(org)}</p>
         ${role ? `<p class="role-title">${inline(role)}</p>` : ''}
         ${when ? `<p class="role-when">${inline(when)}</p>` : ''}
         ${list.length ? `<ul class="role-notes">${list.map((x) => `<li>${inline(x)}</li>`).join('')}</ul>` : ''}
+      </div>`;
+    if (!back) return `<li class="role rv" style="--i:${i}">${face}</li>`;
+    return `<li class="role-flipbox rv" style="--i:${i}" tabindex="0" role="button" aria-pressed="false" aria-label="${esc(t('role.flip', { org }))}">
+      <div class="role-flip">
+        <div class="role role-face">${face}<span class="role-turn" aria-hidden="true"></span></div>
+        <div class="role-back"><img src="${esc(safeUrl(back))}" alt="${esc(org)}" loading="lazy" decoding="async"></div>
       </div></li>`;
   });
   return `<ol class="roles${many ? ' roles--grid' : ''}">${items.join('')}</ol>`;

@@ -76,7 +76,7 @@ SE
 ```
 ````
 
-- `roles`: logo kartları. Sütunlar: logo | kurum | görev | notlar (`;` ile ayrılır) | tarih. Tarih isteğe bağlıdır ve unvanın altında küçük bir satır olarak görünür. Dörtten fazla satır olunca ızgara olur. Logolar `public/content/logos/` içinde, WebP ve en fazla 360 piksel genişlikte.
+- `roles`: logo kartları. Sütunlar: logo | kurum | görev | notlar (`;` ile ayrılır) | tarih. Tarih isteğe bağlıdır ve unvanın altında küçük bir satır olarak görünür. Altıncı sütuna bir görsel yazılırsa (`… | tarih | content/img/…webp`) kart üzerine gelince ya da tıklanınca dönüp o görseli gösterir (Stajlar'daki belgeler ve fotoğraflar). Dörtten fazla satır olunca ızgara olur. Logolar `public/content/logos/` içinde, WebP ve en fazla 360 piksel genişlikte.
 - `stats`: ekrana gelince sayan büyük rakamlar.
 - `logosphere`: yazının arka planında yavaşça dönen logo küresi (Kulüp Etkinlikleri sayfasında). Her satır `logo | ad`; her logo kürede bir kez yer alır ve küre ekrana yayılır. Logolar oranları ne olursa olsun aynı alanı kaplar; ince bir yazı logosu ile yuvarlak bir amblem aynı büyüklükte görünür. Logolar en fazla %40 görünürlükte (telefonda %28), arkadakiler daha soluk. Logoların arka planı saydam olmalı.
 - `stats` satırında sayı boş bırakılırsa (`| Ekip Yönetimi |`) yazının kendisi öne çıkan madde olarak gösterilir.

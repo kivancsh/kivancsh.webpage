@@ -29,7 +29,7 @@ content/logos/pg.webp | P&G
 
 ```stats
 1447 | Participants | Event project leadership
-1 | Mobile Application |
+1 | Mobile Application | [View the App →](https://lnkd.in/p/dgzpdy9z)
  | Case Study Competition Rankings in Northern Cyprus and Türkiye |
  | Team Management |
  | Corporate Sponsorship Agreements |
@@ -39,13 +39,18 @@ content/logos/pg.webp | P&G
 ## EMU Industrial Engineering Club
 
 ```roles
-content/logos/emu-ie-club.webp | EMU Industrial Engineering Club | Chair of the Board | Led the Post-Pandemic Industry Project, with 1,447 participants ; Engaged SpaceX, P&G, Bosch, Turkish Airlines and Turkcell
+content/logos/emu-ie-club.webp | EMU Industrial Engineering Club | Chair of the Board | Led the Post-Pandemic Industry Project, with 1,447 participants ; Post-Pandemic Industry Project Lead
 ```
 
 ## Union of Industrial Engineering Societies of Türkiye
 
 ```roles
 content/logos/temt.webp | Union of Industrial Engineering Societies of Türkiye | Executive Board Member | Vice Chair, responsible for Sponsorship and Finance ; Member of the Supervisory and Advisory Board
+```
+
+## ESTIEM
+
+```roles
 content/logos/estiem.webp | ESTIEM | European Students of Industrial Engineering and Management | Member ; Coordinator
 ```
 
