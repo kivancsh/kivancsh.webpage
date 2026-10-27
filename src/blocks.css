@@ -904,3 +904,113 @@
   .rg-tl, .rg-bl { left: 16px; }
   .rg-tr, .rg-br { right: 16px; }
 }
+
+/* ---------- photo set (```photos) ------------------------------------------------ */
+/* A bento: the first photo stands tall on the left, the others stack beside it.
+   Each tile opens with a wipe as it scrolls in; hovering eases the photo closer. */
+.photo-set {
+  width: min(1180px, calc(100vw - var(--gut) * 2));
+  margin: clamp(56px, 10vh, 120px) 0 clamp(24px, 4vh, 48px) 50%;
+  transform: translateX(-50%);
+}
+.ps-h {
+  margin: 0 0 18px;
+  font: 500 11px var(--f-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pa-ink, var(--pa));
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(10px, 1.4vw, 18px);
+}
+.ps-grid--3 {
+  grid-template-columns: 0.85fr 1.45fr;
+  grid-template-rows: 1fr 1fr;
+  height: clamp(520px, 80vh, 820px);
+}
+.ps-grid--3 .ps-item:first-child {
+  grid-row: 1 / span 2;
+}
+.ps-item {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--pa) 10%, #e9ebee);
+  box-shadow: 0 24px 50px -34px rgba(20, 22, 27, 0.6);
+}
+.ps-item.rv {
+  opacity: 1;
+  transform: none;
+}
+/* the wipe sits on the photo, not the tile: a fully clipped tile would never count as
+   "in view" for the reveal observer */
+.ps-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: inset(100% 0 0 0);
+  transform: scale(1.12);
+  transition: clip-path 1.2s var(--ease), transform 1.4s var(--ease);
+  transition-delay: calc(var(--i, 0) * 140ms);
+}
+.ps-item.in img {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+.ps-item.in:hover img {
+  transform: scale(1.05);
+  transition-delay: 0s;
+}
+.ps-item figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px 18px 16px;
+  font: 500 11px/1.4 var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(10, 10, 12, 0.62));
+  transform: translateY(8px);
+  opacity: 0.85;
+  transition: transform 0.6s var(--ease), opacity 0.6s;
+}
+.ps-item:hover figcaption {
+  transform: none;
+  opacity: 1;
+}
+@media (max-width: 700px) {
+  .photo-set {
+    width: calc(100vw - var(--gut) * 2);
+  }
+  .ps-grid--3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+  }
+  .ps-grid--3 .ps-item:first-child {
+    grid-row: auto;
+    grid-column: 1 / -1;
+    aspect-ratio: 4 / 5;
+  }
+  .ps-grid--3 .ps-item:not(:first-child) {
+    aspect-ratio: 1;
+  }
+  .ps-item figcaption {
+    padding: 28px 12px 10px;
+    font-size: 9.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ps-item img,
+  .ps-item.in img {
+    clip-path: none;
+    transform: none;
+  }
+}

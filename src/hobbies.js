@@ -25,7 +25,8 @@ export function mountHobbies(article, postEl, { scroller, accent, reduced }) {
     text.className = 'hob-text';
     h.before(sec);
     let n = h;
-    while (n && !(n !== h && n.tagName === 'H2')) {
+    // a chapter runs to the next ## heading; a photo set at the end stays outside them
+    while (n && !(n !== h && n.tagName === 'H2') && !n.classList.contains('photo-set')) {
       const next = n.nextElementSibling;
       text.appendChild(n);
       n = next;

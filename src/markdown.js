@@ -77,6 +77,8 @@ export function renderMarkdown(body) {
       } else if (kind === 'travelmap') {
         const codes = block.map((l) => l.trim().toUpperCase()).filter(Boolean);
         html.push(`<div class="travel" data-codes="${esc(codes.join(','))}"></div>`);
+      } else if (kind === 'photos') {
+        html.push(renderPhotos(block));
       } else if (kind === 'gallery') {
         // image | title | place  → the ring gallery (src/gallery.js)
         const items = block.filter((l) => l.trim()).map((l) => {
@@ -178,6 +180,21 @@ function monogram(name) {
     .map((w) => w[0])
     .join('')
     .toLocaleUpperCase('tr');
+}
+
+// ```photos: a small bento of photos. Optional first line `## heading`, then
+// `path WxH | caption` per photo; the first photo takes the tall slot.
+function renderPhotos(lines) {
+  let head = '';
+  const rows = lines.filter((l) => l.trim());
+  if (rows[0] && rows[0].trim().startsWith('## ')) head = rows.shift().trim().slice(3);
+  const items = rows.map((l, i) => {
+    const [media = '', cap = ''] = l.split('|').map((x) => x.trim());
+    const [src, size = ''] = media.split(/\s+/);
+    const [w, h] = (size.match(/^(\d+)x(\d+)$/) || []).slice(1);
+    return `<figure class="ps-item rv" style="--i:${i}"><img src="${esc(safeUrl(src))}" alt="${esc(cap)}"${w ? ` width="${w}" height="${h}"` : ''} loading="lazy" decoding="async">${cap ? `<figcaption>${inline(cap)}</figcaption>` : ''}</figure>`;
+  });
+  return `<section class="photo-set">${head ? `<p class="ps-h rv">${inline(head)}</p>` : ''}<div class="ps-grid ps-grid--${items.length}">${items.join('')}</div></section>`;
 }
 
 // value | label | detail

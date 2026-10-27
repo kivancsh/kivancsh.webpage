@@ -3,6 +3,8 @@ title: Professional Career
 lede: From B2B sales of IBM software to the management of more than 40 dealer accounts at Türk Telekom.
 ---
 
+![](content/img/kariyer/portre.webp 966x1200)
+
 I aim to drive business growth that delivers tangible results by combining an engineering mindset with strong interpersonal skills and emotional intelligence. With an entrepreneurial outlook, I place productivity and research at the centre of my work.
 
 ## Penta Technology (Yıldız Holding)
@@ -10,6 +12,8 @@ I aim to drive business growth that delivers tangible results by combining an en
 ```roles
 content/logos/yildiz-holding.webp | Penta Technology (Yıldız Holding) | Business Development Specialist | As an IBM Business Partner, managed the B2B sales of IBM software products and established relationships with resellers and corporate clients. ; Managed a portfolio of more than 15 corporate accounts. | 2023 – 2024 · Istanbul
 ```
+
+![Penta Technology & IBM "Lead the Way!" event, 5 November 2024](content/img/kariyer/penta-ibm-lead-the-way.webp 1200x800)
 
 ```stats
 15+ | Corporate Accounts | Account management
@@ -20,6 +24,8 @@ content/logos/yildiz-holding.webp | Penta Technology (Yıldız Holding) | Busine
 ```roles
 content/logos/turk-telekom.webp | Türk Telekom | Retail Channel Sales Manager | Responsible for the sales targets and key performance indicators (KPIs) of more than 40 dealer accounts, conducting weekly productivity reviews with each dealer. ; Translate daily sales data into KPI action plans; led a Six Sigma (DMAIC) project that was approved for network-wide rollout. ; Led the turnaround of a region ranked 13th of 17 through segmentation and a 30-day activation plan, targeting a 20% score increase (39.3 → 47+ points). ; Optimised visit routes across more than 40 outlets through district clustering and established weekly visit frequencies. ; Manage incentive and promotion campaigns of up to ₺60,000 per dealer; launched the Cellularline accessory range across the network. | 2024 – Present · Istanbul
 ```
+
+![Türk Telekom: presenting the Maptriks competitor analysis](content/img/kariyer/turk-telekom-sunum.webp 900x1200)
 
 ```stats
 40+ | Dealer Accounts | Weekly productivity reviews
