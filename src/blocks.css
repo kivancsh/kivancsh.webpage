@@ -987,8 +987,8 @@
   object-fit: cover;
   clip-path: inset(100% 0 0 0);
   transform: scale(1.12);
-  transition: clip-path 1.2s var(--ease), transform 1.4s var(--ease);
-  transition-delay: calc(var(--i, 0) * 140ms);
+  transition: clip-path 0.9s var(--ease), transform 1.2s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
 .ps-item.in img {
   clip-path: inset(0 0 0 0);

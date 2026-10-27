@@ -125,6 +125,14 @@ export class Post {
         set(!box.classList.contains('is-flipped'));
       });
     });
+    // photos further down start downloading once the page is open and the browser is
+    // idle, instead of when they scroll near (inside this scroller that is too late)
+    const lazy = [...this.inner.querySelectorAll('img[loading="lazy"]')];
+    if (lazy.length) {
+      const fetchAll = () => lazy.forEach((img) => img.isConnected && (img.loading = 'eager'));
+      if ('requestIdleCallback' in window) requestIdleCallback(fetchAll, { timeout: 2500 });
+      else setTimeout(fetchAll, 1200);
+    }
     const nums = [...this.inner.querySelectorAll('.stat-v')];
     if (nums.length) {
       const io = new IntersectionObserver(

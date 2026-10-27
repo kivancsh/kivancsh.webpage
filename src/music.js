@@ -85,12 +85,18 @@ export class Music {
       this.offerPlay();
     };
     ['pointerdown', 'keydown', 'touchend'].forEach((ev) => addEventListener(ev, kick, { capture: true, passive: true }));
-    // at the end of a song (or preview) Spotify just goes quiet, without a "paused"
-    // report: notice the silence at the very end and go round again
+    // At the end of a song Spotify may go quiet without any report, and for full songs
+    // its reports come only every few seconds. So the play head is estimated from the last
+    // report and the time since; at the very end the song goes round again.
     setInterval(() => {
-      const { position, duration } = this.last;
-      if (this.sp && this.playing && !this.userPaused && duration > 0 && position > duration - 1500 && performance.now() - this.lastUpdate > 1200) this.restart();
+      const { duration } = this.last;
+      if (this.sp && !this.userPaused && this.interacted && duration > 0 && this.headMs() >= duration + 400 && performance.now() - this.lastUpdate > 1200) this.restart();
     }, 1000);
+  }
+
+  // where the song should be now: last reported position plus the time since, while playing
+  headMs() {
+    return this.last.position + (this.playing && this.lastUpdate ? performance.now() - this.lastUpdate : 0);
   }
 
   restart() {
@@ -276,6 +282,7 @@ export class Music {
 
   spUpdate({ isPaused, isBuffering, position, duration }) {
     const c = this.sp;
+    const head = this.headMs(); // before this report: where the song should have been
     this.lastUpdate = performance.now();
     // not logged in to Spotify: this is the 30-second preview, which has no silent intro
     if (duration > 0 && duration < PREVIEW_MAX && !this.previews.has(this.key())) {
@@ -283,7 +290,10 @@ export class Music {
       if (!this.positions.has(this.key())) this.resumeAt = 0;
       this.seeking = this.resumeAt > 1500;
     }
-    const ended = duration > 0 && this.last.position > duration - 1500;
+    // the song ran out: reported at (or reset from) the end, or it was due to end by now
+    const ended =
+      duration > 0 &&
+      (position >= duration - 2000 || head >= duration - 2500 || (position < 1000 && this.last.position > duration - 8000));
     const wasPlaying = this.playing;
     this.setPlaying(!isPaused && !isBuffering);
     if (!isPaused && !isBuffering) {
