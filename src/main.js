@@ -109,7 +109,7 @@ async function boot() {
   });
   const post = new Post({ content, reduced, onClose: () => nav.requestClose() });
 
-  // --- music: each page has its song (Spotify); it starts on the first interaction ---
+  // --- music: each page has its song (Spotify only); it starts on the first interaction ---
   const trackFor = (route) => {
     if (!route || route.view === 'hero') return content.site.music;
     const r = records[route.record];
@@ -119,9 +119,10 @@ async function boot() {
   const npEl = document.querySelector('.np');
   const startRoute = parseRoute(location.hash, records);
   const music = trackFor(startRoute)
-    ? new Music({ el: npEl, track: trackFor(startRoute), volume: content.site.volume ?? 50, onChange: (on) => sound.setOn(on, { bed: false }) })
+    ? new Music({ el: npEl, track: trackFor(startRoute), onChange: (on) => sound.setOn(on, { bed: false }) })
     : ((npEl.hidden = true), null);
   music && music.relabel();
+  if (import.meta.env.DEV) window.__music = music; // for checking the player by hand
 
   // --- language ------------------------------------------------------------------
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));

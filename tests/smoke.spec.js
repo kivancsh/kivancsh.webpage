@@ -102,3 +102,15 @@ test('the travel photo ring opens a photo and Escape closes only the photo', asy
   await expect(page.locator('html')).toHaveClass(/in-post/);
   expect(errors).toEqual([]);
 });
+
+test('without Spotify the music player steps aside and the site carries on', async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto('./?lang=tr');
+  await expect(page.locator('html')).toHaveClass(/ready/);
+  await page.mouse.click(8, 450);
+  await expect(page.locator('.np')).toHaveAttribute('data-state', 'error', { timeout: 20_000 });
+  await expect(page.locator('.np')).toBeHidden();
+  await page.locator('.hero-open').click();
+  await expect(page.locator('#post')).toHaveClass(/is-in/, { timeout: 15_000 });
+  expect(errors).toEqual([]);
+});

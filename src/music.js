@@ -1,23 +1,29 @@
-// Page soundtrack. Each page names a song; switching pages swaps it, and coming back to
-// a page carries on from where its song was left. Browsers block sound until the
-// visitor interacts, so playback starts on the first click / tap / key press.
+// Page soundtrack, played through Spotify's own embed. Each page names a song; switching
+// pages swaps it, and coming back to a page carries on from where its song was left.
+// Browsers block sound until the visitor interacts, so playback starts on the first
+// click / tap / key press.
 //
-// Spotify first: visitors logged in to Spotify in that browser hear the full song.
-// Everyone else only gets Spotify's 30-second preview (cut from the middle of the song),
-// so as soon as the embed reports a preview-length track the player switches to the
-// song's official YouTube upload for the rest of the visit: full length, from the start,
-// at the configured volume.
+// Visitors logged in to Spotify in that browser hear the full song. Everyone else hears
+// Spotify's 30-second preview, looped. There is no other source: if Spotify cannot be
+// reached, the player hides itself and the page carries on without music.
 //
 // On phones the player folds into a small round button in the header; tapping it opens
-// the full player underneath. The embed stays mounted (only out of sight) so it keeps playing.
+// the player underneath. The embed stays mounted (only out of sight) so it keeps playing.
 //
-// Spotify songs are swapped by building a fresh embed rather than controller.loadUri():
-// loadUri navigates the iframe, which adds entries to the page's history, so the
+// Songs are swapped by building a fresh embed rather than controller.loadUri(): loadUri
+// navigates the iframe, which (in Chrome) adds entries to the page's history, so the
 // browser's back button would rewind the player instead of leaving the blog page.
+//
+// Safari and every iPhone/iPad browser (WebKit) only let Spotify start a song after a tap
+// inside Spotify's own player, not on our page. So there, whenever a song should be
+// playing but isn't, the small player opens by itself with Spotify's play button showing:
+// one tap and the music goes on.
 import { t } from './i18n.js';
 
-const PREVIEW_MAX = 31000;
-const YT = { ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3, CUED: 5 };
+const PREVIEW_MAX = 31000; // a track this short is Spotify's preview, not the song
+const GIVE_UP = 12000; // no working player by then: hide it
+const UA = navigator.userAgent;
+const WEBKIT = /AppleWebKit/.test(UA) && !/Chrome|Chromium|Edg|OPR|SamsungBrowser|Android/.test(UA);
 
 const loadScript = (src) =>
   new Promise((resolve, reject) => {
@@ -30,25 +36,21 @@ const loadScript = (src) =>
   });
 
 export class Music {
-  constructor({ el, track, volume = 50, onChange }) {
+  constructor({ el, track, onChange }) {
     this.el = el;
     this.frame = el.querySelector('.np-frame');
-    this.ytHost = el.querySelector('.np-yt');
-    this.btn = el.querySelector('.np-btn');
     this.pill = el.querySelector('.np-pill');
     this.open = false;
-    this.volume = volume;
     this.onChange = onChange || (() => {});
-    this.mode = 'spotify';
     this.track = track;
     this.playing = false;
     this.userPaused = false;
     this.interacted = false;
     this.pending = false;
-    // where each song was left (ms), per song
+    // where each song was left (ms), per song; previews are remembered separately
     this.positions = new Map();
+    this.previews = new Set();
 
-    // spotify
     this.sp = null;
     this.spApi = null;
     this.gen = 0;
@@ -56,20 +58,10 @@ export class Music {
     this.resumeAt = 0;
     this.seeking = false;
 
-    // youtube
-    this.yt = null;
-    this.ytReady = false;
-    this.ytSwitching = false;
-
-    this.el.dataset.mode = 'spotify';
     this.setLabel(track);
     if (track?.spotify) this.loadSpotify();
-    else if (track?.youtube) this.toYouTube();
+    else this.fail();
 
-    this.btn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.toggle();
-    });
     this.pill?.addEventListener('click', (e) => {
       e.stopPropagation();
       this.setOpen(!this.open);
@@ -88,19 +80,54 @@ export class Music {
     );
     const kick = () => {
       this.interacted = true;
-      if (!this.userPaused && !this.playing) this.play();
+      if (this.userPaused || this.playing) return;
+      this.play();
+      this.offerPlay();
     };
-    ['pointerdown', 'keydown', 'touchend'].forEach((t) => addEventListener(t, kick, { capture: true, passive: true }));
-    setInterval(() => this.poll(), 500);
+    ['pointerdown', 'keydown', 'touchend'].forEach((ev) => addEventListener(ev, kick, { capture: true, passive: true }));
+    // at the end of a song (or preview) Spotify just goes quiet, without a "paused"
+    // report: notice the silence at the very end and go round again
+    setInterval(() => {
+      const { position, duration } = this.last;
+      if (this.sp && this.playing && !this.userPaused && duration > 0 && position > duration - 1500 && performance.now() - this.lastUpdate > 1200) this.restart();
+    }, 1000);
+  }
+
+  restart() {
+    const from = this.startMs();
+    this.positions.set(this.key(), from);
+    this.last = { position: from, duration: this.last.duration };
+    this.lastUpdate = performance.now();
+    this.sp.seek(from / 1000);
+    this.sp.play();
+  }
+
+  // Safari / iPhone: if the song could not start by itself, open the player so Spotify's
+  // play button is right there (Spotify may still be loading: keep checking a while)
+  offerPlay() {
+    if (!WEBKIT) return;
+    clearTimeout(this.helpTimer);
+    let tries = 0;
+    const help = () => {
+      if (this.playing || this.userPaused || this.open || this.el.dataset.state === 'error') return;
+      if (this.el.dataset.state !== 'ready' || !this.sp) {
+        if (++tries < 20) this.helpTimer = setTimeout(help, 600);
+        return;
+      }
+      this.autoOpened = true;
+      this.setOpen(true);
+    };
+    this.helpTimer = setTimeout(help, 2000);
   }
 
   key(track = this.track) {
-    return track ? track.spotify || track.youtube : '';
+    return track?.spotify || '';
   }
 
-  // where a song begins when it hasn't been heard yet: `start` (seconds) skips a silent intro
+  // where a song begins when it hasn't been heard yet: `start` (seconds) skips a silent
+  // intro. A preview is already a cut from the middle of the song, so it starts at 0.
   startMs(track = this.track) {
-    return (track?.start || 0) * 1000;
+    return this.previews.has(this.key(track)) ? 0 : (track?.start || 0) * 1000;
   }
 
   resumeMs() {
@@ -118,14 +145,18 @@ export class Music {
   setPlaying(v) {
     if (v === this.playing) return;
     this.playing = v;
+    // the player opened itself to show Spotify's play button: tuck it away once playing
+    if (v && this.autoOpened) {
+      this.autoOpened = false;
+      clearTimeout(this.foldTimer);
+      this.foldTimer = setTimeout(() => this.playing && this.setOpen(false), 2500);
+    }
     this.el.classList.toggle('is-playing', v);
-    this.btn?.setAttribute('aria-pressed', String(v));
     this.relabel();
     this.onChange(v);
   }
 
   relabel() {
-    this.btn?.setAttribute('aria-label', this.playing ? t('music.pause') : t('music.play'));
     this.pill?.setAttribute('aria-label', `${this.open ? t('music.close') : t('music.open')} · ${this.track?.title || ''}`);
   }
 
@@ -139,25 +170,25 @@ export class Music {
     this.relabel();
   }
 
+  // Spotify is out of reach (blocked network, extension, outage): no player at all
+  fail() {
+    this.el.dataset.state = 'error';
+    this.setOpen(false);
+    this.setPlaying(false);
+  }
+
+  // give the embed a while to come up; a late one still wins (see 'ready')
+  watchdog() {
+    clearTimeout(this.giveUp);
+    this.giveUp = setTimeout(() => this.el.dataset.state !== 'ready' && this.fail(), GIVE_UP);
+  }
+
   play() {
-    if (this.mode === 'youtube') return this.ytPlay();
     if (!this.sp) {
       this.pending = true;
       return;
     }
     this.sp.play();
-  }
-
-  toggle() {
-    if (this.playing) {
-      this.userPaused = true;
-      if (this.mode === 'youtube') this.yt?.pauseVideo();
-      else this.sp?.pause();
-    } else {
-      this.userPaused = false;
-      this.interacted = true;
-      this.play();
-    }
   }
 
   // the page changed: swap the song, keep playing if the visitor hadn't paused
@@ -168,25 +199,13 @@ export class Music {
     this.setLabel(track);
     this.relabel();
     this.pending = this.interacted && !this.userPaused;
-    if (this.mode === 'youtube') this.ytLoad();
-    else {
-      this.setPlaying(false);
-      this.mountSpotify();
-    }
+    this.setPlaying(false);
+    this.mountSpotify();
+    if (this.pending) this.offerPlay();
   }
 
   savePosition() {
-    if (this.mode === 'youtube') {
-      if (this.ytReady && !this.ytSwitching) this.positions.set(this.key(), this.yt.getCurrentTime() * 1000);
-    } else if (this.last.duration > 0 && !this.seeking) {
-      this.positions.set(this.key(), this.last.position);
-    }
-  }
-
-  poll() {
-    if (this.mode === 'youtube' && this.playing && this.ytReady && !this.ytSwitching) {
-      this.positions.set(this.key(), this.yt.getCurrentTime() * 1000);
-    }
+    if (this.last.duration > 0 && !this.seeking) this.positions.set(this.key(), this.last.position);
   }
 
   // ---- spotify ------------------------------------------------------------------
@@ -196,9 +215,12 @@ export class Music {
     window.onSpotifyIframeApiReady = (api) => {
       prev && prev(api);
       this.spApi = api;
-      if (this.mode === 'spotify') this.mountSpotify();
+      this.mountSpotify();
     };
-    const go = () => loadScript('https://open.spotify.com/embed/iframe-api/v1').catch(() => this.toYouTube());
+    const go = () => {
+      this.watchdog();
+      loadScript('https://open.spotify.com/embed/iframe-api/v1').catch(() => this.fail());
+    };
     // the embed is heavy; wait for the first frames (or the first interaction) before loading it
     let started = false;
     const start = () => {
@@ -235,11 +257,13 @@ export class Music {
     this.resumeAt = this.resumeMs();
     this.seeking = this.resumeAt > 1500;
     this.last = { position: 0, duration: 0 };
+    if (this.el.dataset.state !== 'ready') this.watchdog();
     this.spApi.createController(host, { uri: this.track.spotify, width: '100%', height: 80 }, (c) => {
       if (gen !== this.gen) return c.destroy();
       this.sp = c;
       c.addListener('ready', () => {
         if (gen !== this.gen) return;
+        clearTimeout(this.giveUp);
         this.el.dataset.state = 'ready';
         if (this.pending) {
           this.pending = false;
@@ -251,9 +275,14 @@ export class Music {
   }
 
   spUpdate({ isPaused, isBuffering, position, duration }) {
-    // a 30-second preview means the visitor isn't logged in to Spotify
-    if (duration > 0 && duration < PREVIEW_MAX && this.track?.youtube) return this.toYouTube();
     const c = this.sp;
+    this.lastUpdate = performance.now();
+    // not logged in to Spotify: this is the 30-second preview, which has no silent intro
+    if (duration > 0 && duration < PREVIEW_MAX && !this.previews.has(this.key())) {
+      this.previews.add(this.key());
+      if (!this.positions.has(this.key())) this.resumeAt = 0;
+      this.seeking = this.resumeAt > 1500;
+    }
     const ended = duration > 0 && this.last.position > duration - 1500;
     const wasPlaying = this.playing;
     this.setPlaying(!isPaused && !isBuffering);
@@ -261,7 +290,7 @@ export class Music {
       this.userPaused = false;
       if (this.seeking) {
         this.seeking = false;
-        if (Math.abs(position - this.resumeAt) > 1500) {
+        if (Math.abs(position - this.resumeAt) > 1500 && this.resumeAt < duration - 2000) {
           c.seek(this.resumeAt / 1000);
           this.last = { position: this.resumeAt, duration };
           return;
@@ -270,97 +299,12 @@ export class Music {
       if (duration > 0) this.positions.set(this.key(), position);
     } else if (isPaused && !isBuffering && wasPlaying) {
       if (ended && !this.userPaused) {
-        this.positions.set(this.key(), this.startMs());
-        c.seek(this.startMs() / 1000);
-        c.play();
+        this.restart(); // round again from the top (a preview loops)
+        return;
       } else if (this.interacted) {
         this.userPaused = true; // paused from the embed's own button
       }
     }
     this.last = { position, duration };
-  }
-
-  // ---- youtube ------------------------------------------------------------------
-
-  toYouTube() {
-    if (this.mode === 'youtube') return;
-    this.mode = 'youtube';
-    this.el.dataset.mode = 'youtube';
-    this.destroySpotify();
-    this.setPlaying(false);
-    // positions so far belonged to preview clips: every song starts from its beginning
-    this.positions.clear();
-    this.pending = this.interacted && !this.userPaused;
-    const make = () => {
-      this.yt = new window.YT.Player(this.ytHost, {
-        width: '100%',
-        height: '100%',
-        videoId: this.track.youtube,
-        playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, modestbranding: 1, playsinline: 1, rel: 0, start: Math.floor(this.startMs() / 1000) },
-        events: {
-          onReady: () => {
-            this.ytReady = true;
-            this.el.dataset.state = 'ready';
-            this.yt.setVolume(this.volume);
-            if (this.pending) this.ytPlay();
-          },
-          onStateChange: (e) => this.ytState(e.data),
-          onError: () => (this.el.dataset.state = 'error'),
-        },
-      });
-    };
-    if (window.YT?.Player) return make();
-    const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prev && prev();
-      make();
-    };
-    loadScript('https://www.youtube.com/iframe_api').catch(() => (this.el.dataset.state = 'error'));
-  }
-
-  ytState(s) {
-    if (s === YT.PLAYING) {
-      this.ytSwitching = false;
-      this.userPaused = false;
-      this.setPlaying(true);
-    } else if (s === YT.PAUSED) {
-      if (!this.ytSwitching && this.interacted) this.userPaused = true;
-      this.setPlaying(false);
-    } else if (s === YT.CUED) {
-      this.ytSwitching = false;
-      this.setPlaying(false);
-    } else if (s === YT.ENDED) {
-      // round again from the top
-      this.positions.set(this.key(), this.startMs());
-      if (!this.userPaused) {
-        this.yt.seekTo(this.startMs() / 1000, true);
-        this.yt.playVideo();
-      }
-    }
-  }
-
-  ytPlay() {
-    if (!this.ytReady) {
-      this.pending = true;
-      return;
-    }
-    this.pending = false;
-    this.yt.unMute();
-    this.yt.setVolume(this.volume);
-    this.yt.playVideo();
-  }
-
-  // swap the video inside the same player (no iframe navigation, no history entries)
-  ytLoad() {
-    if (!this.ytReady) return;
-    this.ytSwitching = true;
-    const opts = { videoId: this.track.youtube, startSeconds: this.resumeMs() / 1000 };
-    if (this.pending) {
-      this.pending = false;
-      this.yt.loadVideoById(opts);
-      this.yt.setVolume(this.volume);
-    } else {
-      this.yt.cueVideoById(opts);
-    }
   }
 }

@@ -1430,84 +1430,10 @@ kbd {
   display: block;
   border: 0;
 }
-.np[data-state='error'] .np-frame {
-  display: none;
+.np[data-state='error'] {
+  display: none; /* Spotify can't be reached: no player, no cue */
 }
 
-/* phones: the player gets the full width of the top row, the brand sits under it */
-/* YouTube fallback row: video, title, play/pause */
-.np-ytrow {
-  display: none;
-  align-items: center;
-  gap: 12px;
-  height: 80px;
-  padding: 0 10px 0 8px;
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--accent) 22%, #121010);
-  box-shadow: 0 0 0 1px var(--line), 0 18px 40px -20px #000;
-}
-.np[data-mode='youtube'] .np-frame {
-  display: none;
-}
-.np[data-mode='youtube'] .np-ytrow {
-  display: flex;
-}
-.np-video {
-  position: relative;
-  flex: none;
-  width: 112px;
-  aspect-ratio: 16 / 9;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #000;
-}
-.np-video iframe,
-.np-yt {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-.np-ymeta {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.np-ymeta .np-t {
-  font: 500 14px/1.15 var(--f-display);
-  font-variation-settings: 'opsz' 48;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.np-ymeta .np-a {
-  font: italic 400 12px var(--f-body);
-  color: var(--muted);
-}
-.np-ymeta .np-a::before {
-  content: none;
-}
-.np-btn {
-  flex: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--faint);
-  display: grid;
-  place-items: center;
-  transition: border-color 0.3s;
-}
-.np-btn:hover {
-  border-color: var(--paper);
-}
-.np-btn .snd-bars,
-.np-btn .np-play {
-  grid-area: 1 / 1;
-}
 .np-play {
   width: 0;
   height: 0;
@@ -1518,9 +1444,6 @@ kbd {
 }
 .np .snd-bars {
   display: none;
-}
-.np.is-playing .np-btn .snd-bars {
-  display: inline-flex;
 }
 .np.is-playing .np-play {
   display: none;
@@ -1580,8 +1503,7 @@ kbd {
     border-color: var(--accent);
   }
   /* the drop-down player: small, soft glass, grows out of the button */
-  .np-frame,
-  .np-ytrow {
+  .np-frame {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
@@ -1597,33 +1519,7 @@ kbd {
     background: rgba(16, 14, 13, 0.5);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 30px -20px rgba(0, 0, 0, 0.7);
   }
-  .np-ytrow {
-    height: 62px;
-    gap: 10px;
-    padding: 0 8px 0 7px;
-    border-radius: 16px;
-    background: rgba(18, 16, 15, 0.62);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    backdrop-filter: blur(14px) saturate(1.2);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 12px 30px -20px rgba(0, 0, 0, 0.7);
-  }
-  .np-ytrow .np-video {
-    width: 84px;
-    border-radius: 9px;
-  }
-  .np-ytrow .np-ymeta .np-t {
-    font-size: 13px;
-  }
-  .np-ytrow .np-ymeta .np-a {
-    font-size: 11px;
-  }
-  .np-ytrow .np-btn {
-    width: 32px;
-    height: 32px;
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-  .np.is-open .np-frame,
-  .np.is-open .np-ytrow {
+  .np.is-open .np-frame {
     opacity: 1;
     pointer-events: auto;
     transform: none;

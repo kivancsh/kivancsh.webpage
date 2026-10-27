@@ -256,23 +256,6 @@
 .in-post .np-k {
   color: var(--accent);
 }
-.in-post .np-ytrow {
-  background: #ffffff;
-  color: #14161b;
-  box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.1), 0 16px 34px -24px rgba(20, 22, 27, 0.45);
-}
-.in-post .np-ymeta .np-a {
-  color: #59606b;
-}
-.in-post .np-btn {
-  border-color: rgba(20, 22, 27, 0.25);
-}
-.in-post .np-play {
-  border-left-color: #14161b;
-}
-.in-post .np.is-playing .snd-bars i {
-  background: #14161b;
-}
 .in-post .np-frame {
   box-shadow: 0 0 0 1px rgba(20, 22, 27, 0.08), 0 16px 34px -24px rgba(20, 22, 27, 0.45);
 }

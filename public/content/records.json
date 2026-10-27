@@ -1,5 +1,5 @@
 {
-  "_doc": "Sitenin tüm içeriği. Metin alanları (name, years, label, subtitle) {\"tr\": …, \"en\": …} biçimindedir. Her yazının Türkçesi 'post' dosyasında, İngilizcesi aynı adın .en.md uzantılı dosyasındadır (ör. stajlar.md ve stajlar.en.md). 'music' o sayfada çalan şarkıdır; alt plakta yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. All content. Text fields are {\"tr\": …, \"en\": …}; English posts live next to the Turkish ones as *.en.md.",
+  "_doc": "Sitenin tüm içeriği. Metin alanları (name, years, label, subtitle) {\"tr\": …, \"en\": …} biçimindedir. Her yazının Türkçesi 'post' dosyasında, İngilizcesi aynı adın .en.md uzantılı dosyasındadır (ör. stajlar.md ve stajlar.en.md). 'music' o sayfada Spotify'dan çalan şarkıdır; alt plakta yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. All content. Text fields are {\"tr\": …, \"en\": …}; English posts live next to the Turkish ones as *.en.md.",
   "site": {
     "name": "Kıvanç Karademir",
     "subtitle": {
@@ -14,10 +14,8 @@
     "music": {
       "spotify": "spotify:track:0VjIjW4GlUZAMYd2vXMi3b",
       "title": "Blinding Lights",
-      "artist": "The Weeknd",
-      "youtube": "fHI8X4OXluQ"
-    },
-    "volume": 50
+      "artist": "The Weeknd"
+    }
   },
   "records": [
     {
@@ -35,8 +33,7 @@
       "music": {
         "spotify": "spotify:track:1mea3bSkSGXuIRvnydlB5b",
         "title": "Viva La Vida",
-        "artist": "Coldplay",
-        "youtube": "dvgZkm1xWPE"
+        "artist": "Coldplay"
       },
       "children": [
         {
@@ -83,7 +80,6 @@
         "spotify": "spotify:track:2X485T9Z5Ly0xyaghN73ed",
         "title": "Let It Happen",
         "artist": "Tame Impala",
-        "youtube": "-ed6UeDp1ek",
         "start": 4
       }
     },
@@ -102,8 +98,7 @@
       "music": {
         "spotify": "spotify:track:1LzNfuep1bnAUR9skqdHCK",
         "title": "Fade Into You",
-        "artist": "Mazzy Star",
-        "youtube": "ImKY6TZEyrI"
+        "artist": "Mazzy Star"
       },
       "children": [
         {
@@ -121,8 +116,7 @@
           "music": {
             "spotify": "spotify:track:374niFA4ZgtXDlflUaNc3q",
             "title": "La Route",
-            "artist": "Juniore",
-            "youtube": "dIirVPZDoMc"
+            "artist": "Juniore"
           }
         },
         {
@@ -140,8 +134,7 @@
           "music": {
             "spotify": "spotify:track:2p8IUWQDrpjuFltbdgLOag",
             "title": "After Hours",
-            "artist": "The Weeknd",
-            "youtube": "ygTZZpVkmKg"
+            "artist": "The Weeknd"
           }
         }
       ]

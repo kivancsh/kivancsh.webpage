@@ -89,11 +89,15 @@ SE
 
 ## Müzik
 
-Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: `spotify` (Spotify şarkı adresi `spotify:track:…`), `youtube` (aynı şarkının resmi YouTube video kimliği), `title`, `artist`. Ana sayfanınki `site.music`; alt plakta şarkı yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. YouTube sesi `site.volume` ile ayarlanır (0–100, şu an 50). Bir şarkının başında sessizlik varsa `"start": 4` gibi bir alanla şarkı ilk açılışta o saniyeden başlar (Let It Happen'da kullanılıyor).
+Müzik yalnızca Spotify'ın kendi oynatıcısıyla çalar. Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: `spotify` (Spotify şarkı adresi `spotify:track:…`), `title`, `artist`. Ana sayfanınki `site.music`; alt plakta şarkı yoksa ana plağınki, ana plakta yoksa ana sayfanınki çalar. Bir şarkının başında sessizlik varsa `"start": 4` gibi bir alanla şarkı ilk açılışta o saniyeden başlar (Let It Happen'da kullanılıyor).
 
-- Sayfa değişince şarkı da değişir; bir sayfaya geri dönülünce o sayfanın şarkısı kaldığı saniyeden devam eder (ziyaret boyunca hatırlanır, sayfa yenilenince sıfırlanır). İlk kez çalan şarkı en baştan başlar.
-- Tarayıcıda Spotify'a giriş yapmış ziyaretçiler şarkıyı Spotify'dan tam dinler. Giriş yapmamış ziyaretçilere Spotify yalnızca 30 saniyelik bir önizleme verdiği için çalar bunu fark edince o ziyaret boyunca YouTube'a geçer ve şarkıyı başından, tam ve ayarlı seste çalar.
-- Tarayıcılar sesli otomatik oynatmayı engellediği için müzik ziyaretçinin ilk tıklamasında/dokunuşunda başlar. Telefon ve tablette sağ üstteki müzik düğmesi hafifçe nabız gibi atar ve altında "♪ Müziği aç" notu durur; müzik başlayınca ikisi de kaybolur. Düğmeye dokununca açılan küçük çalar 4 saniye sonra kendiliğinden kapanır, müzik çalmaya devam eder. Ziyaretçi durdurursa kendiliğinden tekrar başlamaz.
+- Tarayıcıda Spotify'a giriş yapmış ziyaretçiler şarkının tamamını dinler. Giriş yapmamış ziyaretçiler Spotify'ın 30 saniyelik önizlemesini dinler; önizleme döngüde çalar ve `start` ona uygulanmaz.
+- Sayfa değişince şarkı da değişir; bir sayfaya geri dönülünce o sayfanın şarkısı kaldığı saniyeden devam eder (ziyaret boyunca hatırlanır, sayfa yenilenince sıfırlanır).
+- Tarayıcılar sesli otomatik oynatmayı engellediği için müzik ziyaretçinin ilk tıklamasında/dokunuşunda başlar. Ziyaretçi durdurursa kendiliğinden tekrar başlamaz. Telefon ve tablette sağ üstteki müzik düğmesi hafifçe nabız gibi atar ve altında "♪ Müziği aç" notu durur; müzik başlayınca ikisi de kaybolur. Düğmeye dokununca açılan küçük çalar 4 saniye sonra kendiliğinden kapanır, müzik çalmaya devam eder.
+- iPhone, iPad ve Mac'te Safari, Spotify'ın çalmaya başlaması için Spotify'ın kendi oynatıcısına dokunulmasını ister. Bu yüzden orada şarkı kendiliğinden başlamazsa küçük çalar kendiliğinden açılır; Spotify'ın çal düğmesine tek dokunuş yeter. Bu, her sayfa değişiminde tekrarlanabilir.
+- 30 saniyelik önizleme ya da şarkı bittiğinde başa dönüp çalmaya devam eder.
+- Spotify'ın oynatıcısında ses seviyesi ayarı yoktur; şarkı cihazın ses seviyesinde çalar.
+- Spotify'a ulaşılamazsa (engelli ağ, eklenti) 12 saniye içinde çalar kendini gizler; site müziksiz devam eder.
 
 ## Harita verisi
 
