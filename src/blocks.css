@@ -1068,9 +1068,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 120px;
-  height: 52px;
-  margin: -26px 0 0 -60px;
+  /* width and height are set per logo in src/logosphere.js (equal area) */
   will-change: transform, opacity;
 }
 .ls-item img {
@@ -1078,11 +1076,4 @@
   height: 100%;
   object-fit: contain;
   display: block;
-}
-@media (max-width: 700px) {
-  .ls-item {
-    width: 84px;
-    height: 36px;
-    margin: -18px 0 0 -42px;
-  }
 }
