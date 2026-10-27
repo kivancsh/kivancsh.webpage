@@ -51,9 +51,11 @@ export function renderMarkdown(body) {
     if (!para.length) return;
     const raw = para.join(' ');
     const text = inline(raw);
+    // a paragraph that is nothing but a link reads as a call to action
+    const cta = /^\[[^\]]+\]\([^)\s]+\)$/.test(raw);
     // a drop cap only makes sense on real prose, not on a placeholder marker
-    const lead = firstPara && /^[\p{L}"“‘']/u.test(raw);
-    html.push(`<p class="rv${lead ? ' lead-p' : ''}">${text}</p>`);
+    const lead = firstPara && !cta && /^[\p{L}"“‘']/u.test(raw);
+    html.push(`<p class="rv${lead ? ' lead-p' : ''}${cta ? ' link-p' : ''}">${text}</p>`);
     firstPara = false;
     para = [];
   };
@@ -101,11 +103,16 @@ export function renderMarkdown(body) {
     if ((m = t.match(/^!\[([^\]]*)\]\(([^)]+)\)$/))) {
       flush();
       const cap = inline(m[1]);
-      const src = m[2].trim();
-      const media = src === 'placeholder'
-        ? `<div class="fig-ph"><span>${t('md.image')}</span></div>`
-        : `<img src="${esc(safeUrl(src))}" alt="${esc(m[1])}" loading="lazy" decoding="async">`;
-      html.push(`<figure class="fig rv"><div class="fig-frame"><div class="fig-inner">${media}</div></div>${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`);
+      // ![caption](path 1024x768): the size is optional and keeps the page from jumping as it loads
+      const [src, size = ''] = m[2].trim().split(/\s+/);
+      const [w, h] = (size.match(/^(\d+)x(\d+)$/) || []).slice(1);
+      const figcap = cap ? `<figcaption>${cap}</figcaption>` : '';
+      if (src === 'placeholder') {
+        html.push(`<figure class="fig rv"><div class="fig-frame"><div class="fig-inner"><div class="fig-ph"><span>${t('md.image')}</span></div></div></div>${figcap}</figure>`);
+      } else {
+        // photos keep their own proportions: never cropped, portrait or landscape
+        html.push(`<figure class="fig fig--photo rv"><img src="${esc(safeUrl(src))}" alt="${esc(m[1])}"${w ? ` width="${w}" height="${h}"` : ''} loading="lazy" decoding="async">${figcap}</figure>`);
+      }
       continue;
     }
 

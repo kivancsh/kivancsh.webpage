@@ -24,3 +24,13 @@ content/logos/temt.webp | Türkiye Endüstri Mühendisliği Toplulukları Birli�
 ```roles
 content/logos/temt.webp | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye Dereceleri | VAY Vaka Analiz Yarışması: yerel birincilik ; Ulusal üçüncülük ve dördüncülük (Yapı Kredi ve Bosch vakaları)
 ```
+
+## Fotoğraflar
+
+![Türkiye Endüstri Mühendisliği Toplulukları Birliği 51. Genel Kurulu, İzmir Ekonomi Üniversitesi, Temmuz 2022](content/img/kulup/temt-51-genel-kurul.webp 1024x768)
+
+![TEMT duyurusu: Sponsorluk ve Finanstan Sorumlu Başkan Yardımcısı](content/img/kulup/temt-baskan-yardimcisi.webp 526x660)
+
+![Doğu Akdeniz Üniversitesi haberi, 13 Ağustos 2021: "DAÜ Endüstri Mühendisliği Bölümü Öğrencisi Alperen Kıvanç Karademir'den Büyük Başarı"](content/img/kulup/dau-haber.webp 1400x798)
+
+[Habere ulaşmak için tıklayın →](https://www.emu.edu.tr/tr/haberler/haberler/dau-endustri-muhendisligi-bolumu-ogrencisi-alperen-kivanc-karademirden-buyuk-basari/1206/pid/3759)

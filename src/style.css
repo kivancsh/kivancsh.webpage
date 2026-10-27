@@ -1911,3 +1911,44 @@ kbd {
   content-visibility: auto;
   contain-intrinsic-size: auto 700px;
 }
+
+/* photos in articles: whole, at their own proportions */
+.fig--photo {
+  width: min(960px, calc(100vw - var(--gut) * 2));
+}
+.fig--photo img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(82vh, 820px);
+  margin: 0 auto;
+  box-shadow: 0 0 0 1px var(--line), 0 26px 50px -30px rgba(20, 22, 27, 0.55);
+}
+.fig--photo figcaption {
+  text-align: center;
+}
+.fig--photo + .fig--photo {
+  margin-top: 3.6em;
+}
+
+/* a paragraph that is only a link, e.g. under a press photo: "Read the article →" */
+.pb .link-p {
+  margin-top: -1.2em;
+  text-align: center;
+}
+.pb .link-p a {
+  display: inline-block;
+  padding: 12px 20px;
+  border: 1px solid color-mix(in oklab, var(--pa) 40%, var(--line));
+  font: 500 12.5px var(--f-mono);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--paper);
+  transition: border-color 0.3s, background 0.3s;
+}
+.pb .link-p a:hover,
+.pb .link-p a:focus-visible {
+  border-color: var(--pa);
+  background: color-mix(in oklab, var(--pa) 8%, transparent);
+}
