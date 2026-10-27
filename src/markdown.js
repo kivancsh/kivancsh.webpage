@@ -86,8 +86,8 @@ export function renderMarkdown(body) {
           return { src: safeUrl(src), name };
         });
         html.push(`<div class="logo-sphere" hidden data-logos="${esc(JSON.stringify(logos))}"></div>`);
-      } else if (kind === 'photos') {
-        html.push(renderPhotos(block));
+      } else if (kind === 'photos' || kind === 'photos inline') {
+        html.push(renderPhotos(block, { inline: kind === 'photos inline' }));
       } else if (kind === 'gallery') {
         // image | title | place  → the ring gallery (src/gallery.js)
         const items = block.filter((l) => l.trim()).map((l) => {
@@ -193,7 +193,8 @@ function monogram(name) {
 
 // ```photos: a small bento of photos. Optional first line `## heading`, then
 // `path WxH | caption` per photo; the first photo takes the tall slot.
-function renderPhotos(lines) {
+// ```photos inline: a compact pair that stays inside the current section's text.
+function renderPhotos(lines, { inline: inSection = false } = {}) {
   let head = '';
   const rows = lines.filter((l) => l.trim());
   if (rows[0] && rows[0].trim().startsWith('## ')) head = rows.shift().trim().slice(3);
@@ -203,7 +204,7 @@ function renderPhotos(lines) {
     const [w, h] = (size.match(/^(\d+)x(\d+)$/) || []).slice(1);
     return `<figure class="ps-item rv" style="--i:${i}"><img src="${esc(safeUrl(src))}" alt="${esc(cap)}"${w ? ` width="${w}" height="${h}"` : ''} loading="lazy" decoding="async">${cap ? `<figcaption>${inline(cap)}</figcaption>` : ''}</figure>`;
   });
-  return `<section class="photo-set">${head ? `<p class="ps-h rv">${inline(head)}</p>` : ''}<div class="ps-grid ps-grid--${items.length}">${items.join('')}</div></section>`;
+  return `<section class="photo-set${inSection ? ' photo-set--in' : ''}">${head ? `<p class="ps-h rv">${inline(head)}</p>` : ''}<div class="ps-grid ps-grid--${items.length}">${items.join('')}</div></section>`;
 }
 
 // value | label | detail   (no value: the label itself is the highlight)

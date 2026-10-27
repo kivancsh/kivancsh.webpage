@@ -16,6 +16,15 @@ function splitWords(text) {
     .join(' ');
 }
 
+// "45.447 dk" → counts up to 45447 and prints it back with the same thousands separator
+function count(v) {
+  const m = v.match(/^(\d{1,3}(?:([.,])\d{3})+|\d+)(.*)$/);
+  if (!m) return null;
+  const sep = m[2];
+  const fmt = (x) => (sep ? String(x).replace(/\B(?=(\d{3})+(?!\d))/g, sep) : String(x));
+  return { n: +m[1].replace(/[.,]/g, ''), fmt, rest: m[3] };
+}
+
 export class Post {
   constructor({ content, reduced, onClose }) {
     this.content = content;
@@ -108,16 +117,16 @@ export class Post {
         (entries) => entries.forEach((en) => {
           if (!en.isIntersecting) return;
           io.unobserve(en.target);
-          const m = en.target.dataset.v.match(/^(\d+)(.*)$/);
+          const m = count(en.target.dataset.v);
           if (!m || this.reduced) return;
           const o = { v: 0 };
-          gsap.to(o, { v: +m[1], duration: 1.6, ease: 'power2.out', onUpdate: () => (en.target.textContent = Math.round(o.v) + m[2]) });
+          gsap.to(o, { v: m.n, duration: 1.6, ease: 'power2.out', onUpdate: () => (en.target.textContent = m.fmt(Math.round(o.v)) + m.rest) });
         }),
         { root: this.scroller, threshold: 0.6 },
       );
       nums.forEach((n) => {
-        const m = n.dataset.v.match(/^(\d+)(.*)$/);
-        if (m && !this.reduced) n.textContent = `0${m[2]}`;
+        const m = count(n.dataset.v);
+        if (m && !this.reduced) n.textContent = `0${m.rest}`;
         io.observe(n);
       });
       this.cleanups.push(() => io.disconnect());

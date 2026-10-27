@@ -6,6 +6,11 @@ layout: hobbies
 
 ## Fitness
 
+```stats
+23 | Kilograms lost | In two months
+ | Increased muscle mass through regular training |
+```
+
 ## Artificial Intelligence
 
 Claude, Claude Code, OpenAI and prompt engineering. This website was also developed with Claude Code.
@@ -18,13 +23,24 @@ Claude, Claude Code, OpenAI and prompt engineering. This website was also develo
 
 ## Football
 
+```photos inline
+content/img/hobiler/tribun.webp 675x1200 | In the stands, Galatasaray
+content/img/hobiler/atki.webp 640x480 | Scarves up
+```
+
 ## Music
+
+### ![Guitar](content/img/hobiler/gitar.svg) I play the guitar
+
+### ![Spotify](content/logos/spotify.svg) A highly active Spotify listener
+
+```stats
+45,447 | Minutes listened | 2025 Spotify Wrapped
+```
 
 Each record on this website has its own soundtrack, which can be played from the player in the top right corner.
 
 ```photos
 ## Moments
-content/img/hobiler/tribun.webp 675x1200 | In the stands, Galatasaray
 content/img/hobiler/yamac-parasutu.webp 1200x658 | Paragliding
-content/img/hobiler/atki.webp 640x480 | Scarves up
 ```

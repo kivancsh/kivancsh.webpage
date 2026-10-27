@@ -189,7 +189,7 @@
 
 /* figures and highlights together: a tidy grid, every cell ruled underneath */
 .stats--mixed {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
   border-bottom: 0;
   column-gap: 28px;
 }
@@ -1140,4 +1140,49 @@
 }
 .hob-text li > a:hover {
   opacity: 0.7;
+}
+
+/* ```photos inline: a pair of photos inside a hobby chapter's text */
+.photo-set--in {
+  width: auto;
+  max-width: 520px;
+  margin: 1.4em 0 0;
+  transform: none;
+}
+.photo-set--in .ps-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: auto;
+  gap: 12px;
+}
+.photo-set--in .ps-item {
+  aspect-ratio: 3 / 4;
+}
+.photo-set--in .ps-item figcaption {
+  padding: 28px 12px 10px;
+  font-size: 10px;
+}
+/* a single photo in a set spans the width at its own shape */
+.ps-grid--1 {
+  grid-template-columns: 1fr;
+}
+.ps-grid--1 .ps-item img {
+  height: auto;
+}
+/* figures in a hobby chapter use the chapter's colour */
+.hob-text .stat-v {
+  color: color-mix(in oklab, var(--hc) 78%, #14161b);
+}
+.hob-text .stat-t::before {
+  background: var(--hc);
+}
+.hob-text {
+  min-width: 0; /* let wide blocks wrap instead of pushing the chapter past the screen */
+}
+.hob-text .stats {
+  max-width: 520px;
+}
+@media (max-width: 700px) {
+  .hob-text .stats--mixed {
+    grid-template-columns: 1fr;
+  }
 }
