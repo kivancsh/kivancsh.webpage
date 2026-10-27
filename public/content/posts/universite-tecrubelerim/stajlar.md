@@ -13,3 +13,7 @@ content/logos/loreal.webp | L'Oréal | L'Oréal ile Benim Geleceğim | Hızlı t
 content/logos/kastamonu-entegre.webp | Kastamonu Entegre (Hayat Holding) | Üretim Planlama Stajı | İş akışı optimizasyonu ve kalite kontrol süreçlerine destek verdim.
 content/logos/bp.webp | BP / Castrol | Teknik Destek Uzmanlığı Stajı | Castrol madeni yağ portföyünü rakiplerle karşılaştırmalı olarak analiz ettim.
 ```
+
+![Zirve Kıbrıs haberi: "DAÜ öğrencisinin başarısı"](content/img/stajlar/zirve-kibris-haber.webp 1400x713)
+
+[Habere ulaşmak için tıklayın →](https://www.zirvekibris.com/haber-endustri-muhendisligi-ogrencisi-alperen-kivanc-karademirin-gurulandiran-basarisi-67147.html)

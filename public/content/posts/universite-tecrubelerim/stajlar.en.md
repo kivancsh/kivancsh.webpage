@@ -13,3 +13,7 @@ content/logos/loreal.webp | L'Oréal | My Future with L'Oréal | FMCG career dev
 content/logos/kastamonu-entegre.webp | Kastamonu Entegre (Hayat Holding) | Production Planning Internship | Supported workflow optimisation and quality control.
 content/logos/bp.webp | BP / Castrol | Technical Support Specialist Internship | Analysed Castrol's lubricant portfolio against competitors.
 ```
+
+![Zirve Kıbrıs news: "Success of an EMU student"](content/img/stajlar/zirve-kibris-haber.webp 1400x713)
+
+[Read the news article (in Turkish) →](https://www.zirvekibris.com/haber-endustri-muhendisligi-ogrencisi-alperen-kivanc-karademirin-gurulandiran-basarisi-67147.html)

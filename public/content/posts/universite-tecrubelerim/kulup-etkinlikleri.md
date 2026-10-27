@@ -38,7 +38,3 @@ content/logos/temt.webp | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye 
 ![Doğu Akdeniz Üniversitesi haberi, 13 Ağustos 2021: "DAÜ Endüstri Mühendisliği Bölümü Öğrencisi Alperen Kıvanç Karademir'den Büyük Başarı"](content/img/kulup/dau-haber.webp 1400x798)
 
 [Habere ulaşmak için tıklayın →](https://www.emu.edu.tr/tr/haberler/haberler/dau-endustri-muhendisligi-bolumu-ogrencisi-alperen-kivanc-karademirden-buyuk-basari/1206/pid/3759)
-
-![Zirve Kıbrıs haberi: "DAÜ öğrencisinin başarısı"](content/img/kulup/zirve-kibris-haber.webp 1400x713)
-
-[Habere ulaşmak için tıklayın →](https://www.zirvekibris.com/haber-endustri-muhendisligi-ogrencisi-alperen-kivanc-karademirin-gurulandiran-basarisi-67147.html)
