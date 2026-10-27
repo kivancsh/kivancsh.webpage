@@ -1262,15 +1262,17 @@ kbd {
     justify-content: flex-start;
     padding-top: 110px;
   }
+  /* phones: a small record tucked into the top right, level with the year */
   .ph-disc {
-    position: relative;
-    right: auto;
-    top: auto;
-    width: 42vw;
-    align-self: flex-end;
-    margin: -10px 0 -24px;
+    position: absolute;
+    right: var(--gut);
+    top: 152px;
+    width: 64px;
   }
-  .ph-year { font-size: 25vw; }
+  .ph-year {
+    font-size: 21vw;
+    padding-right: 76px;
+  }
   .ph-title { font-size: clamp(42px, 13vw, 64px); }
   .pb { font-size: 18.5px; line-height: 1.68; }
   .fig { width: 100vw; }
@@ -1653,7 +1655,7 @@ kbd {
   font-size: clamp(76px, 14.5vw, 250px);
 }
 @media (max-width: 700px) {
-  .ph-year--long { font-size: 17vw; }
+  .ph-year--long { font-size: 15vw; }
 }
 
 /* ---------- language switch --------------------------------------------------- */

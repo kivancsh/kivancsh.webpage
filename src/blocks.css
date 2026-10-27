@@ -774,6 +774,8 @@
 }
 .rg-stage {
   --rg-bg: color-mix(in oklab, var(--pa) 5%, #e3e3db);
+  /* sideways drags spin the ring; up and down still scroll the page */
+  touch-action: pan-y;
   --rg-ink: #1f1f1f;
   position: relative;
   height: clamp(560px, 100svh, 920px);

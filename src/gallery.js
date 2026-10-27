@@ -4,6 +4,8 @@
 // near it flip over and lean outwards; scrolling turns the ring a little. Clicking a
 // card zooms the ring in until that card stands upright in the middle, with its title
 // rising word by word; clicking anywhere else or Escape brings the circle back.
+// Dragging (finger or mouse) spins the ring like a dial; on touch screens the cards under
+// the finger flip just as they do under the cursor.
 
 import gsap from 'gsap';
 import { esc } from './markdown.js';
@@ -26,6 +28,7 @@ export function mountRing(el, { reduced, scroller }) {
   const n = items.length;
   if (!n) return () => {};
 
+  const touch = matchMedia('(pointer: coarse)').matches;
   el.innerHTML = `
     <div class="rg-stage">
       <p class="rg-k rg-tl">${t('gal.archive')}</p>
@@ -36,7 +39,7 @@ export function mountRing(el, { reduced, scroller }) {
         .join('')}</div></div>
       <div class="rg-caption" aria-live="polite"></div>
       <p class="rg-k rg-bl">${t('gal.study')}</p>
-      <p class="rg-k rg-br"><span class="rg-hint">${t('gal.hint')}</span><span class="rg-back">${t('gal.back')}</span></p>
+      <p class="rg-k rg-br"><span class="rg-hint">${t(touch ? 'gal.hintTouch' : 'gal.hint')}</span><span class="rg-back">${t(touch ? 'gal.backTouch' : 'gal.back')}</span></p>
     </div>`;
 
   const stage = el.querySelector('.rg-stage');
@@ -58,6 +61,13 @@ export function mountRing(el, { reduced, scroller }) {
   let scale = baseScale(innerWidth);
   let scrollTurn = 0; // target, from the scroll position
   let turn = 0; // current, eased
+  let spin = 0; // dial rotation from dragging: target …
+  let spinC = 0; // … and current
+  const drag = { id: -1, a: 0, da: 0, moved: 0, touch: false };
+  const center = () => {
+    const r = stage.getBoundingClientRect();
+    return { r, cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
+  };
   let raf = 0;
   const idle = () => !state.intro && !state.busy && state.preview < 0;
 
@@ -113,8 +123,9 @@ export function mountRing(el, { reduced, scroller }) {
     par.c.y = lerp(par.c.y, par.t.y, LERP);
     par.c.z = lerp(par.c.z, par.t.z, LERP);
     turn = lerp(turn, scrollTurn, LERP * 0.5);
-    gsap.set(tilt, { rotateX: par.c.x, rotateY: par.c.y, rotation: par.c.z + turn });
-    if (mobile || reduced) return;
+    spinC = lerp(spinC, spin, 0.12);
+    gsap.set(tilt, { rotateX: par.c.x, rotateY: par.c.y, rotation: par.c.z + turn + spinC });
+    if (reduced) return;
     hover.forEach((h, i) => {
       const { t: tg, c } = h;
       if (Math.abs(tg.r - c.r) + Math.abs(tg.s - c.s) + Math.abs(tg.x - c.x) + Math.abs(tg.y - c.y) < 0.002) return;
@@ -129,17 +140,16 @@ export function mountRing(el, { reduced, scroller }) {
   // distance from a point to each card's resting centre on screen (stable: no feedback
   // from the flip), taking the ring's current turn into account
   function distances(x, y) {
-    const r = stage.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const a = ((par.c.z + turn) * Math.PI) / 180;
+    const { r, cx, cy } = center();
+    const a = ((par.c.z + turn + spinC) * Math.PI) / 180;
     const cos = Math.cos(a);
     const sin = Math.sin(a);
     return { r, cx, cy, d: rest.map((p) => Math.hypot(x - (cx + (p.x * cos - p.y * sin) * scale), y - (cy + (p.x * sin + p.y * cos) * scale))) };
   }
 
+  // the cursor (or a finger on the glass) tilts the ring and flips the cards nearby
   function onMove(e) {
-    if (e.pointerType !== 'mouse' || mobile || reduced || !idle()) return;
+    if (reduced || !idle()) return;
     const { r, cx, cy, d: dist } = distances(e.clientX, e.clientY);
     const px = (e.clientX - cx) / (r.width / 2);
     const py = (e.clientY - cy) / (r.height / 2);
@@ -149,8 +159,8 @@ export function mountRing(el, { reduced, scroller }) {
     rest.forEach((p, i) => {
       const d = dist[i];
       const tg = hover[i].t;
-      if (d < SENSITIVITY) {
-        const f = Math.max(0, 1 - d / FALLOFF);
+      if (d < SENSITIVITY * scale) {
+        const f = Math.max(0, 1 - d / (FALLOFF * scale));
         tg.r = 180 * f;
         tg.s = 1 + 0.3 * f;
         tg.x = PULL * f * Math.cos(p.angle);
@@ -191,6 +201,7 @@ export function mountRing(el, { reduced, scroller }) {
     gsap.to(tilt, { rotateX: 0, rotateY: 0, rotation: 0, duration: d * 0.6, ease: 'power3.out' });
     Object.assign(par.c, { x: 0, y: 0, z: 0 });
     turn = 0;
+    spin = spinC = 0;
     hover.forEach((h) => Object.assign(h.c, { r: 0, s: 1, x: 0, y: 0 }));
     gsap.to(cards, { x: (k) => rest[k].x, y: (k) => rest[k].y, rotationY: 0, scale: 1, duration: 1.25, ease: 'power4.out' });
     gsap.to(ring, { scale: 5, y: 1300, rotation: (swing * 180) / Math.PI + 360, duration: d, ease: 'power4.inOut', onComplete: () => (state.busy = false) });
@@ -221,6 +232,7 @@ export function mountRing(el, { reduced, scroller }) {
 
   stage.addEventListener('click', (e) => {
     if (state.preview >= 0) return close();
+    if (drag.moved > 8) return (drag.moved = 0); // that was a spin, not a pick
     // a hovered card leans away from the cursor, so a click goes to the nearest card
     const card = e.target.closest('.rg-card');
     if (card && e.detail === 0) return open(+card.dataset.i); // keyboard
@@ -228,8 +240,42 @@ export function mountRing(el, { reduced, scroller }) {
     const i = d.indexOf(Math.min(...d));
     if (d[i] < 70 * scale + 20) open(i);
   });
-  stage.addEventListener('pointermove', onMove);
-  stage.addEventListener('pointerleave', () => idle() && calm());
+  // ---- dragging spins the ring like a dial -----------------------------------------
+  const dialAngle = (e) => {
+    const { cx, cy } = center();
+    return (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
+  };
+  stage.addEventListener('pointerdown', (e) => {
+    if (!idle() || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    drag.id = e.pointerId;
+    drag.a = dialAngle(e);
+    drag.da = 0;
+    drag.moved = 0;
+    drag.touch = e.pointerType !== 'mouse';
+    if (drag.touch) onMove(e); // a finger landing flips what is under it
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (e.pointerId === drag.id && idle()) {
+      const a = dialAngle(e);
+      let da = a - drag.a;
+      if (da > 180) da -= 360;
+      if (da < -180) da += 360;
+      drag.a = a;
+      drag.da = da;
+      drag.moved += Math.abs(da) * 3 + Math.abs(e.movementX || 0);
+      spin += da;
+    }
+    if (e.pointerType === 'mouse' || e.pointerId === drag.id) onMove(e);
+  });
+  const release = (e) => {
+    if (e.pointerId !== drag.id) return;
+    drag.id = -1;
+    spin += drag.da * 8; // let it coast a little
+    if (drag.touch) calm();
+  };
+  stage.addEventListener('pointerup', release);
+  stage.addEventListener('pointercancel', release);
+  stage.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && idle() && calm());
   // Escape closes the photo, not the article behind it
   const onKey = (e) => {
     if (e.key !== 'Escape' || state.preview < 0) return;
