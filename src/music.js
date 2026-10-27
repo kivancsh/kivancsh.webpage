@@ -75,6 +75,8 @@ export class Music {
       this.setOpen(!this.open);
     });
     document.addEventListener('pointerdown', (e) => this.open && !this.el.contains(e.target) && this.setOpen(false));
+    // touching the player itself keeps it open
+    this.el.addEventListener('pointerdown', () => clearTimeout(this.foldTimer));
     addEventListener(
       'keydown',
       (e) => {
@@ -128,6 +130,9 @@ export class Music {
   }
 
   setOpen(v) {
+    clearTimeout(this.foldTimer);
+    // a gentle peek: once the song is on, the player tucks itself away again
+    if (v) this.foldTimer = setTimeout(() => this.playing && this.setOpen(false), 4000);
     this.open = v;
     this.el.classList.toggle('is-open', v);
     this.pill?.setAttribute('aria-expanded', String(v));

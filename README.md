@@ -93,7 +93,7 @@ Her sayfanın şarkısı `records.json` içindeki `music` alanıyla belirlenir: 
 
 - Sayfa değişince şarkı da değişir; bir sayfaya geri dönülünce o sayfanın şarkısı kaldığı saniyeden devam eder (ziyaret boyunca hatırlanır, sayfa yenilenince sıfırlanır). İlk kez çalan şarkı en baştan başlar.
 - Tarayıcıda Spotify'a giriş yapmış ziyaretçiler şarkıyı Spotify'dan tam dinler. Giriş yapmamış ziyaretçilere Spotify yalnızca 30 saniyelik bir önizleme verdiği için çalar bunu fark edince o ziyaret boyunca YouTube'a geçer ve şarkıyı başından, tam ve ayarlı seste çalar.
-- Tarayıcılar sesli otomatik oynatmayı engellediği için müzik ziyaretçinin ilk tıklamasında/dokunuşunda başlar. Ziyaretçi durdurursa kendiliğinden tekrar başlamaz.
+- Tarayıcılar sesli otomatik oynatmayı engellediği için müzik ziyaretçinin ilk tıklamasında/dokunuşunda başlar. Telefon ve tablette sağ üstteki müzik düğmesi hafifçe nabız gibi atar ve altında "♪ Müziği aç" notu durur; müzik başlayınca ikisi de kaybolur. Düğmeye dokununca açılan küçük çalar 4 saniye sonra kendiliğinden kapanır, müzik çalmaya devam eder. Ziyaretçi durdurursa kendiliğinden tekrar başlamaz.
 
 ## Harita verisi
 

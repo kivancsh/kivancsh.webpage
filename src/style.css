@@ -1530,6 +1530,22 @@ kbd {
   animation: bars 0.9s ease-in-out infinite alternate;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .np-pill::after {
+    animation: none !important;
+  }
+}
+@keyframes npCuePulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+@keyframes npCueIn {
+  to { opacity: 1; transform: none; }
+}
+.np-cue {
+  display: none;
+}
+
 /* smaller screens: the player folds into a round button; tapping it drops the full
    player down underneath. It stays rendered (only faded out) so the song keeps playing. */
 .np-pill {
@@ -1563,22 +1579,123 @@ kbd {
   .np.is-open .np-pill {
     border-color: var(--accent);
   }
+  /* the drop-down player: small, soft glass, grows out of the button */
   .np-frame,
   .np-ytrow {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: min(340px, calc(100vw - var(--gut) * 2));
+    width: min(300px, calc(100vw - var(--gut) * 2));
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-6px);
-    transition: opacity 0.25s ease, transform 0.35s var(--ease);
+    transform: translateY(-4px) scale(0.96);
+    transform-origin: top right;
+    transition: opacity 0.4s ease, transform 0.55s var(--ease);
+  }
+  .np-frame {
+    border-radius: 14px;
+    background: rgba(16, 14, 13, 0.5);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 30px -20px rgba(0, 0, 0, 0.7);
+  }
+  .np-ytrow {
+    height: 62px;
+    gap: 10px;
+    padding: 0 8px 0 7px;
+    border-radius: 16px;
+    background: rgba(18, 16, 15, 0.62);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 12px 30px -20px rgba(0, 0, 0, 0.7);
+  }
+  .np-ytrow .np-video {
+    width: 84px;
+    border-radius: 9px;
+  }
+  .np-ytrow .np-ymeta .np-t {
+    font-size: 13px;
+  }
+  .np-ytrow .np-ymeta .np-a {
+    font-size: 11px;
+  }
+  .np-ytrow .np-btn {
+    width: 32px;
+    height: 32px;
+    border-color: rgba(255, 255, 255, 0.18);
   }
   .np.is-open .np-frame,
   .np.is-open .np-ytrow {
     opacity: 1;
     pointer-events: auto;
     transform: none;
+  }
+
+  /* "♪ Müziği aç": a soft pulse on the button and a small note under the header,
+     until the music is playing or the player is opened */
+  .np-pill::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    opacity: 0;
+    animation: npCuePulse 2s cubic-bezier(0.2, 0.75, 0.1, 1) 0.9s infinite;
+    pointer-events: none;
+  }
+  .np-pill {
+    position: relative;
+  }
+  .np-cue {
+    display: block;
+    position: absolute;
+    top: calc(100% + 52px);
+    right: -2px;
+    margin: 0;
+    white-space: nowrap;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: rgba(18, 16, 15, 0.8);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: #f4efe6;
+    font: 500 10.5px/1 var(--f-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 30px -14px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-6px);
+    animation: npCueIn 0.6s cubic-bezier(0.2, 0.75, 0.1, 1) 1.2s forwards;
+  }
+  .np-cue::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 16px;
+    width: 10px;
+    height: 10px;
+    background: inherit;
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+  .np-cue span:first-child {
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .in-post .np-cue {
+    top: calc(100% + 12px); /* the contact row is folded away inside an article */
+  }
+  .np.is-playing .np-cue,
+  .np.is-open .np-cue,
+  .np[data-state='error'] .np-cue {
+    animation: none;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .np.is-playing .np-pill::after,
+  .np.is-open .np-pill::after,
+  .np[data-state='error'] .np-pill::after {
+    animation: none;
   }
   .top-r {
     align-items: center;
