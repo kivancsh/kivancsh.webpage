@@ -25,6 +25,10 @@ content/logos/temt.webp | Union of Industrial Engineering Societies of Türkiye 
 content/logos/temt.webp | Case Study Competitions across Türkiye | National Rankings | VAY Case Study Competition: first place locally ; Third and fourth place nationally (Yapı Kredi and Bosch cases)
 ```
 
+![Kıvanç Karademir speaking at the podium](content/img/kulup/vaka-yarismasi-kursu.webp 800x533)
+
+[Read the news article (in Turkish) →](https://www.kibrispostasi.com/c91-EGITIM/n373581-dau-endustri-muhendisligi-ogrenci-takimi-vaka-analizi-yarismasinda-4-oldu)
+
 ## Photographs
 
 ![51st General Assembly of the Union of Industrial Engineering Societies of Türkiye, Izmir University of Economics, July 2022](content/img/kulup/temt-51-genel-kurul.webp 1024x768)
@@ -34,3 +38,7 @@ content/logos/temt.webp | Case Study Competitions across Türkiye | National Ran
 ![Eastern Mediterranean University news, 13 August 2021: "Great Success from EMU Industrial Engineering Student Alperen Kıvanç Karademir"](content/img/kulup/dau-haber.webp 1400x798)
 
 [Read the news article (in Turkish) →](https://www.emu.edu.tr/tr/haberler/haberler/dau-endustri-muhendisligi-bolumu-ogrencisi-alperen-kivanc-karademirden-buyuk-basari/1206/pid/3759)
+
+![Zirve Kıbrıs news: "Success of an EMU student"](content/img/kulup/zirve-kibris-haber.webp 1400x713)
+
+[Read the news article (in Turkish) →](https://www.zirvekibris.com/haber-endustri-muhendisligi-ogrencisi-alperen-kivanc-karademirin-gurulandiran-basarisi-67147.html)

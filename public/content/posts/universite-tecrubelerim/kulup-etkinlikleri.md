@@ -25,6 +25,10 @@ content/logos/temt.webp | Türkiye Endüstri Mühendisliği Toplulukları Birli�
 content/logos/temt.webp | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye Dereceleri | VAY Vaka Analiz Yarışması: yerel birincilik ; Ulusal üçüncülük ve dördüncülük (Yapı Kredi ve Bosch vakaları)
 ```
 
+![Kıvanç Karademir kürsüde konuşurken](content/img/kulup/vaka-yarismasi-kursu.webp 800x533)
+
+[Haber Linkine Ulaşmak için Tıklayın →](https://www.kibrispostasi.com/c91-EGITIM/n373581-dau-endustri-muhendisligi-ogrenci-takimi-vaka-analizi-yarismasinda-4-oldu)
+
 ## Fotoğraflar
 
 ![Türkiye Endüstri Mühendisliği Toplulukları Birliği 51. Genel Kurulu, İzmir Ekonomi Üniversitesi, Temmuz 2022](content/img/kulup/temt-51-genel-kurul.webp 1024x768)
@@ -34,3 +38,7 @@ content/logos/temt.webp | Türkiye Geneli Vaka Analiz Yarışmaları | Türkiye 
 ![Doğu Akdeniz Üniversitesi haberi, 13 Ağustos 2021: "DAÜ Endüstri Mühendisliği Bölümü Öğrencisi Alperen Kıvanç Karademir'den Büyük Başarı"](content/img/kulup/dau-haber.webp 1400x798)
 
 [Habere ulaşmak için tıklayın →](https://www.emu.edu.tr/tr/haberler/haberler/dau-endustri-muhendisligi-bolumu-ogrencisi-alperen-kivanc-karademirden-buyuk-basari/1206/pid/3759)
+
+![Zirve Kıbrıs haberi: "DAÜ öğrencisinin başarısı"](content/img/kulup/zirve-kibris-haber.webp 1400x713)
+
+[Habere ulaşmak için tıklayın →](https://www.zirvekibris.com/haber-endustri-muhendisligi-ogrencisi-alperen-kivanc-karademirin-gurulandiran-basarisi-67147.html)
