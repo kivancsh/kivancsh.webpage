@@ -77,6 +77,13 @@ export function renderMarkdown(body) {
       } else if (kind === 'travelmap') {
         const codes = block.map((l) => l.trim().toUpperCase()).filter(Boolean);
         html.push(`<div class="travel" data-codes="${esc(codes.join(','))}"></div>`);
+      } else if (kind === 'gallery') {
+        // image | title | place  → the ring gallery (src/gallery.js)
+        const items = block.filter((l) => l.trim()).map((l) => {
+          const [src = '', title = '', place = ''] = l.split('|').map((x) => x.trim());
+          return { src: safeUrl(src), title, place };
+        });
+        html.push(`<div class="ring-gallery" data-items="${esc(JSON.stringify(items))}"></div>`);
       } else if (kind === 'timeline') {
         const items = block.filter((l) => l.trim()).map((l) => {
           const [when, ...rest] = l.split('|');

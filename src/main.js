@@ -388,6 +388,7 @@ async function boot() {
     });
     import('./hobbies.js');
     import('./travel/travel.js');
+    import('./gallery.js');
   }, 1200);
   nav.start();
   requestAnimationFrame((t) => {

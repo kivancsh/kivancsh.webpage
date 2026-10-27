@@ -79,7 +79,7 @@ export class Post {
     this.cleanups = [];
   }
 
-  // page-specific pieces: counters, the travel map, the hobbies chapters
+  // page-specific pieces: counters, the travel map, the photo ring, the hobbies chapters
   async enhance(meta, accent) {
     const article = this.inner.querySelector('.pb');
     const opts = { reduced: this.reduced, scroller: this.scroller, accent, base: import.meta.env.BASE_URL || './' };
@@ -91,6 +91,11 @@ export class Post {
     if (maps.length) {
       const { mountTravel } = await import('./travel/travel.js');
       maps.forEach((m) => mountTravel(m, opts).then((off) => this.cleanups.push(off)).catch((e) => console.warn(e)));
+    }
+    const rings = [...this.inner.querySelectorAll('.ring-gallery')];
+    if (rings.length) {
+      const { mountRing } = await import('./gallery.js');
+      rings.forEach((r) => this.cleanups.push(mountRing(r, opts)));
     }
     const nums = [...this.inner.querySelectorAll('.stat-v')];
     if (nums.length) {

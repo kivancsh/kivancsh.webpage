@@ -764,3 +764,143 @@
     stroke-width: 2;
   }
 }
+
+/* ---------- photo ring (```gallery) ------------------------------------------------- */
+/* An off-white editorial panel; the cards stand edge-on around a flat circle. */
+.ring-gallery {
+  width: min(1400px, calc(100vw - var(--gut) * 2));
+  margin: clamp(48px, 9vh, 96px) 0 0 50%;
+  transform: translateX(-50%);
+}
+.rg-stage {
+  --rg-bg: color-mix(in oklab, var(--pa) 5%, #e3e3db);
+  --rg-ink: #1f1f1f;
+  position: relative;
+  height: clamp(560px, 100svh, 920px);
+  overflow: hidden;
+  background: var(--rg-bg);
+  color: var(--rg-ink);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.rg-tilt {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  transform-origin: center;
+}
+.rg-ring {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  flex: none;
+  transform-style: preserve-3d;
+}
+.rg-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 45px;
+  height: 60px;
+  margin: -30px 0 0 -22.5px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--rg-ink); /* the back of a flipped card */
+  transform-origin: center;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  will-change: transform;
+  cursor: pointer;
+}
+.rg-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+}
+.rg-card:focus-visible {
+  outline: 2px solid var(--pa);
+  outline-offset: 3px;
+}
+.is-preview .rg-card {
+  cursor: zoom-out;
+}
+
+/* corner labels, like the masthead and colophon of a printed study */
+.rg-k {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  font: 500 11px/1 var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rg-ink);
+  pointer-events: none;
+}
+.rg-tl { top: 22px; left: 24px; }
+.rg-tr { top: 22px; right: 24px; }
+.rg-bl { bottom: 22px; left: 24px; }
+.rg-br { bottom: 22px; right: 24px; }
+.rg-back,
+.is-preview .rg-hint {
+  display: none;
+}
+.is-preview .rg-back {
+  display: inline;
+}
+
+/* the chosen photo's title, rising word by word under it */
+.rg-caption {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: clamp(56px, 12%, 110px);
+  text-align: center;
+  pointer-events: none;
+}
+.rg-title {
+  margin: 0;
+  font: 340 36px/1.1 var(--f-display);
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.05rem;
+  padding: 0 var(--gut);
+}
+.rg-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+}
+.rg-w > span {
+  display: inline-block;
+}
+.rg-place {
+  margin: 10px 0 0;
+  font: 500 11px var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--rg-ink) 62%, transparent);
+}
+@media (max-width: 700px) {
+  .ring-gallery {
+    width: 100vw;
+  }
+  .rg-title {
+    font-size: 28px;
+  }
+  .rg-k {
+    font-size: 9.5px;
+  }
+  .rg-tl, .rg-bl { left: 16px; }
+  .rg-tr, .rg-br { right: 16px; }
+}

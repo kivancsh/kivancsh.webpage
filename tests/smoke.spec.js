@@ -79,3 +79,26 @@ test('the static preview page of a record leads into the app', async ({ page, re
   await expect(page).toHaveURL(/\?lang=en#\/kariyer-yolculugum$/);
   await expect(page.locator('#post')).toHaveClass(/is-in/, { timeout: 15_000 });
 });
+
+test('the travel photo ring opens a photo and Escape closes only the photo', async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto('./?lang=tr#/dunya-turu-hobiler/kesif-seyahat');
+  await expect(page.locator('#post')).toHaveClass(/is-in/, { timeout: 15_000 });
+  await expect(page.locator('.rg-card')).toHaveCount(16);
+  await page.evaluate(() => {
+    const s = document.querySelector('.post-scroll');
+    s.scrollTop = document.querySelector('.ring-gallery').offsetTop;
+  });
+  await expect(async () => {
+    // the article takes focus once it has opened, so focus the card on every try
+    await page.locator('.rg-card').first().focus();
+    await page.keyboard.press('Enter'); // ignored until the intro has finished
+    await expect(page.locator('.rg-stage')).toHaveClass(/is-preview/, { timeout: 500 });
+  }).toPass({ timeout: 20_000 });
+  await expect(page.locator('.rg-title')).toContainText('Helsinki');
+  await page.waitForTimeout(2200);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.rg-stage')).not.toHaveClass(/is-preview/, { timeout: 5_000 });
+  await expect(page.locator('html')).toHaveClass(/in-post/);
+  expect(errors).toEqual([]);
+});
