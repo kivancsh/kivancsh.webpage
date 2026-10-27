@@ -4,7 +4,7 @@ lede: Doğu Akdeniz Üniversitesi'nde Endüstri Mühendisliği lisansı; kulüp 
 ---
 
 ```roles
- | Doğu Akdeniz Üniversitesi | Endüstri Mühendisliği, Lisans | | 2018 – 2023 · Gazimağusa, KKTC
+content/logos/dau.webp | Doğu Akdeniz Üniversitesi | Endüstri Mühendisliği, Lisans | | 2018 – 2023 · Gazimağusa, KKTC
 ```
 
 Bu plağın iki yüzü var: endüstri mühendisliği kulüplerindeki yönetim ve etkinlik çalışmaları, ve sekiz farklı şirkette geçen stajlar ile eğitim programları. Her biri aşağıda kendi mini plağında ayrıntılı anlatılıyor.

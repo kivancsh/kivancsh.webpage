@@ -3,8 +3,22 @@ title: Endüstri Mühendisliği Kulüp Etkinlikleri Deneyimlerim
 lede: Kulüp başkanlığı, ulusal birlik yönetimi ve vaka analiz yarışmalarında dereceler.
 ---
 
+```logosphere
+content/logos/spacex.webp | SpaceX
+content/logos/pfizer.webp | Pfizer
+content/logos/thy.webp | Turkish Airlines
+content/logos/bosch.webp | Bosch
+content/logos/samsung.webp | Samsung
+content/logos/pg.webp | P&G
+```
+
 ```stats
 1447 | Katılımcı | Etkinlik proje liderliği
+1 | Mobil Uygulama |
+ | KKTC ve Türkiye Vaka Analiz Yarışması Dereceleri |
+ | Ekip Yönetimi |
+ | Şirketlerle Sponsorluk Anlaşmaları |
+ | Dev Şirketlerle İş Birlikleri |
 ```
 
 ## DAÜ Endüstri Mühendisliği Kulübü

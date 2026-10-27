@@ -82,7 +82,7 @@ export class Post {
   // page-specific pieces: counters, the travel map, the photo ring, the hobbies chapters
   async enhance(meta, accent) {
     const article = this.inner.querySelector('.pb');
-    const opts = { reduced: this.reduced, scroller: this.scroller, accent, base: import.meta.env.BASE_URL || './' };
+    const opts = { reduced: this.reduced, scroller: this.scroller, postEl: this.el, accent, base: import.meta.env.BASE_URL || './' };
     if (meta.layout === 'hobbies') {
       const { mountHobbies } = await import('./hobbies.js');
       this.cleanups.push(mountHobbies(article, this.el, opts));
@@ -91,6 +91,11 @@ export class Post {
     if (maps.length) {
       const { mountTravel } = await import('./travel/travel.js');
       maps.forEach((m) => mountTravel(m, opts).then((off) => this.cleanups.push(off)).catch((e) => console.warn(e)));
+    }
+    const sphere = this.inner.querySelector('.logo-sphere');
+    if (sphere) {
+      const { mountLogoSphere } = await import('./logosphere.js');
+      this.cleanups.push(mountLogoSphere(sphere, opts));
     }
     const rings = [...this.inner.querySelectorAll('.ring-gallery')];
     if (rings.length) {

@@ -77,6 +77,13 @@ export function renderMarkdown(body) {
       } else if (kind === 'travelmap') {
         const codes = block.map((l) => l.trim().toUpperCase()).filter(Boolean);
         html.push(`<div class="travel" data-codes="${esc(codes.join(','))}"></div>`);
+      } else if (kind === 'logosphere') {
+        // image | name  → partner logos turning on a sphere behind the page (src/logosphere.js)
+        const logos = block.filter((l) => l.trim()).map((l) => {
+          const [src = '', name = ''] = l.split('|').map((x) => x.trim());
+          return { src: safeUrl(src), name };
+        });
+        html.push(`<div class="logo-sphere" hidden data-logos="${esc(JSON.stringify(logos))}"></div>`);
       } else if (kind === 'photos') {
         html.push(renderPhotos(block));
       } else if (kind === 'gallery') {
@@ -197,14 +204,20 @@ function renderPhotos(lines) {
   return `<section class="photo-set">${head ? `<p class="ps-h rv">${inline(head)}</p>` : ''}<div class="ps-grid ps-grid--${items.length}">${items.join('')}</div></section>`;
 }
 
-// value | label | detail
+// value | label | detail   (no value: the label itself is the highlight)
 function renderStats(lines) {
+  let text = 0;
   const items = lines.filter((l) => l.trim()).map((l, i) => {
     const [v = '', label = '', detail = ''] = l.split('|').map((x) => x.trim());
+    const d = detail ? `<span class="stat-d">${inline(detail)}</span>` : '';
+    if (!v) {
+      text++;
+      return `<div class="stat stat--text rv" style="--i:${i}"><span class="stat-t">${inline(label)}</span>${d}</div>`;
+    }
     return `<div class="stat rv" style="--i:${i}"><span class="stat-v" data-v="${esc(v)}">${esc(v)}</span>
-      <span class="stat-l">${inline(label)}</span>${detail ? `<span class="stat-d">${inline(detail)}</span>` : ''}</div>`;
+      <span class="stat-l">${inline(label)}</span>${d}</div>`;
   });
-  return `<div class="stats">${items.join('')}</div>`;
+  return `<div class="stats${text ? ' stats--mixed' : ''}">${items.join('')}</div>`;
 }
 
 export { inline as renderInline, esc };

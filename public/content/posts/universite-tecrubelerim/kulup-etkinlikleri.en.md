@@ -3,8 +3,22 @@ title: Industrial Engineering Student Club Activities
 lede: Club leadership, national association governance and rankings in case study competitions.
 ---
 
+```logosphere
+content/logos/spacex.webp | SpaceX
+content/logos/pfizer.webp | Pfizer
+content/logos/thy.webp | Turkish Airlines
+content/logos/bosch.webp | Bosch
+content/logos/samsung.webp | Samsung
+content/logos/pg.webp | P&G
+```
+
 ```stats
 1447 | Participants | Event project leadership
+1 | Mobile Application |
+ | Case Study Competition Rankings in Northern Cyprus and Türkiye |
+ | Team Management |
+ | Corporate Sponsorship Agreements |
+ | Partnerships with Major Companies |
 ```
 
 ## EMU Industrial Engineering Club

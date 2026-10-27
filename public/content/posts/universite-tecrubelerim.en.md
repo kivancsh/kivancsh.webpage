@@ -4,7 +4,7 @@ lede: A Bachelor of Science in Industrial Engineering at Eastern Mediterranean U
 ---
 
 ```roles
- | Eastern Mediterranean University | B.Sc. in Industrial Engineering | | 2018 – 2023 · Famagusta, Northern Cyprus
+content/logos/dau.webp | Eastern Mediterranean University | B.Sc. in Industrial Engineering | | 2018 – 2023 · Famagusta, Northern Cyprus
 ```
 
 This record comprises two areas of experience: leadership and organisational roles within industrial engineering student clubs, and internships and training programmes completed at eight companies. Each area is presented in detail in its own section below.

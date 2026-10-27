@@ -187,6 +187,36 @@
   color: var(--muted);
 }
 
+/* figures and highlights together: a tidy grid, every cell ruled underneath */
+.stats--mixed {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  border-bottom: 0;
+  column-gap: 28px;
+}
+.stats--mixed .stat,
+.stats--mixed .stat + .stat {
+  padding: 22px 0 20px;
+  border-left: 0;
+  border-bottom: 1px solid var(--line);
+}
+.stat--text {
+  justify-content: flex-end;
+}
+.stat-t {
+  font: 360 clamp(19px, 1.6vw, 23px) / 1.2 var(--f-display);
+  font-variation-settings: 'opsz' 48;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+.stat-t::before {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 3px;
+  margin-bottom: 14px;
+  background: var(--pa);
+}
+
 /* ---------- travel map ----------------------------------------------------- */
 
 .travel {
@@ -1014,5 +1044,45 @@
   .ps-item.in img {
     clip-path: none;
     transform: none;
+  }
+}
+
+/* ---------- logo sphere (```logosphere) ------------------------------------------ */
+/* Behind the article: fills the window, never takes a click, fades in with the page. */
+.ls-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.4s ease 0.4s;
+}
+.post.is-in .ls-layer {
+  opacity: 1;
+}
+.post.is-leaving .ls-layer {
+  opacity: 0;
+  transition-delay: 0s;
+}
+.ls-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 52px;
+  margin: -26px 0 0 -60px;
+  will-change: transform, opacity;
+}
+.ls-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+@media (max-width: 700px) {
+  .ls-item {
+    width: 84px;
+    height: 36px;
+    margin: -18px 0 0 -42px;
   }
 }
