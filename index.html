@@ -39,6 +39,14 @@
         if (q === 'en' || q === 'tr') document.documentElement.lang = q;
       } catch (e) {}
     </script>
+    <link rel="preconnect" href="https://open.spotify.com" />
+    <script>
+      // Spotify's player API loads with the page; the site picks it up once it's here
+      window.onSpotifyIframeApiReady = function (api) {
+        window.__spotifyApi = api;
+      };
+    </script>
+    <script async src="https://open.spotify.com/embed/iframe-api/v1" onerror="window.__spotifyFailed = true"></script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23110f0e'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23332d29' stroke-width='1'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%23332d29' stroke-width='1'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%23b3384a'/%3E%3Ccircle cx='32' cy='32' r='2' fill='%23110f0e'/%3E%3C/svg%3E" />
   </head>
   <body>

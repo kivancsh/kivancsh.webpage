@@ -123,7 +123,7 @@ export class Music {
       this.autoOpened = true;
       this.setOpen(true);
     };
-    this.helpTimer = setTimeout(help, 2000);
+    this.helpTimer = setTimeout(help, 1200);
   }
 
   key(track = this.track) {
@@ -216,26 +216,24 @@ export class Music {
 
   // ---- spotify ------------------------------------------------------------------
 
+  // Spotify's API script is requested by index.html together with the page, so it is
+  // usually here already; the player is built straight away
   loadSpotify() {
-    const prev = window.onSpotifyIframeApiReady;
-    window.onSpotifyIframeApiReady = (api) => {
-      prev && prev(api);
+    this.watchdog();
+    const take = (api) => {
       this.spApi = api;
       this.mountSpotify();
     };
-    const go = () => {
-      this.watchdog();
-      loadScript('https://open.spotify.com/embed/iframe-api/v1').catch(() => this.fail());
+    if (window.__spotifyApi) return take(window.__spotifyApi);
+    if (window.__spotifyFailed) return this.fail();
+    const prev = window.onSpotifyIframeApiReady;
+    window.onSpotifyIframeApiReady = (api) => {
+      prev && prev(api);
+      take(api);
     };
-    // the embed is heavy; wait for the first frames (or the first interaction) before loading it
-    let started = false;
-    const start = () => {
-      if (started) return;
-      started = true;
-      go();
-    };
-    setTimeout(start, 2500);
-    addEventListener('pointerdown', start, { once: true, capture: true, passive: true });
+    const tag = document.querySelector('script[src*="open.spotify.com/embed/iframe-api"]');
+    if (tag) tag.addEventListener('error', () => this.fail());
+    else loadScript('https://open.spotify.com/embed/iframe-api/v1').catch(() => this.fail());
   }
 
   destroySpotify() {

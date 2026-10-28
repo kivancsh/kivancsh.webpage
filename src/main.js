@@ -92,6 +92,23 @@ async function boot() {
   drawDomLabels();
   translateStatic();
 
+  // the music player comes up before the 3D scene, so Spotify is ready as early as possible
+  const sound = new Sound();
+  // --- music: each page has its song (Spotify only); it starts on the first interaction ---
+  const trackFor = (route) => {
+    if (!route || route.view === 'hero') return content.site.music;
+    const r = records[route.record];
+    const c = route.child != null ? r.children[route.child] : null;
+    return c?.music || r.music || content.site.music;
+  };
+  const npEl = document.querySelector('.np');
+  const startRoute = parseRoute(location.hash, records);
+  const music = trackFor(startRoute)
+    ? new Music({ el: npEl, track: trackFor(startRoute), onChange: (on) => sound.setOn(on, { bed: false }) })
+    : ((npEl.hidden = true), null);
+  music && music.relabel();
+  if (import.meta.env.DEV) window.__music = music; // for checking the player by hand
+
   const canvas = document.getElementById('gl');
   // starting quality: phones and tablets begin one tier down, weak hardware two
   const coarse = matchMedia('(pointer: coarse)').matches;
@@ -117,7 +134,6 @@ async function boot() {
   }
 
   const car = new Carousel(n);
-  const sound = new Sound();
   const cursor = finePointer ? new Cursor() : null;
   const app = { view: 'hero', route: { view: 'hero' }, target: null, busy: false, pending: null, depth: 0 };
   const root = document.documentElement;
@@ -148,20 +164,6 @@ async function boot() {
       });
     });
 
-  // --- music: each page has its song (Spotify only); it starts on the first interaction ---
-  const trackFor = (route) => {
-    if (!route || route.view === 'hero') return content.site.music;
-    const r = records[route.record];
-    const c = route.child != null ? r.children[route.child] : null;
-    return c?.music || r.music || content.site.music;
-  };
-  const npEl = document.querySelector('.np');
-  const startRoute = parseRoute(location.hash, records);
-  const music = trackFor(startRoute)
-    ? new Music({ el: npEl, track: trackFor(startRoute), onChange: (on) => sound.setOn(on, { bed: false }) })
-    : ((npEl.hidden = true), null);
-  music && music.relabel();
-  if (import.meta.env.DEV) window.__music = music; // for checking the player by hand
 
   // --- language ------------------------------------------------------------------
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
