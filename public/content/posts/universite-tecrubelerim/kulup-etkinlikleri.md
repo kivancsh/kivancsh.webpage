@@ -39,7 +39,7 @@ content/logos/pg.webp | P&G
 ## DAÜ Endüstri Mühendisliği Kulübü
 
 ```roles
-content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü | Yönetim Kurulu Başkanı | Pandemi Sonrası Sanayi Projesi'nin liderliği: 1447 katılımcı ; Post Pandemik Endüstri Proje Lideri
+content/logos/emu-ie-club.webp | DAÜ Endüstri Mühendisliği Kulübü |  | Yönetim Kurulu Başkanı ; Post Pandemik Endüstri Proje Lideri: 1447 katılımcı, 28 iş birliği ; Organizasyon Takımı
 ```
 
 ## Türkiye Endüstri Mühendisliği Toplulukları Birliği
