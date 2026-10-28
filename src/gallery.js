@@ -186,6 +186,24 @@ export function mountRing(el, { reduced, scroller }) {
       .join(' ');
   }
 
+  // The zoomed card is the small card scaled up five times; phone browsers paint that
+  // layer at its small size and stretch it, so the photo looks soft. Once the zoom has
+  // landed, a plain full-resolution copy of the photo is laid exactly over the card.
+  const sharp = document.createElement('img');
+  sharp.className = 'rg-sharp';
+  sharp.alt = '';
+  sharp.decoding = 'async';
+  stage.appendChild(sharp);
+  function showSharp(i) {
+    const c = cards[i].getBoundingClientRect();
+    const s = stage.getBoundingClientRect();
+    sharp.src = items[i].src;
+    Object.assign(sharp.style, { left: `${c.left - s.left}px`, top: `${c.top - s.top}px`, width: `${c.width}px`, height: `${c.height}px` });
+    const on = () => state.preview === i && sharp.classList.add('on');
+    if (sharp.complete) on();
+    else sharp.onload = on;
+  }
+
   function open(i) {
     if (!idle()) return;
     state.busy = true;
@@ -204,13 +222,24 @@ export function mountRing(el, { reduced, scroller }) {
     spin = spinC = 0;
     hover.forEach((h) => Object.assign(h.c, { r: 0, s: 1, x: 0, y: 0 }));
     gsap.to(cards, { x: (k) => rest[k].x, y: (k) => rest[k].y, rotationY: 0, scale: 1, duration: 1.25, ease: 'power4.out' });
-    gsap.to(ring, { scale: 5, y: 1300, rotation: (swing * 180) / Math.PI + 360, duration: d, ease: 'power4.inOut', onComplete: () => (state.busy = false) });
+    gsap.to(ring, {
+      scale: 5,
+      y: 1300,
+      rotation: (swing * 180) / Math.PI + 360,
+      duration: d,
+      ease: 'power4.inOut',
+      onComplete: () => {
+        state.busy = false;
+        showSharp(i);
+      },
+    });
     gsap.fromTo(caption.querySelectorAll('.rg-w > span, .rg-place'), { yPercent: 125, opacity: 1 }, { yPercent: 0, duration: 0.75, delay: reduced ? 0.2 : 1.25, stagger: 0.1, ease: 'power4.out' });
   }
 
   function close({ quick = false } = {}) {
     if (state.preview < 0 || (state.busy && !quick)) return;
     state.busy = true;
+    sharp.classList.remove('on');
     const d = reduced || quick ? 0.6 : 2.5;
     gsap.to(caption.querySelectorAll('.rg-w > span, .rg-place'), { yPercent: -125, duration: 0.75, delay: quick ? 0 : 0.5, stagger: 0.1, ease: 'power4.out' });
     gsap.to(ring, {
@@ -313,6 +342,7 @@ export function mountRing(el, { reduced, scroller }) {
   const onResize = () => {
     mobile = innerWidth < 1000;
     scale = baseScale(innerWidth);
+    if (state.preview >= 0 && !state.busy) showSharp(state.preview); // keep the copy on the card
     if (idle()) {
       gsap.set(ring, { scale });
       calm();

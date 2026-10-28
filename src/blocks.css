@@ -1296,3 +1296,17 @@
 .fig.rv:not(.in) {
   transform: translate(-50%, 18px);
 }
+
+/* the full-resolution copy over the zoomed card (see showSharp in src/gallery.js) */
+.rg-sharp {
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  border-radius: 20px; /* the card's 4px corner, zoomed five times */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.rg-sharp.on {
+  opacity: 1;
+}
