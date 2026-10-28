@@ -111,13 +111,16 @@ export class Post {
       const { mountRing } = await import('./gallery.js');
       rings.forEach((r) => this.cleanups.push(mountRing(r, opts)));
     }
+    // turn over on hover only where there is a real mouse; on phones a tap turns it (a tap
+    // can also arrive as a "mouse" pointer that then hovers whatever scrolls under it)
+    const hover = matchMedia('(hover: hover) and (pointer: fine)');
     this.inner.querySelectorAll('.role-flipbox').forEach((box) => {
       const set = (on) => {
         box.classList.toggle('is-flipped', on);
         box.setAttribute('aria-pressed', String(on));
       };
-      box.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && set(true));
-      box.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && set(false));
+      box.addEventListener('pointerenter', (e) => hover.matches && e.pointerType === 'mouse' && set(true));
+      box.addEventListener('pointerleave', (e) => hover.matches && e.pointerType === 'mouse' && set(false));
       box.addEventListener('click', () => set(!box.classList.contains('is-flipped')));
       box.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter' && e.key !== ' ') return;

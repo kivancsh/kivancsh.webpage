@@ -1196,9 +1196,11 @@
 }
 
 /* ---------- cards that turn over (roles with a back image) ---------------------- */
+/* Each side turns on its own (no shared 3D space, which Safari / iPhone flatten), and the
+   side that shows switches exactly halfway through the turn, so neither browser relies on
+   backface-visibility alone. */
 .role-flipbox {
   position: relative;
-  perspective: 1400px;
   cursor: pointer;
   outline: none;
 }
@@ -1211,35 +1213,44 @@
 .role-flip {
   position: relative;
   height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.9s var(--ease);
 }
-.role-flipbox.is-flipped .role-flip {
-  transform: rotateY(180deg);
-}
-.role-face,
-.role-back {
+.role-flip > .role-face,
+.role-flip > .role-back {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transition:
+    transform 0.9s var(--ease),
+    visibility 0s linear 0.45s,
+    border-color 0.5s,
+    background 0.5s;
 }
-.role-face {
+.role-flip > .role-face {
   height: 100%;
+  transform: perspective(1400px) rotateY(0deg);
 }
-.role-back {
+.role-flip > .role-back {
   position: absolute;
   inset: 0;
-  transform: rotateY(180deg);
-  display: grid;
-  place-items: center;
-  padding: 10px;
+  transform: perspective(1400px) rotateY(180deg);
+  visibility: hidden;
   overflow: hidden;
   border: 1px solid color-mix(in oklab, var(--pa) 30%, var(--line));
   background: #f4f2ef;
   box-shadow: var(--shadow-soft, none);
 }
+.role-flipbox.is-flipped .role-face {
+  transform: perspective(1400px) rotateY(-180deg);
+  visibility: hidden;
+}
+.role-flipbox.is-flipped .role-back {
+  transform: perspective(1400px) rotateY(0deg);
+  visibility: visible;
+}
 .role-back img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
   object-fit: contain;
   display: block;
 }
@@ -1266,7 +1277,8 @@
   outline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .role-flip {
+  .role-flip > .role-face,
+  .role-flip > .role-back {
     transition: none;
   }
 }

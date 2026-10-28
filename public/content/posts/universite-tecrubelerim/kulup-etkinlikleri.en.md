@@ -39,7 +39,7 @@ content/logos/pg.webp | P&G
 ## EMU Industrial Engineering Club
 
 ```roles
-content/logos/emu-ie-club.webp | EMU Industrial Engineering Club |  | Chair of the Board ; Post-Pandemic Industry Project Lead: 1,447 participants, 28 partnerships ; Organising Team
+content/logos/emu-ie-club.webp | EMU Industrial Engineering Club | Chair of the Board | Post-Pandemic Industry Project Lead: 1,447 participants, 28 partnerships ; Organising Team
 ```
 
 ## Union of Industrial Engineering Societies of Türkiye
