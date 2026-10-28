@@ -85,6 +85,18 @@ export class Music {
       this.offerPlay();
     };
     ['pointerdown', 'keydown', 'touchend'].forEach((ev) => addEventListener(ev, kick, { capture: true, passive: true }));
+    // Scrolling tries too. Browsers only unlock sound on a click, tap or key press, so
+    // this starts the music wherever the browser allows it (on phones a finger lifted
+    // after a swipe counts; a mouse wheel on its own usually doesn't, unless the visitor
+    // has already clicked or the browser trusts the site from earlier visits).
+    let lastTry = 0;
+    const scrollKick = () => {
+      if (this.userPaused || this.playing || performance.now() - lastTry < 1500) return;
+      lastTry = performance.now();
+      this.play();
+    };
+    ['wheel', 'touchmove'].forEach((ev) => addEventListener(ev, scrollKick, { capture: true, passive: true }));
+    document.addEventListener('scroll', scrollKick, { capture: true, passive: true });
     // At the end of a song Spotify may go quiet without any report, and for full songs
     // its reports come only every few seconds. So the play head is estimated from the last
     // report and the time since; at the very end the song goes round again.
