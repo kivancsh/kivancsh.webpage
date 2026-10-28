@@ -44,7 +44,15 @@ function preloadImages(bodies) {
   const urls = new Set();
   bodies.forEach((b) => (b.match(/content\/(?:img|logos)\/[^\s|)"']+\.(?:webp|png|jpe?g|svg)/g) || []).forEach((u) => urls.add(u)));
   const queue = [...urls];
+  // the page being read goes first: other pages' photos wait while its own are still
+  // coming in (on a slow phone they'd otherwise share the connection with them)
+  const settled = (img) => new Promise((r) => (img.addEventListener('load', r, { once: true }), img.addEventListener('error', r, { once: true })));
   const next = () => {
+    const busy = [...document.querySelectorAll('#post img')].filter((i) => !i.complete && i.loading !== 'lazy');
+    if (busy.length) {
+      Promise.race([...busy.map(settled), new Promise((r) => setTimeout(r, 4000))]).then(next);
+      return;
+    }
     const src = queue.shift();
     if (!src) return;
     const img = new Image();

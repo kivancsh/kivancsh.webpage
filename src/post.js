@@ -119,6 +119,9 @@ export class Post {
         box.classList.toggle('is-flipped', on);
         box.setAttribute('aria-pressed', String(on));
       };
+      // the back photo is decoded now, while the card shows its front, so turning it over
+      // doesn't wait for the picture
+      box.querySelector('.role-back img')?.decode().catch(() => {});
       box.addEventListener('pointerenter', (e) => hover.matches && e.pointerType === 'mouse' && set(true));
       box.addEventListener('pointerleave', (e) => hover.matches && e.pointerType === 'mouse' && set(false));
       box.addEventListener('click', () => set(!box.classList.contains('is-flipped')));

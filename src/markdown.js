@@ -179,7 +179,7 @@ function renderRoles(lines) {
     return `<li class="role-flipbox rv" style="--i:${i}" tabindex="0" role="button" aria-pressed="false" aria-label="${esc(t('role.flip', { org }))}">
       <div class="role-flip">
         <div class="role role-face">${face}<span class="role-turn" aria-hidden="true"></span></div>
-        <div class="role-back"><img src="${esc(safeUrl(back))}" alt="${esc(org)}" loading="lazy" decoding="async"></div>
+        <div class="role-back"><img src="${esc(safeUrl(back))}" alt="${esc(org)}" decoding="async"></div>
       </div></li>`;
   });
   return `<ol class="roles${many ? ' roles--grid' : ''}">${items.join('')}</ol>`;

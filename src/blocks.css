@@ -1197,9 +1197,11 @@
 
 /* ---------- cards that turn over (roles with a back image) ---------------------- */
 /* Each side turns on its own (no shared 3D space, which Safari / iPhone flatten), and the
-   side that shows switches exactly halfway through the turn, so neither browser relies on
-   backface-visibility alone. */
+   side that shows switches when the card is edge-on, so no browser relies on
+   backface-visibility alone. The turn's curve is symmetric, so edge-on is exactly halfway
+   (--flip-t / 2): the new side comes up the moment the old one goes, with no blank card. */
 .role-flipbox {
+  --flip-t: 0.6s;
   position: relative;
   cursor: pointer;
   outline: none;
@@ -1219,8 +1221,8 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition:
-    transform 0.9s var(--ease),
-    visibility 0s linear 0.45s,
+    transform var(--flip-t) cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0s linear calc(var(--flip-t) / 2),
     border-color 0.5s,
     background 0.5s;
 }
