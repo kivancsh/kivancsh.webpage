@@ -1286,3 +1286,13 @@
 .stat-d a:hover {
   opacity: 0.7;
 }
+
+/* photos come in quicker than text: they're already downloaded by the time they show */
+.pb .fig.rv,
+.pb .role-flipbox.rv,
+.pb .role.rv {
+  transition-duration: 0.55s, 0.7s;
+}
+.fig.rv:not(.in) {
+  transform: translate(-50%, 18px);
+}

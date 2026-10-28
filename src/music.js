@@ -234,7 +234,7 @@ export class Music {
       started = true;
       go();
     };
-    setTimeout(start, 1500);
+    setTimeout(start, 2500);
     addEventListener('pointerdown', start, { once: true, capture: true, passive: true });
   }
 

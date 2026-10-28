@@ -1,12 +1,7 @@
 // fonts ship with the site (no Google Fonts round trip): Fraunces for display and text,
-// Big Shoulders for the big numbers, Plex Mono for small labels
-import '@fontsource-variable/fraunces/opsz.css';
-import '@fontsource-variable/fraunces/opsz-italic.css';
-import '@fontsource/big-shoulders-display/500';
-import '@fontsource/big-shoulders-display/700';
-import '@fontsource/big-shoulders-display/800';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// Big Shoulders for the big numbers, Plex Mono for small labels, each cut down to the
+// characters the site uses (scripts/fonts.mjs, npm run fonts)
+import './fonts.css';
 import './style.css';
 import './blocks.css';
 import './post-light.css';
@@ -29,21 +24,51 @@ const mod = (v, n) => ((v % n) + n) % n;
 const wrapN = (v, n) => mod(v + n / 2, n) - n / 2;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function fontsReady() {
-  if (!document.fonts) return;
+// the faces the record labels are painted with (canvas text needs them loaded)
+function fontsReady() {
+  if (!document.fonts) return Promise.resolve();
   const faces = [
     '800 100px "Big Shoulders Display"',
     'italic 400 60px "Fraunces Variable"',
     '400 60px "Fraunces Variable"',
     '500 20px "IBM Plex Mono"',
   ];
-  await Promise.race([Promise.all(faces.map((f) => document.fonts.load(f, 'ÖĞÇŞİ2015'))), wait(2500)]);
+  return Promise.allSettled(faces.map((f) => document.fonts.load(f, 'ÖĞÇŞİ2015')));
+}
+
+// every photo and logo the posts use, fetched quietly a couple at a time so that any
+// page opens with its pictures already here (skipped when the visitor saves data)
+function preloadImages(bodies) {
+  const net = navigator.connection;
+  if (net && (net.saveData || /2g/.test(net.effectiveType || ''))) return;
+  const urls = new Set();
+  bodies.forEach((b) => (b.match(/content\/(?:img|logos)\/[^\s|)"']+\.(?:webp|png|jpe?g|svg)/g) || []).forEach((u) => urls.add(u)));
+  const queue = [...urls];
+  const next = () => {
+    const src = queue.shift();
+    if (!src) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.fetchPriority = 'low';
+    img.onload = img.onerror = next;
+    img.src = src;
+  };
+  next();
+  next();
 }
 
 async function boot() {
+  // three.js is the biggest download: start it right away, alongside content and fonts
+  const stageModule = import('./stage/stage.js');
+  stageModule.catch(() => {});
   const content = await loadContent();
   localizeContent(content);
-  await fontsReady();
+  // record labels are painted with the site's fonts, but the page doesn't wait long for
+  // them: if they're late, the labels are painted again when they arrive
+  const fonts = fontsReady();
+  let fontsIn = false;
+  fonts.then(() => (fontsIn = true));
+  await Promise.race([fonts, wait(300)]);
   const { records } = content;
   const n = records.length;
 
@@ -74,7 +99,7 @@ async function boot() {
   const tier = lowPower ? 0 : coarse || innerWidth < 760 ? 1 : 2;
   let stage = null;
   try {
-    const { Stage } = await import('./stage/stage.js');
+    const { Stage } = await stageModule;
     stage = new Stage(canvas, content, { reduced, tier });
     // iOS and Android drop WebGL contexts under memory pressure; recover instead of freezing
     canvas.addEventListener('webglcontextlost', (e) => {
@@ -108,6 +133,20 @@ async function boot() {
     onHoverChild: (c) => stage && (stage.hover = c >= 0 ? { kind: 'mini', index: c } : null),
   });
   const post = new Post({ content, reduced, onClose: () => nav.requestClose() });
+
+  // fonts that arrived after the first paint: repaint the labels everywhere they're shown
+  if (!fontsIn)
+    fonts.then(() => {
+      const before = records.flatMap((r) => [r._labelURL, ...(r.children || []).map((c) => c._labelURL)]);
+      drawDomLabels();
+      const after = records.flatMap((r) => [r._labelURL, ...(r.children || []).map((c) => c._labelURL)]);
+      stage && stage.relabel();
+      ui.relabel();
+      post.inner.querySelectorAll('[style*="--label"]').forEach((el) => {
+        const i = before.findIndex((u) => el.style.cssText.includes(u));
+        if (i >= 0) el.style.setProperty('--label', `url(${after[i]})`);
+      });
+    });
 
   // --- music: each page has its song (Spotify only); it starts on the first interaction ---
   const trackFor = (route) => {
@@ -383,9 +422,11 @@ async function boot() {
 
   // warm the cache so a click dives straight in: every post, plus the map and hobbies code
   setTimeout(() => {
-    records.forEach((r) => {
-      loadPost(r.post, getLang());
-      (r.children || []).forEach((c) => loadPost(c.post, getLang()));
+    const posts = records.flatMap((r) => [r.post, ...(r.children || []).map((c) => c.post)]);
+    Promise.all(posts.map((p) => loadPost(p, getLang()))).then((all) => {
+      const go = () => preloadImages(all.map((p) => p.body));
+      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 4000 });
+      else setTimeout(go, 1500);
     });
     import('./hobbies.js');
     import('./travel/travel.js');

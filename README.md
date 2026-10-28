@@ -105,7 +105,12 @@ Müzik yalnızca Spotify'ın kendi oynatıcısıyla çalar. Her sayfanın şark�
 
 ## Yazı tipleri
 
-Fraunces (başlık ve metin), Big Shoulders Display (büyük rakamlar) ve IBM Plex Mono (küçük etiketler) npm paketleriyle siteyle birlikte gelir; Google Fonts'a istek gitmez.
+Fraunces (başlık ve metin), Big Shoulders Display (büyük rakamlar) ve IBM Plex Mono (küçük etiketler) siteyle birlikte gelir; Google Fonts'a istek gitmez. `npm run fonts` bu yazı tiplerini sitenin kullandığı karakterlere indirger (`src/fonts/`, `src/fonts.css`; 408 KB → 175 KB). Yazılara yeni bir dilin harflerini (ör. ñ, ø) eklerseniz bu komutu bir kez çalıştırın.
+
+## Hız
+
+- Açılışta 3B sahnenin kodu ve içerik dosyası HTML gelir gelmez indirilmeye başlar; yazı tipleri açılışı bekletmez (geç gelirlerse plak etiketleri yeniden çizilir).
+- Ana sayfa açıldıktan sonra tarayıcı boşta kaldığında bütün sayfaların fotoğrafları ve logoları arka planda ikişer ikişer indirilir; hangi sayfaya girilirse girilsin fotoğraflar hazırdır. Veri tasarrufu açıksa ya da bağlantı 2G ise bu yapılmaz.
 
 ## Arama motorları ve bağlantı önizlemeleri
 
