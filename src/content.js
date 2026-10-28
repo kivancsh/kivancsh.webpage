@@ -2,7 +2,9 @@ import { parseFrontMatter } from './markdown.js';
 import { t } from './i18n.js';
 
 const base = import.meta.env.BASE_URL || './';
-const url = (p) => `${base}content/${p}`.replace(/\/{2,}/g, '/');
+// GitHub Pages lets browsers keep these files for 10 minutes; every build stamps its own
+// version on them so an update shows on the next reload, not 10 minutes later
+const url = (p) => `${base}content/${p}`.replace(/\/{2,}/g, '/') + `?v=${__BUILD__}`;
 
 export async function loadContent() {
   const res = await fetch(url('records.json'));
